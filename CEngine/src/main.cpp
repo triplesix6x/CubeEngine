@@ -19,5 +19,6 @@ int main()
 	{
 		std::cout << reinterpret_cast<uintptr_t>(&arr[i]) << std::endl;
 	}
+	free(arr, size * sizeof(int));
 	return 0;
 }
