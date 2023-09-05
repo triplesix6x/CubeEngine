@@ -15,7 +15,7 @@ int main()
 	for (int i = 0; i < size; ++i)
 	{
 		arr[i] = i;
-		std::cout << reinterpret_cast<uintptr_t>(&arr[i]) << std::endl;
+		std::cout << std::hex << reinterpret_cast<uintptr_t>(&arr[i]) << std::dec << std::endl;
 	}
 	free(arr, size * sizeof(int));
 	
@@ -24,7 +24,7 @@ int main()
 	for (u16 i = 0; i < size; ++i)
 	{
 		brr[i] = i;
-		std::cout << reinterpret_cast<uintptr_t>(&brr[i]) << std::endl;
+		std::cout<< std::hex << reinterpret_cast<uintptr_t>(&brr[i]) << std::dec << std::endl;
 	}
 	free(brr, size * sizeof(int));
 
@@ -33,7 +33,7 @@ int main()
 	for (int i = 0; i < size; ++i)
 	{
 		crr[i] = 0.5;
-		std::cout << reinterpret_cast<uintptr_t>(&crr[i]) << std::endl;
+		std::cout << std::hex << reinterpret_cast<uintptr_t>(&crr[i]) << std::dec << std::endl;
 	}
 	free(crr, size * sizeof(int));
 	return 0;

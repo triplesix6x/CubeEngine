@@ -12,11 +12,6 @@ namespace mem {
 		Pool_allocator();
 		Pool_allocator(const size_t element_sz_bytes, const size_t num_elements, const size_t aligmnent);
 
-		Pool_allocator(const Pool_allocator& alloc) = delete;
-		Pool_allocator& operator=(const Pool_allocator& rhs) = delete;
-		Pool_allocator(Pool_allocator&& alloc) = delete;
-		Pool_allocator& operator=(Pool_allocator&& rhs) = delete; 
-
 		~Pool_allocator();
 
 		void alloc_pool(const size_t element_sz_bytes, const size_t num_elements, const size_t aligmnent);

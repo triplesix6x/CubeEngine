@@ -143,7 +143,7 @@ namespace mem {
 			uintptr_t next_address = reinterpret_cast<uintptr_t>(*pplist);
 
 			pplist = static_cast<void**>(*pplist);
-			os << "\t 0x" << std::hex << curr_address << " | 0x" << next_address << std::endl;
+			os << "\t 0x" << std::hex << curr_address << " | 0x" << next_address << std::dec << std::endl;
 		}
 
 		return os;
