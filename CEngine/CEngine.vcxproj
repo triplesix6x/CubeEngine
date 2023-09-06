@@ -105,7 +105,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp14</LanguageStandard>
       <AdditionalIncludeDirectories>C:\Users\user999\source\repos\CubeEngine\CEngine\includes</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
@@ -130,15 +130,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\Allocator.cpp" />
-    <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\PoolAllocator.cpp" />
-    <ClCompile Include="src\runtimealloc.cpp" />
+    <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="includes\Allocator.h" />
     <ClInclude Include="includes\PoolAllocator.h" />
-    <ClInclude Include="includes\runtimealloc.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

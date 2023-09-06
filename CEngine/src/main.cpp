@@ -1,40 +1,33 @@
 #include <iostream>
 #include <stdint.h>
-#include "runtimealloc.h"
+#include "PoolAllocator.h"
 #define u32 uint32_t
 #define u16 uint16_t
+
+struct vecc
+{
+
+    u32 x;
+    u32 y;
+    u32 z;
+
+    static PoolAllocator allocator;
+
+    static void* operator new(size_t size) {
+        return allocator.allocate(size);
+    }
+
+    static void operator delete(void* ptr, size_t size) {
+        return allocator.deallocate(ptr, size);
+    }
+};
+PoolAllocator vecc::allocator{ 12 };
 
 
 
 int main()
 {
-	using namespace mem;
-	setlocale(LC_ALL, "");
-	static const u32 size = 8;
-	u32 *arr = (u32*)allocate(size * sizeof(u32));
-	for (int i = 0; i < size; ++i)
-	{
-		arr[i] = i;
-		std::cout << std::hex << reinterpret_cast<uintptr_t>(&arr[i]) << std::dec << std::endl;
-	}
-	free(arr, size * sizeof(int));
-	
-	std::cout << "----------------------------------" << std::endl;
-	u16* brr = (u16*)allocate(size * sizeof(u16));
-	for (u16 i = 0; i < size; ++i)
-	{
-		brr[i] = i;
-		std::cout<< std::hex << reinterpret_cast<uintptr_t>(&brr[i]) << std::dec << std::endl;
-	}
-	free(brr, size * sizeof(int));
-
-	std::cout << "----------------------------------" << std::endl;
-	double* crr = (double*)allocate(size * sizeof(double));
-	for (int i = 0; i < size; ++i)
-	{
-		crr[i] = 0.5;
-		std::cout << std::hex << reinterpret_cast<uintptr_t>(&crr[i]) << std::dec << std::endl;
-	}
-	free(crr, size * sizeof(int));
+    vecc *myvec = new vecc{1, 2, 3};
+    delete myvec;
 	return 0;
 }
