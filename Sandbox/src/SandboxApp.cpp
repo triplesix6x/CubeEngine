@@ -7,7 +7,7 @@ class Sandbox : public Cube::Application
 public:
 	Sandbox()
 	{
-
+		std::cout << sizeof(this) << std::endl;
 	}
 
 	~Sandbox()
@@ -16,7 +16,7 @@ public:
 	}
 };
 
-static PoolAllocator allocator {128};
+static PoolAllocator allocator {8};
 void* operator new(size_t size)
 {
 	return allocator.allocate(size);

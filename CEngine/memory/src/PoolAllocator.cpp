@@ -2,11 +2,12 @@
 #include <iostream>
 #include <stdint.h>
 #include <memory>
-
+#include <assert.h>
 
 
 Chunk* PoolAllocator::allocatePool(size_t chunkSize) 
 {
+    assert((chunkSize <= mPoolSize) && "Выделаяемый объект больше общего пула");
     std::cout << "Allocating "  << mPoolSize << " bytes" << std::endl;
 
     mChunksPerPool = mPoolSize / chunkSize;
