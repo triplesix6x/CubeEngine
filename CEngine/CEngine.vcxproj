@@ -103,7 +103,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>CUBE_BUILD_DLL;CUBE_PLATFORM_WINDOWS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp14</LanguageStandard>
       <AdditionalIncludeDirectories>C:\Users\user999\source\repos\CubeEngine\CEngine\includes</AdditionalIncludeDirectories>
@@ -130,10 +130,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\PoolAllocator.cpp" />
+    <ClCompile Include="core\src\Application.cpp" />
+    <ClCompile Include="memory\src\PoolAllocator.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="includes\PoolAllocator.h" />
+    <ClInclude Include="core\Cube.h" />
+    <ClInclude Include="core\includes\Application.h" />
+    <ClInclude Include="core\includes\Core.h" />
+    <ClInclude Include="memory\includes\PoolAllocator.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

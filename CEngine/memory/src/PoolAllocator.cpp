@@ -1,4 +1,4 @@
-#include "PoolAllocator.h"
+#include "../includes/PoolAllocator.h"
 #include <iostream>
 #include <stdint.h>
 #include <memory>
@@ -8,7 +8,8 @@
 Chunk* PoolAllocator::allocatePool(size_t chunkSize) 
 {
     std::cout << "HI" << std::endl;
-    size_t mPoolSize = mChunksPerPool * chunkSize;
+
+    mChunksPerPool = mPoolSize / chunkSize;
     Chunk* poolBegin = reinterpret_cast<Chunk*>(malloc(mPoolSize));
     Chunk* chunk = poolBegin;
 
