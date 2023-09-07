@@ -106,7 +106,7 @@
       <PreprocessorDefinitions>CUBE_BUILD_DLL;CUBE_PLATFORM_WINDOWS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp14</LanguageStandard>
-      <AdditionalIncludeDirectories>C:\Users\user999\source\repos\CubeEngine\CEngine\includes</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\user999\source\repos\CubeEngine\CEngine\includes; $(SolutionDir)CEngine\vendor\spdlog\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -131,6 +131,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="core\src\Application.cpp" />
+    <ClCompile Include="core\src\Log.cpp" />
     <ClCompile Include="memory\src\PoolAllocator.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -138,6 +139,7 @@
     <ClInclude Include="core\includes\Application.h" />
     <ClInclude Include="core\includes\Core.h" />
     <ClInclude Include="core\includes\EntryPoint.h" />
+    <ClInclude Include="core\includes\Log.h" />
     <ClInclude Include="memory\includes\PoolAllocator.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

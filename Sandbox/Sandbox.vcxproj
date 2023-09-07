@@ -104,7 +104,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>CUBE_PLATFORM_WINDOWS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\user999\source\repos\CubeEngine\Sandbox\includes;$(SolutionDir)CEngine\core</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\user999\source\repos\CubeEngine\Sandbox\includes;$(SolutionDir)CEngine\core;$(SolutionDir)CEngine\vendor\spdlog\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
