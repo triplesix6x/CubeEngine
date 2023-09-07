@@ -137,6 +137,7 @@
     <ClInclude Include="core\Cube.h" />
     <ClInclude Include="core\includes\Application.h" />
     <ClInclude Include="core\includes\Core.h" />
+    <ClInclude Include="core\includes\EntryPoint.h" />
     <ClInclude Include="memory\includes\PoolAllocator.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

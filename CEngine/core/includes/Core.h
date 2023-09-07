@@ -7,5 +7,5 @@
 		#define CUBE_API __declspec(dllimport)
 	#endif
 #else
-	#error Cube only support Windows
+	#error Cube only supports Windows
 #endif

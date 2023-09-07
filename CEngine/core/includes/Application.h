@@ -11,4 +11,6 @@ namespace Cube
 		virtual ~Application();
 		void run();
 	};
+	Application* CreateApplication();
+	void ReleaseApplication(void* app);
 }

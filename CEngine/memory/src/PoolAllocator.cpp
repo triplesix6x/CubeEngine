@@ -7,7 +7,7 @@
 
 Chunk* PoolAllocator::allocatePool(size_t chunkSize) 
 {
-    std::cout << "HI" << std::endl;
+    std::cout << "Allocating "  << mPoolSize << " bytes" << std::endl;
 
     mChunksPerPool = mPoolSize / chunkSize;
     Chunk* poolBegin = reinterpret_cast<Chunk*>(malloc(mPoolSize));

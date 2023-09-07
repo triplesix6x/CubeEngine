@@ -16,7 +16,7 @@ public:
 	}
 };
 
-static PoolAllocator allocator {4096};
+static PoolAllocator allocator {128};
 void* operator new(size_t size)
 {
 	return allocator.allocate(size);
@@ -26,10 +26,12 @@ void operator delete(void* ptr, size_t size)
 	return allocator.deallocate(ptr, size);
 }
 
-int main()
+Cube::Application* Cube::CreateApplication()
 {
-	Sandbox* sandbox = new Sandbox();
-	sandbox->run();
-	delete sandbox;
-	return 0;
+	return new Sandbox();
+}
+
+void Cube::ReleaseApplication(void* app)
+{	
+	return delete app;
 }
