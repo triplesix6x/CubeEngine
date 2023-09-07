@@ -1,25 +1,27 @@
 #include <stdint.h>
 #include <memory>
 
-struct Chunk 
-{
-    Chunk* next;
-};
 
-class PoolAllocator 
-{
-public:
-    PoolAllocator(size_t chunksPerPool) : mChunksPerPool(chunksPerPool) {}
 
-    void* allocate(size_t size);
-    void deallocate(void* ptr, size_t size);
-    void realeasePool();
-    ~PoolAllocator();
+struct Chunk
+    {
+        Chunk* next;
+    };
 
-private:
+class PoolAllocator
+    {
+    public:
+        PoolAllocator(size_t chunksPerPool) : mChunksPerPool(chunksPerPool) {}
 
-    size_t mChunksPerPool;
-    Chunk* mAlloc = nullptr;
+         void* allocate(size_t size);
+        void deallocate(void* ptr, size_t size);
+        void realeasePool();
+        ~PoolAllocator();
 
-    Chunk* allocatePool(size_t chunkSize);
-};
+    private:
+
+        size_t mChunksPerPool;
+        Chunk* mAlloc = nullptr;
+
+        Chunk* allocatePool(size_t chunkSize);
+    };
