@@ -7,7 +7,7 @@ class Sandbox : public Cube::Application
 public:
 	Sandbox()
 	{
-		std::cout << sizeof(this) << std::endl;
+
 	}
 
 	~Sandbox()
