@@ -3,19 +3,10 @@
 #include <Cube.h>
 
 
-static PoolAllocator allocator {8};
-void* operator new(size_t size)
-{
-	return allocator.allocate(size);
-}
-void operator delete(void* ptr, size_t size)
-{
-	return allocator.deallocate(ptr, size);
-}
 
-Cube::Application* Cube::CreateApplication()
+Cube::Application* Cube::CreateApplication(HINSTANCE hInstance)
 {
-	return new Application();
+	return new Application(hInstance);
 }
 
 void Cube::ReleaseApplication(void* app)

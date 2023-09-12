@@ -28,4 +28,4 @@ namespace Cube {
 #define CUBE_WARN(...)		::Cube::Log::GetClientLogger()->warn(__VA_ARGS__)
 #define CUBE_INFO(...)		::Cube::Log::GetClientLogger()->info(__VA_ARGS__)
 #define CUBE_TRACE(...)		::Cube::Log::GetClientLogger()->trace(__VA_ARGS__)
-#define CUBE_FATAL(...)	::Cube::Log::GetClientLogger()->fatal(__VA_ARGS__)
+#define CUBE_FATAL(...)		::Cube::Log::GetClientLogger()->fatal(__VA_ARGS__)

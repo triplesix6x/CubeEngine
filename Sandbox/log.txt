@@ -1,8 +1,0 @@
-[13:39:38] APP: Hello!
-[13:39:38] CUBE_ENGINE: Initialized Log!
-[13:41:49] APP: Hello!
-[13:41:49] CUBE_ENGINE: Initialized Log.
-[13:42:21] APP: Hello!
-[13:42:21] CUBE_ENGINE: Initialized Log.
-[13:42:38] APP: Hello!
-[13:42:38] CUBE_ENGINE: Initialized Log.

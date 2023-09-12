@@ -1,11 +1,12 @@
 #include "../includes/Application.h"
+#include "../includes/Window.h"
 
 namespace Cube
 {
 
-	Application::Application()
+	Application::Application(HINSTANCE hInstance)
 	{
-
+		m_Window = new Window(hInstance);
 	}
 
 	Application::~Application()
@@ -14,6 +15,7 @@ namespace Cube
 	}
 	void Application::run()
 	{
+		m_Window->WindowShow();
 		while (true);
 	}
 }

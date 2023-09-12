@@ -1,5 +1,6 @@
 #pragma once
 #include "Core.h"
+#include "Window.h"
 
 namespace Cube
 {
@@ -7,10 +8,12 @@ namespace Cube
 	class CUBE_API Application
 	{
 	public:
-		Application();
+		Application(HINSTANCE hInstance);
 		virtual ~Application();
 		void run();
+	private:
+		Window* m_Window;
 	};
-	Application* CreateApplication();
+	Application* CreateApplication(HINSTANCE hInstance);
 	void ReleaseApplication(void* app);
 }
