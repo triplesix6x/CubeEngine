@@ -2,7 +2,7 @@
 #include "Core.h"
 #include <memory.h>
 #include "spdlog/spdlog.h"
-#include "spdlog/sinks/stdout_color_sinks.h"
+#include "spdlog/sinks/basic_file_sink.h"
 
 namespace Cube {
 	class CUBE_API Log
