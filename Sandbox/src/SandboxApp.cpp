@@ -2,19 +2,6 @@
 #include <iostream>
 #include <Cube.h>
 
-class Sandbox : public Cube::Application
-{
-public:
-	Sandbox()
-	{
-
-	}
-
-	~Sandbox()
-	{
-
-	}
-};
 
 static PoolAllocator allocator {8};
 void* operator new(size_t size)
@@ -28,7 +15,7 @@ void operator delete(void* ptr, size_t size)
 
 Cube::Application* Cube::CreateApplication()
 {
-	return new Sandbox();
+	return new Application();
 }
 
 void Cube::ReleaseApplication(void* app)

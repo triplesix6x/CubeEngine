@@ -8,8 +8,6 @@
 Chunk* PoolAllocator::allocatePool(size_t chunkSize) 
 {
     assert((chunkSize <= mPoolSize) && "Выделаяемый объект больше общего пула");
-    std::cout << "Allocating "  << mPoolSize << " bytes" << std::endl;
-
     mChunksPerPool = mPoolSize / chunkSize;
     Chunk* poolBegin = reinterpret_cast<Chunk*>(malloc(mPoolSize));
     Chunk* chunk = poolBegin;
