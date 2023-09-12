@@ -8,12 +8,14 @@ namespace Cube
 	class CUBE_API Application
 	{
 	public:
-		Application(HINSTANCE hInstance);
+		Application();
 		virtual ~Application();
-		void run();
+		int run();
 	private:
 		Window* m_Window;
+		MSG message;
+		BOOL gResult;
 	};
-	Application* CreateApplication(HINSTANCE hInstance);
+	Application* CreateApplication();
 	void ReleaseApplication(void* app);
 }

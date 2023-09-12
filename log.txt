@@ -1,0 +1,4 @@
+[22:36:48] CUBE_ENGINE: Initialized Log.
+[22:36:48] CUBE_ENGINE: Window was created.
+[22:36:48] CUBE_ENGINE: Window was shown.
+[22:36:56] CUBE_ENGINE: Window was closed.

@@ -4,9 +4,9 @@
 
 
 
-Cube::Application* Cube::CreateApplication(HINSTANCE hInstance)
+Cube::Application* Cube::CreateApplication()
 {
-	return new Application(hInstance);
+	return new Application();
 }
 
 void Cube::ReleaseApplication(void* app)
