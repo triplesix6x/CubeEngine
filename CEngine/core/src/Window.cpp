@@ -1,4 +1,5 @@
 #include "../includes/Window.h"
+#include "../includes/Log.h"
 
 namespace Cube
 {
@@ -20,10 +21,12 @@ namespace Cube
 		RegisterClassEx(&wc);
 		hwnd = CreateWindowEx(0, pClassName, L"Cube Engine", WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU,
 									200, 200, 1280, 720, nullptr, nullptr, hInstance, nullptr);
+		CUBE_CORE_INFO("Window was created");
 	}
 
 	void Window::WindowShow()
 	{
+		CUBE_CORE_INFO("Window was shown");
 		ShowWindow(hwnd, SW_SHOW);
 	}
 
