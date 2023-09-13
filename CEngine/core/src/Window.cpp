@@ -14,12 +14,15 @@ namespace Cube
 		wc.cbClsExtra = 0;
 		wc.cbWndExtra = 0;
 		wc.hInstance = getInstance();
-		wc.hIcon = (HICON)LoadImage(getInstance(), L"C:\\Users\\user999\\source\\repos\\CubeEngine\\CEngine\\icons\\kubik2.ico", IMAGE_ICON, 32, 32, LR_LOADFROMFILE);
-		wc.hCursor = (HCURSOR)LoadImage(getInstance(), L"C:\\Users\\user999\\source\\repos\\CubeEngine\\CEngine\\icons\\cursor.ico", IMAGE_ICON, 24, 24, LR_LOADFROMFILE);
+		wc.hIcon = (HICON)LoadImage(getInstance(), L"C:\\Users\\user999\\source\\repos\\CubeEngine\\CEngine\\icons\\kubik2.ico", 
+													IMAGE_ICON, 32, 32, LR_LOADFROMFILE);
+		wc.hCursor = (HCURSOR)LoadImage(getInstance(), L"C:\\Users\\user999\\source\\repos\\CubeEngine\\CEngine\\icons\\cursor.ico", 
+													IMAGE_ICON, 24, 24, LR_LOADFROMFILE);
 		wc.hbrBackground = (HBRUSH)(CreateSolidBrush(RGB(69, 69, 69)));
 		wc.lpszMenuName = nullptr;
 		wc.lpszClassName = getName();
-		wc.hIconSm = (HICON)LoadImage(getInstance(), L"C:\\Users\\user999\\source\\repos\\CubeEngine\\CEngine\\icons\\kubik.ico", IMAGE_ICON, 16, 16, LR_LOADFROMFILE);
+		wc.hIconSm = (HICON)LoadImage(getInstance(), L"C:\\Users\\user999\\source\\repos\\CubeEngine\\CEngine\\icons\\kubik.ico", 
+													IMAGE_ICON, 16, 16, LR_LOADFROMFILE);
 		RegisterClassEx(&wc);
 	}
 
@@ -38,19 +41,25 @@ namespace Cube
 		return wndClass.hInst;
 	}
 
-	Window::Window(int width, int height)
+	Window::Window(int width, int height) : width(width), height(height)
 	{
 		RECT wr;
 		wr.left = 100;
 		wr.top = 100;
 		wr.right = width + wr.left;
 		wr.bottom = height + wr.top;
-		if (FAILED(AdjustWindowRect(&wr, WS_CAPTION | WS_MINIMIZEBOX | WS_SIZEBOX | WS_MAXIMIZEBOX | WS_SYSMENU, FALSE)))
+		if (AdjustWindowRect(&wr, WindowType::FULL, FALSE) == 0)
 		{
 			throw CUBE_LAST_EXCEPTION();
 		};
-		hwnd = CreateWindowEx(0, WindowClass::getName(), L"Cube Engine", WS_CAPTION | WS_MINIMIZEBOX | WS_SIZEBOX | WS_MAXIMIZEBOX | WS_SYSMENU,
-							CW_USEDEFAULT, CW_USEDEFAULT, width, height, nullptr, nullptr, WindowClass::getInstance(), this);
+
+		RECT desktop;
+		const HWND hDesktop = GetDesktopWindow();
+		GetWindowRect(hDesktop, &desktop);
+
+		hwnd = CreateWindowEx(0, WindowClass::getName(), L"Cube Engine", WindowType::FULL,
+							((desktop.right / 2) - (width / 2)), ((desktop.bottom / 2) - (height / 2)), 
+							width, height, nullptr, nullptr, WindowClass::getInstance(), this);
 		if (hwnd == nullptr)
 		{
 			throw CUBE_LAST_EXCEPTION();
@@ -68,36 +77,6 @@ namespace Cube
 		ShowWindow(hwnd, SW_SHOW);
 	}
 	
-	LRESULT WINAPI Window::HandleMessageSetup(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
-	{
-		if (message == WM_NCCREATE)
-		{
-			const CREATESTRUCTW* const pCreate = reinterpret_cast<CREATESTRUCTW*>(lParam);
-			Window* const pWnd = static_cast<Window*>(pCreate->lpCreateParams);
-			SetWindowLongPtr(hwnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(pWnd));
-			SetWindowLongPtr(hwnd, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(&Window::HandleMessageThunk));
-			return pWnd->HandleMessage(hwnd, message, wParam, lParam);
-		}
-		return DefWindowProc(hwnd, message, wParam, lParam);
-	}
-
-	LRESULT WINAPI Window::HandleMessageThunk(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
-	{
-		Window* const pWnd = reinterpret_cast<Window*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
-		return pWnd->HandleMessage(hwnd, message, wParam, lParam);
-	}
-
-	LRESULT Window::HandleMessage(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
-	{
-		switch (message)
-		{
-		case WM_CLOSE:
-			CUBE_CORE_INFO("Window was closed.");
-			PostQuitMessage(0);
-			return 0;
-		}
-		return DefWindowProc(hwnd, message, wParam, lParam);
-	}
 	Window::Exception::Exception(int line, const char* file, HRESULT hResult) : CubeException(line, file), hResult(hResult)
 	{
 
@@ -138,4 +117,134 @@ namespace Cube
 	{
 		return TranslateErrorCode(hResult);
 	}
+
+	std::optional<int> Window::ProcessMessages()
+	{
+		MSG message;
+		while (PeekMessage(&message, nullptr, 0, 0, PM_REMOVE))
+		{
+			if (message.message == WM_QUIT)
+			{
+				return message.wParam;
+			}
+			TranslateMessage(&message);
+			DispatchMessage(&message);
+		}
+		return {};
+	}
+
+	LRESULT WINAPI Window::HandleMessageSetup(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
+	{
+		if (message == WM_NCCREATE)
+		{
+			const CREATESTRUCTW* const pCreate = reinterpret_cast<CREATESTRUCTW*>(lParam);
+			Window* const pWnd = static_cast<Window*>(pCreate->lpCreateParams);
+			SetWindowLongPtr(hwnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(pWnd));
+			SetWindowLongPtr(hwnd, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(&Window::HandleMessageThunk));
+			pWnd->handle(hwnd);
+			return pWnd->HandleMessage(hwnd, message, wParam, lParam);
+		}
+		return DefWindowProc(hwnd, message, wParam, lParam);
+	}
+
+	LRESULT WINAPI Window::HandleMessageThunk(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
+	{
+		Window* const pWnd = reinterpret_cast<Window*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
+		return pWnd->HandleMessage(hwnd, message, wParam, lParam);
+	}
+
+
+	LRESULT Window::HandleMessage(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
+	{
+		switch (message)
+		{
+		case WM_MOUSEMOVE:
+		{
+			const POINTS pt = MAKEPOINTS(lParam);
+			if(pt.x >= 0 && pt.x < width && pt.y >= 0 && pt.y < height)
+			{ 
+				mouse.OnMouseMove(pt.x, pt.y);
+				if (!mouse.IsInWindow())
+				{
+					SetCapture(handle());
+					mouse.OnMouseEnter();
+				}
+			}
+			else
+			{
+				if (wParam & (MK_LBUTTON | MK_RBUTTON))
+				{
+					mouse.OnMouseMove(pt.x, pt.y);
+				}
+				else
+				{
+					ReleaseCapture();
+					mouse.OnMouseLeave();
+				}
+			}
+			
+			break;
+		}
+		case WM_LBUTTONDOWN:
+		{
+			const POINTS pt = MAKEPOINTS(lParam);
+			mouse.OnLeftPressed(pt.x, pt.y);
+			break;
+		}
+		case WM_RBUTTONDOWN:
+		{
+			const POINTS pt = MAKEPOINTS(lParam);
+			mouse.OnRightPressed(pt.x, pt.y);
+			break;
+		}
+		case WM_LBUTTONUP:
+		{
+			const POINTS pt = MAKEPOINTS(lParam);
+			mouse.OnLeftReleased(pt.x, pt.y);
+			break;
+		}
+		case WM_RBUTTONUP:
+		{
+			const POINTS pt = MAKEPOINTS(lParam);
+			mouse.OnRightReleased(pt.x, pt.y);
+			break;
+		}
+		case WM_MOUSEWHEEL:
+		{
+			const POINTS pt = MAKEPOINTS(lParam);
+			if (GET_WHEEL_DELTA_WPARAM(wParam) > 0)
+			{
+				mouse.OnWheelUp(pt.x, pt.y);
+			}
+			else if (GET_WHEEL_DELTA_WPARAM(wParam) < 0)
+			{
+				mouse.OnWheelDown(pt.x, pt.y);
+			}
+		}
+
+		case WM_KEYDOWN:
+		case WM_SYSKEYDOWN:
+			if (!(lParam & 0x40000000) || kbd.AutorepeatIsEnabled())
+			{
+				kbd.OnKeyPressed(static_cast<unsigned char>(wParam));
+			}
+			break;
+		case WM_KEYUP:
+		case WM_SYSKEYUP:
+			kbd.OnKeyReleased(static_cast<unsigned char>(wParam));
+			break;
+		case WM_CHAR:
+			kbd.OnChar(static_cast<unsigned char>(wParam));
+			break;
+		case WM_KILLFOCUS:
+			kbd.ClearState();
+			break;
+		case WM_CLOSE:
+			CUBE_CORE_INFO("Window was closed.");
+			PostQuitMessage(0);
+			return 0;
+		}
+		return DefWindowProc(hwnd, message, wParam, lParam);
+	}
+
 }

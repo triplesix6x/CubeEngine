@@ -11,10 +11,9 @@ namespace Cube
 		virtual ~Application();
 		int run();
 	private:
-		Window* m_Window;
+		void doFrame();
+		Window m_Window;
 		MSG message;
 		BOOL gResult;
 	};
-	Application* CreateApplication();
-	void ReleaseApplication(void* app);
 }

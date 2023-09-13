@@ -1,10 +1,19 @@
 #pragma once
 #include <string>
 #include <Windows.h>
+#include "Keyboard.h"
+#include "Mouse.h"
 #include "../exception/includes/CubeException.h"
 
 namespace Cube
 {
+	enum WindowType : DWORD
+	{
+		FULL = WS_OVERLAPPEDWINDOW | WS_BORDER,
+		STATIC = WS_OVERLAPPED,
+		RESIZABLE = WS_SIZEBOX,
+		POPUP = WS_POPUP
+	};
 	class Window
 	{
 	public:
@@ -37,6 +46,11 @@ namespace Cube
 		void WindowShow();
 		Window(int width, int height);
 		~Window();
+		HWND handle() { return hwnd; }
+		void handle(HWND shwnd) { hwnd = shwnd; }
+		static std::optional<int> ProcessMessages();
+		Mouse mouse;
+		Keyboard kbd;
 	private:
 		static LRESULT WINAPI HandleMessageSetup(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam);
 		static LRESULT WINAPI HandleMessageThunk(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam);

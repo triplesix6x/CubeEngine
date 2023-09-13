@@ -4,10 +4,9 @@
 namespace Cube
 {
 
-	Application::Application()
+	Application::Application() : m_Window(1280, 720)
 	{
-		m_Window = new Window(1280, 720);
-		m_Window->WindowShow();
+		m_Window.WindowShow();
 	}
 
 	Application::~Application()
@@ -16,18 +15,18 @@ namespace Cube
 	}
 	int Application::run()
 	{
-		while ( (gResult = GetMessage(&message, nullptr, 0, 0)) > 0)
+		while ( true )
 		{
-			TranslateMessage(&message);
-			DispatchMessage(&message);
-		};
-		if (gResult == -1)
-		{
-			return -1;
+			if (const auto ecode = Window::ProcessMessages())
+			{
+				return *ecode;
+			}
+			doFrame();
 		}
-		else
-		{
-			return message.wParam;
-		}
+	}
+
+	void Application::doFrame()
+	{
+
 	}
 }

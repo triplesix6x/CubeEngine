@@ -1,4 +1,3 @@
-#include <Windows.h>
 #include "../Cube.h"
 
 int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
@@ -6,9 +5,8 @@ int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	try
 	{
 		Cube::Log::init();
-		Cube::Application* app = new Cube::Application;
-		int Result = app->run();
-		delete app;
+		Cube::Application app;
+		int Result = app.run();
 		return Result;
 	}
 	catch (const CubeException& e)
