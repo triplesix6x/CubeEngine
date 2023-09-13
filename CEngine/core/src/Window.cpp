@@ -9,17 +9,17 @@ namespace Cube
 	{
 		WNDCLASSEX wc = { 0 };
 		wc.cbSize = sizeof(wc);
-		wc.style = CS_OWNDC;
+		wc.style = CS_OWNDC | CS_HREDRAW | CS_VREDRAW;
 		wc.lpfnWndProc = HandleMessageSetup;
 		wc.cbClsExtra = 0;
 		wc.cbWndExtra = 0;
 		wc.hInstance = getInstance();
-		wc.hIcon = (HICON)LoadImage(getInstance(), L"C:\\Users\\user999\\source\\repos\\CubeEngine\\kubik2.ico", IMAGE_ICON, 32, 32, LR_LOADFROMFILE);
-		wc.hCursor = nullptr;
-		wc.hbrBackground = nullptr;
+		wc.hIcon = (HICON)LoadImage(getInstance(), L"C:\\Users\\user999\\source\\repos\\CubeEngine\\CEngine\\icons\\kubik2.ico", IMAGE_ICON, 32, 32, LR_LOADFROMFILE);
+		wc.hCursor = (HCURSOR)LoadImage(getInstance(), L"C:\\Users\\user999\\source\\repos\\CubeEngine\\CEngine\\icons\\cursor.ico", IMAGE_ICON, 24, 24, LR_LOADFROMFILE);
+		wc.hbrBackground = (HBRUSH)(CreateSolidBrush(RGB(69, 69, 69)));
 		wc.lpszMenuName = nullptr;
 		wc.lpszClassName = getName();
-		wc.hIconSm = (HICON)LoadImage(getInstance(), L"C:\\Users\\user999\\source\\repos\\CubeEngine\\kubik.ico", IMAGE_ICON, 16, 16, LR_LOADFROMFILE);
+		wc.hIconSm = (HICON)LoadImage(getInstance(), L"C:\\Users\\user999\\source\\repos\\CubeEngine\\CEngine\\icons\\kubik.ico", IMAGE_ICON, 16, 16, LR_LOADFROMFILE);
 		RegisterClassEx(&wc);
 	}
 

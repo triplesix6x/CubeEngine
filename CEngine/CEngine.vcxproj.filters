@@ -55,10 +55,13 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\kubik.ico">
+    <Image Include="icons\cursor.ico">
       <Filter>Файлы ресурсов</Filter>
     </Image>
-    <Image Include="..\kubik2.ico">
+    <Image Include="icons\kubik.ico">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="icons\kubik2.ico">
       <Filter>Файлы ресурсов</Filter>
     </Image>
   </ItemGroup>
