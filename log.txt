@@ -1,2 +1,4 @@
-[10:57:09] CUBE_ENGINE: Initialized Log.
-[10:57:09] CUBE_ENGINE: Unknown Exception was thrown
+[16:40:59] CUBE_ENGINE: Initialized Log.
+[16:40:59] CUBE_ENGINE: Window was created.
+[16:40:59] CUBE_ENGINE: Window was shown.
+[16:41:02] CUBE_ENGINE: Window was closed.

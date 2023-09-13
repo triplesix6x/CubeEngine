@@ -41,7 +41,7 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
@@ -93,7 +93,7 @@
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -110,7 +110,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
@@ -124,7 +124,7 @@
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -133,6 +133,7 @@
   <ItemGroup>
     <ClCompile Include="core\src\Application.cpp" />
     <ClCompile Include="core\src\Log.cpp" />
+    <ClCompile Include="core\src\EntryPoint.cpp" />
     <ClCompile Include="core\src\Window.cpp" />
     <ClCompile Include="exception\src\CubeException.cpp" />
     <ClCompile Include="memory\src\PoolAllocator.cpp" />
@@ -140,12 +141,14 @@
   <ItemGroup>
     <ClInclude Include="core\Cube.h" />
     <ClInclude Include="core\includes\Application.h" />
-    <ClInclude Include="core\includes\Core.h" />
-    <ClInclude Include="core\includes\EntryPoint.h" />
     <ClInclude Include="core\includes\Log.h" />
     <ClInclude Include="core\includes\Window.h" />
     <ClInclude Include="exception\includes\CubeException.h" />
     <ClInclude Include="memory\includes\PoolAllocator.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\kubik.ico" />
+    <Image Include="..\kubik2.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

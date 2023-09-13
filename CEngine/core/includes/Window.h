@@ -1,12 +1,11 @@
 #pragma once
 #include <string>
-#include "Core.h"
 #include <Windows.h>
 #include "../exception/includes/CubeException.h"
 
 namespace Cube
 {
-	class CUBE_API Window
+	class Window
 	{
 	public:
 		class Exception : public CubeException

@@ -1,11 +1,10 @@
 #pragma once
-#include "Core.h"
 #include <memory.h>
 #include "spdlog/spdlog.h"
 #include "spdlog/sinks/basic_file_sink.h"
 
 namespace Cube {
-	class CUBE_API Log
+	class Log
 	{
 	public:
 		static void init();

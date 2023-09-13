@@ -1,11 +1,10 @@
 #pragma once
-#include "Core.h"
 #include "Window.h"
 
 namespace Cube
 {
 
-	class CUBE_API Application
+	class Application
 	{
 	public:
 		Application();

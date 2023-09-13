@@ -1,18 +1,14 @@
-#pragma once
-
-#ifdef CUBE_PLATFORM_WINDOWS
-
-extern Cube::Application* Cube::CreateApplication();
-extern void Cube::ReleaseApplication(void* app);
+#include <Windows.h>
+#include "../Cube.h"
 
 int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
-{\
-	try 
+{
+	try
 	{
 		Cube::Log::init();
-		auto app = Cube::CreateApplication();
+		Cube::Application* app = new Cube::Application;
 		int Result = app->run();
-		Cube::ReleaseApplication(app);
+		delete app;
 		return Result;
 	}
 	catch (const CubeException& e)
@@ -33,4 +29,3 @@ int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	return -1;
 }
 
-#endif

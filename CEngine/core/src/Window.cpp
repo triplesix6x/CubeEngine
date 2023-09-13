@@ -14,12 +14,12 @@ namespace Cube
 		wc.cbClsExtra = 0;
 		wc.cbWndExtra = 0;
 		wc.hInstance = getInstance();
-		wc.hIcon = nullptr;
+		wc.hIcon = (HICON)LoadImage(getInstance(), L"C:\\Users\\user999\\source\\repos\\CubeEngine\\kubik2.ico", IMAGE_ICON, 32, 32, LR_LOADFROMFILE);
 		wc.hCursor = nullptr;
 		wc.hbrBackground = nullptr;
 		wc.lpszMenuName = nullptr;
 		wc.lpszClassName = getName();
-		wc.hIconSm = nullptr;
+		wc.hIconSm = (HICON)LoadImage(getInstance(), L"C:\\Users\\user999\\source\\repos\\CubeEngine\\kubik.ico", IMAGE_ICON, 16, 16, LR_LOADFROMFILE);
 		RegisterClassEx(&wc);
 	}
 

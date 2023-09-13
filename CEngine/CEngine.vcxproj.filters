@@ -30,18 +30,15 @@
     <ClCompile Include="exception\src\CubeException.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="core\src\EntryPoint.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core\includes\Application.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="core\includes\Core.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
     <ClInclude Include="core\Cube.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="core\includes\EntryPoint.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="memory\includes\PoolAllocator.h">
@@ -56,5 +53,13 @@
     <ClInclude Include="exception\includes\CubeException.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\kubik.ico">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="..\kubik2.ico">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
   </ItemGroup>
 </Project>

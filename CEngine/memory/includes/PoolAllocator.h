@@ -1,16 +1,15 @@
 #pragma once
 #include <stdint.h>
-#include "../../core/includes/Core.h"
 #include <memory>
 
 
 
-struct CUBE_API Chunk
+struct Chunk
     {
         Chunk* next;
     };
 
-class CUBE_API PoolAllocator
+class PoolAllocator
     {
     public:
         PoolAllocator(size_t poolSize) : mPoolSize(poolSize) {}
