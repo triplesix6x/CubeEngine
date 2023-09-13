@@ -134,6 +134,7 @@
     <ClCompile Include="core\src\Application.cpp" />
     <ClCompile Include="core\src\Log.cpp" />
     <ClCompile Include="core\src\Window.cpp" />
+    <ClCompile Include="exception\src\CubeException.cpp" />
     <ClCompile Include="memory\src\PoolAllocator.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -143,6 +144,7 @@
     <ClInclude Include="core\includes\EntryPoint.h" />
     <ClInclude Include="core\includes\Log.h" />
     <ClInclude Include="core\includes\Window.h" />
+    <ClInclude Include="exception\includes\CubeException.h" />
     <ClInclude Include="memory\includes\PoolAllocator.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

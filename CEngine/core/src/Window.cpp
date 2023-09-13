@@ -1,5 +1,6 @@
 #include "../includes/Window.h"
 #include "../includes/Log.h"
+#include <sstream>
 
 namespace Cube
 {
@@ -44,9 +45,16 @@ namespace Cube
 		wr.top = 100;
 		wr.right = width + wr.left;
 		wr.bottom = height + wr.top;
-		AdjustWindowRect(&wr, WS_CAPTION | WS_MINIMIZEBOX | WS_SIZEBOX | WS_MAXIMIZEBOX | WS_SYSMENU, FALSE);
+		if (FAILED(AdjustWindowRect(&wr, WS_CAPTION | WS_MINIMIZEBOX | WS_SIZEBOX | WS_MAXIMIZEBOX | WS_SYSMENU, FALSE)))
+		{
+			throw CUBE_LAST_EXCEPTION();
+		};
 		hwnd = CreateWindowEx(0, WindowClass::getName(), L"Cube Engine", WS_CAPTION | WS_MINIMIZEBOX | WS_SIZEBOX | WS_MAXIMIZEBOX | WS_SYSMENU,
 							CW_USEDEFAULT, CW_USEDEFAULT, width, height, nullptr, nullptr, WindowClass::getInstance(), this);
+		if (hwnd == nullptr)
+		{
+			throw CUBE_LAST_EXCEPTION();
+		};
 		CUBE_CORE_INFO("Window was created.");
 	}
 	Window::~Window()
@@ -89,5 +97,45 @@ namespace Cube
 			return 0;
 		}
 		return DefWindowProc(hwnd, message, wParam, lParam);
+	}
+	Window::Exception::Exception(int line, const char* file, HRESULT hResult) : CubeException(line, file), hResult(hResult)
+	{
+
+	}
+	const char* Window::Exception::whatEx() const
+	{
+		std::ostringstream oss;
+		oss << getType() << std::endl << "[Error code] " << GetErrorCode() << std::endl << "[Description] " << GetErrorString() << std::endl << getOriginString();
+		whatExBuffer = oss.str();
+		return whatExBuffer.c_str();
+	}
+
+	const char* Window::Exception::getType() const
+	{
+		return "Cube Window Exception";
+	}
+
+	std::string Window::Exception::TranslateErrorCode(HRESULT hResult)
+	{
+		char* pMessageBuffer = nullptr;
+		DWORD nMessageLen = FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS, 
+										  nullptr, hResult, MAKELANGID(LANG_NEPALI, SUBLANG_DEFAULT), reinterpret_cast<wchar_t*>(&pMessageBuffer), 0, nullptr);
+		if (nMessageLen == 0)
+		{
+			return "Unidentified error code.";
+		}
+		std::string errorString = pMessageBuffer;
+		LocalFree(pMessageBuffer);
+		return errorString;
+	}
+	
+	HRESULT Window::Exception::GetErrorCode() const
+	{
+		return hResult;
+	}
+
+	std::string Window::Exception::GetErrorString() const
+	{
+		return TranslateErrorCode(hResult);
 	}
 }

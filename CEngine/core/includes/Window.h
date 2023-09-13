@@ -2,11 +2,25 @@
 #include <string>
 #include "Core.h"
 #include <Windows.h>
+#include "../exception/includes/CubeException.h"
 
 namespace Cube
 {
 	class CUBE_API Window
 	{
+	public:
+		class Exception : public CubeException
+		{
+		public:
+			Exception(int line, const char* file, HRESULT hResult);
+			virtual const char* whatEx() const override;
+			virtual const char* getType() const override;
+			static std::string TranslateErrorCode(HRESULT hResult);
+			HRESULT GetErrorCode() const;
+			std::string GetErrorString() const;
+		private:
+			HRESULT hResult;
+		};
 	private:
 		class WindowClass
 		{
@@ -33,3 +47,6 @@ namespace Cube
 		HWND hwnd;
 	};
 }
+
+#define CUBE_EXCEPTION(hResult) Window::Exception(__LINE__, __FILE__, hResult)
+#define CUBE_LAST_EXCEPTION() Window::Exception(__LINE__, __FILE__, GetLastError())
