@@ -39,6 +39,12 @@
     <ClCompile Include="core\src\Mouse.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="core\render\src\Graphics.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="core\src\Timer.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core\includes\Application.h">
@@ -65,6 +71,12 @@
     <ClInclude Include="core\includes\Mouse.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="core\render\includes\Graphics.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="core\includes\Timer.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="icons\cursor.ico">
@@ -76,5 +88,9 @@
     <Image Include="icons\kubik2.ico">
       <Filter>Файлы ресурсов</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="core\shader\VertexShader.hlsl" />
+    <FxCompile Include="core\shader\PixelShader.hlsl" />
   </ItemGroup>
 </Project>

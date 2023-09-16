@@ -1,8 +1,10 @@
 #pragma once
 #include <string>
 #include <Windows.h>
+#include <memory>
 #include "Keyboard.h"
 #include "Mouse.h"
+#include "../render/includes/Graphics.h"
 #include "../exception/includes/CubeException.h"
 
 namespace Cube
@@ -19,6 +21,7 @@ namespace Cube
 	public:
 		class Exception : public CubeException
 		{
+			using CubeException::CubeException;
 		public:
 			Exception(int line, const char* file, HRESULT hResult);
 			virtual const char* whatEx() const override;
@@ -28,6 +31,12 @@ namespace Cube
 			std::string GetErrorString() const;
 		private:
 			HRESULT hResult;
+		};
+		class NoGfxException : public Exception
+		{
+		public:
+			using Exception::Exception;
+			const char* getType() const;
 		};
 	private:
 		class WindowClass
@@ -49,6 +58,7 @@ namespace Cube
 		HWND handle() { return hwnd; }
 		void handle(HWND shwnd) { hwnd = shwnd; }
 		static std::optional<int> ProcessMessages();
+		Graphics& Gfx();
 		Mouse mouse;
 		Keyboard kbd;
 	private:
@@ -58,8 +68,10 @@ namespace Cube
 		int width;
 		int height;
 		HWND hwnd;
+		std::unique_ptr<Graphics> pGfx;
 	};
 }
 
 #define CUBE_EXCEPTION(hResult) Window::Exception(__LINE__, __FILE__, hResult)
+#define HWND_NOGFX_EXCEPTION() Window::NoGfxException(__LINE__, __FILE__)
 #define CUBE_LAST_EXCEPTION() Window::Exception(__LINE__, __FILE__, GetLastError())

@@ -11,7 +11,6 @@ int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	}
 	catch (const CubeException& e)
 	{
-		CUBE_CORE_ERROR("Cube Exception was thrown -> \n{} {}", e.whatEx(), e.getType());
 		MessageBoxA(nullptr, e.whatEx(), e.getType(), MB_OK | MB_ICONEXCLAMATION);
 	}
 	catch (const std::exception& e)

@@ -18,7 +18,7 @@ namespace Cube
 													IMAGE_ICON, 32, 32, LR_LOADFROMFILE);
 		wc.hCursor = (HCURSOR)LoadImage(getInstance(), L"C:\\Users\\user999\\source\\repos\\CubeEngine\\CEngine\\icons\\cursor.ico", 
 													IMAGE_ICON, 24, 24, LR_LOADFROMFILE);
-		wc.hbrBackground = (HBRUSH)(CreateSolidBrush(RGB(69, 69, 69)));
+		wc.hbrBackground = nullptr;
 		wc.lpszMenuName = nullptr;
 		wc.lpszClassName = getName();
 		wc.hIconSm = (HICON)LoadImage(getInstance(), L"C:\\Users\\user999\\source\\repos\\CubeEngine\\CEngine\\icons\\kubik.ico", 
@@ -75,6 +75,7 @@ namespace Cube
 	{
 		CUBE_CORE_INFO("Window was shown.");
 		ShowWindow(hwnd, SW_SHOW);
+		pGfx = std::make_unique<Graphics>(hwnd);
 	}
 	
 	Window::Exception::Exception(int line, const char* file, HRESULT hResult) : CubeException(line, file), hResult(hResult)
@@ -86,12 +87,18 @@ namespace Cube
 		std::ostringstream oss;
 		oss << getType() << std::endl << "[Error code] " << GetErrorCode() << std::endl << "[Description] " << GetErrorString() << std::endl << getOriginString();
 		whatExBuffer = oss.str();
+		CUBE_CORE_ERROR("Cube Exception was thrown -> \n{} {}", whatExBuffer.c_str(), getType());
 		return whatExBuffer.c_str();
 	}
 
-	const char* Window::Exception::getType() const
+	inline const char* Window::Exception::getType() const
 	{
 		return "Cube Window Exception";
+	}
+
+	const char* Window::NoGfxException::getType() const
+	{
+		return "Chili Window Exception [No Graphics]";
 	}
 
 	std::string Window::Exception::TranslateErrorCode(HRESULT hResult)
@@ -131,6 +138,15 @@ namespace Cube
 			DispatchMessage(&message);
 		}
 		return {};
+	}
+
+	Graphics& Window::Gfx()
+	{
+		if(!pGfx)
+		{
+			throw HWND_NOGFX_EXCEPTION();
+		}
+		return *pGfx;
 	}
 
 	LRESULT WINAPI Window::HandleMessageSetup(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)

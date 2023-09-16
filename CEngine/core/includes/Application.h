@@ -1,5 +1,6 @@
 #pragma once
 #include "Window.h"
+#include "Timer.h"
 
 namespace Cube
 {
@@ -13,6 +14,7 @@ namespace Cube
 	private:
 		void doFrame();
 		Window m_Window;
+		Timer timer;
 		MSG message;
 		BOOL gResult;
 	};
