@@ -33,10 +33,11 @@ public:
 	~Graphics() = default;
 	void EndFrame();
 	void ClearBuffer(float red, float green, float blue);
-	void DrawTestTriangle();
+	void DrawTestTriangle(float angle, float x, float y);
 private:
 	wrl::ComPtr<ID3D11Device> pDevice = nullptr;
 	wrl::ComPtr<IDXGISwapChain> pSwap;
 	wrl::ComPtr<ID3D11DeviceContext> pContext;
 	wrl::ComPtr<ID3D11RenderTargetView> pTarget;
+	wrl::ComPtr<ID3D11DepthStencilView> pDSV;
 };
