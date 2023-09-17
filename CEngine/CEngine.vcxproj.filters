@@ -143,6 +143,9 @@
     <ClInclude Include="core\render\includes\Box.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="core\render\includes\DrawableBase.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="icons\cursor.ico">

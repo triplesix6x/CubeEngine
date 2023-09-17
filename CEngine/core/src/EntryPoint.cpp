@@ -5,7 +5,7 @@ int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	try
 	{
 		Cube::Log::init();
-		Cube::Application app;
+		Cube::Application app(1600, 900);
 		int Result = app.run();
 		return Result;
 	}

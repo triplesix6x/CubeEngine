@@ -9,7 +9,7 @@ namespace Cube
 	class Application
 	{
 	public:
-		Application();
+		Application(int width, int height);
 		virtual ~Application();
 		int run();
 	private:
@@ -17,7 +17,5 @@ namespace Cube
 		std::vector<std::unique_ptr<Box>> boxes;
 		Window m_Window;
 		Timer timer;
-		MSG message;
-		BOOL gResult;
 	};
 }

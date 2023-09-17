@@ -75,7 +75,7 @@ namespace Cube
 	{
 		CUBE_CORE_INFO("Window was shown.");
 		ShowWindow(hwnd, SW_SHOW);
-		pGfx = std::make_unique<Graphics>(hwnd);
+		pGfx = std::make_unique<Graphics>(hwnd, width, height);
 	}
 	
 	Window::Exception::Exception(int line, const char* file, HRESULT hResult) : CubeException(line, file), hResult(hResult)

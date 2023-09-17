@@ -34,7 +34,7 @@ public:
 		const char* getType() const;
 	};
 public:
-	Graphics(HWND hwnd);
+	Graphics(HWND hwnd, int width, int height);
 	Graphics(const Graphics&) = delete;
 	Graphics& operator=(const Graphics&) = delete;
 	~Graphics() = default;

@@ -168,6 +168,7 @@
     <ClInclude Include="core\render\includes\Box.h" />
     <ClInclude Include="core\render\includes\ConstantBuffers.h" />
     <ClInclude Include="core\render\includes\Drawable.h" />
+    <ClInclude Include="core\render\includes\DrawableBase.h" />
     <ClInclude Include="core\render\includes\Graphics.h" />
     <ClInclude Include="core\render\includes\IndexBuffer.h" />
     <ClInclude Include="core\render\includes\InputLayout.h" />

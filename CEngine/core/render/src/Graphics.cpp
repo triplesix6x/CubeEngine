@@ -12,7 +12,7 @@
 namespace wrl = Microsoft::WRL;
 namespace dx = DirectX;
 
-Graphics::Graphics(HWND hwnd)
+Graphics::Graphics(HWND hwnd, int width, int height)
 {
 	DXGI_SWAP_CHAIN_DESC sd = {};
 	sd.BufferDesc.Width = 0;
@@ -49,8 +49,8 @@ Graphics::Graphics(HWND hwnd)
 
 	wrl::ComPtr<ID3D11Texture2D> pDepthStencil;
 	D3D11_TEXTURE2D_DESC descDepth = {};
-	descDepth.Width = 1600u;
-	descDepth.Height = 900u;
+	descDepth.Width = (UINT)width;
+	descDepth.Height = (UINT)height;
 	descDepth.MipLevels = 1u;
 	descDepth.ArraySize = 1u;
 	descDepth.Format = DXGI_FORMAT_D32_FLOAT;
@@ -69,8 +69,8 @@ Graphics::Graphics(HWND hwnd)
 	pContext->OMSetRenderTargets(1u, pTarget.GetAddressOf(), pDSV.Get());
 
 	D3D11_VIEWPORT vp;
-	vp.Width = 1600;
-	vp.Height = 900;
+	vp.Width = width;
+	vp.Height = height;
 	vp.MinDepth = 0;
 	vp.MaxDepth = 1;
 	vp.TopLeftX = 0;
