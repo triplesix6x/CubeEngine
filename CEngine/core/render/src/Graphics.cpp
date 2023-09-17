@@ -245,12 +245,12 @@ void Graphics::DrawTestTriangle(float angle, float x, float z)
 
 	wrl::ComPtr<ID3D11PixelShader> pPixelShader;
 	wrl::ComPtr<ID3DBlob> pBlob;
-	D3DReadFileToBlob(L"PixelShader.cso", &pBlob);
+	D3DReadFileToBlob(L"shaders\\PixelShader.cso", &pBlob);
 	pDevice->CreatePixelShader(pBlob->GetBufferPointer(), pBlob->GetBufferSize(), nullptr, &pPixelShader);
 	pContext->PSSetShader(pPixelShader.Get(), nullptr, 0u);
 
 	wrl::ComPtr<ID3D11VertexShader> pVertexShader;
-	D3DReadFileToBlob(L"VertexShader.cso", &pBlob);
+	D3DReadFileToBlob(L"shaders\\VertexShader.cso", &pBlob);
 	pDevice->CreateVertexShader(pBlob->GetBufferPointer(), pBlob->GetBufferSize(), nullptr, &pVertexShader);
 	pContext->VSSetShader(pVertexShader.Get(), nullptr, 0u);
 	
