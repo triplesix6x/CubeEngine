@@ -4,11 +4,16 @@
 #include <wrl.h>
 #include "../exception/includes/CubeException.h"
 #include <d3d11.h>
+#include <memory>
+#include <d3dcompiler.h>
+#include <random>
+#include <DirectXMath.h>
 
 namespace wrl = Microsoft::WRL;
 
 class Graphics
 {
+	friend class Bindable;
 public:
 	class GraphicsException : public CubeException
 	{
@@ -30,11 +35,16 @@ public:
 	};
 public:
 	Graphics(HWND hwnd);
+	Graphics(const Graphics&) = delete;
+	Graphics& operator=(const Graphics&) = delete;
 	~Graphics() = default;
 	void EndFrame();
 	void ClearBuffer(float red, float green, float blue);
-	void DrawTestTriangle(float angle, float x, float y);
+	void DrawIndexed(UINT count);
+	void SetProjection(DirectX::FXMMATRIX proj);
+	DirectX::XMMATRIX GetProjection() const;
 private:
+	DirectX::XMMATRIX projection;
 	wrl::ComPtr<ID3D11Device> pDevice = nullptr;
 	wrl::ComPtr<IDXGISwapChain> pSwap;
 	wrl::ComPtr<ID3D11DeviceContext> pContext;

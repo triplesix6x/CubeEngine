@@ -1,6 +1,6 @@
-#include "../includes/Window.h"
 #include "../includes/Log.h"
 #include <sstream>
+#include "../includes/Window.h"
 
 namespace Cube
 {

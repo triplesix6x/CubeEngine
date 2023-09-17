@@ -135,7 +135,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="core\render\src\Bindable.cpp" />
+    <ClCompile Include="core\render\src\Box.cpp" />
+    <ClCompile Include="core\render\src\Drawable.cpp" />
     <ClCompile Include="core\render\src\Graphics.cpp" />
+    <ClCompile Include="core\render\src\IndexBuffer.cpp" />
+    <ClCompile Include="core\render\src\InputLayout.cpp" />
+    <ClCompile Include="core\render\src\PixelShader.cpp" />
+    <ClCompile Include="core\render\src\Topology.cpp" />
+    <ClCompile Include="core\render\src\TransformCBuf.cpp" />
+    <ClCompile Include="core\render\src\VertexBuffer.cpp" />
+    <ClCompile Include="core\render\src\VertexShader.cpp" />
     <ClCompile Include="core\src\Application.cpp" />
     <ClCompile Include="core\src\Keyboard.cpp" />
     <ClCompile Include="core\src\Log.cpp" />
@@ -153,7 +163,19 @@
     <ClInclude Include="core\includes\Log.h" />
     <ClInclude Include="core\includes\Mouse.h" />
     <ClInclude Include="core\includes\Window.h" />
+    <ClInclude Include="core\render\includes\Bindable.h" />
+    <ClInclude Include="core\render\includes\BindableBase.h" />
+    <ClInclude Include="core\render\includes\Box.h" />
+    <ClInclude Include="core\render\includes\ConstantBuffers.h" />
+    <ClInclude Include="core\render\includes\Drawable.h" />
     <ClInclude Include="core\render\includes\Graphics.h" />
+    <ClInclude Include="core\render\includes\IndexBuffer.h" />
+    <ClInclude Include="core\render\includes\InputLayout.h" />
+    <ClInclude Include="core\render\includes\PixelShader.h" />
+    <ClInclude Include="core\render\includes\Topology.h" />
+    <ClInclude Include="core\render\includes\TransformCbuf.h" />
+    <ClInclude Include="core\render\includes\VertexBuffer.h" />
+    <ClInclude Include="core\render\includes\VertexShader.h" />
     <ClInclude Include="exception\includes\CubeException.h" />
     <ClInclude Include="memory\includes\PoolAllocator.h" />
     <ClInclude Include="core\includes\Timer.h" />
