@@ -1,11 +1,11 @@
-#include "../Cube.h"
+#include "../CubeApp.h"
 
 int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
 	try
 	{
 		Cube::Log::init();
-		Cube::Application app(1600, 900);
+		Cube::Application app(800, 600);
 		int Result = app.run();
 		return Result;
 	}

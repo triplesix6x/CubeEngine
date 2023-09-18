@@ -2,7 +2,7 @@
 #include <windows.h>
 #include <string>
 #include <wrl.h>
-#include "../exception/includes/CubeException.h"
+#include "../../../exception/includes/CubeException.h"
 #include <d3d11.h>
 #include <memory>
 #include <d3dcompiler.h>

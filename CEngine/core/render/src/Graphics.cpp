@@ -2,7 +2,7 @@
 #include <d3dcompiler.h>
 #include <DirectXMath.h>
 #include "../includes/Graphics.h"
-#include "../../CEngine/core/includes/Log.h"
+#include "../../includes/Log.h"
 #define GFX_THROW_FAILED(hResultcall) if (FAILED(hResult=(hResultcall))) throw Graphics::GraphicsException(__LINE__, __FILE__, hResult)
 #define GFX_DEVICE_REMOVED_EXCEPTION(hResult) Graphics::DeviceRemovedException(__LINE__, __FILE__, (hResult))
 

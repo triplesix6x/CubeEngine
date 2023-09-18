@@ -5,7 +5,7 @@
 #include "Keyboard.h"
 #include "Mouse.h"
 #include "../render/includes/Graphics.h"
-#include "../exception/includes/CubeException.h"
+#include "../../exception/includes/CubeException.h"
 
 namespace Cube
 {

@@ -1,5 +1,6 @@
 #include "../includes/Application.h"
 #include "../render/includes/Box.h"
+#include "../render/includes/Plane.h"
 #include "../includes/Window.h"
 #include <memory>
 
@@ -14,12 +15,16 @@ namespace Cube
 		std::uniform_real_distribution<float> ddist(0.0f, 3.1415f * 2.0f);
 		std::uniform_real_distribution<float> odist(0.0f, 3.1415f * 0.3f);
 		std::uniform_real_distribution<float> rdist(6.0f, 20.0f);
-		for (auto i = 0; i < 70; i++)
+		for (auto i = 0; i < 25; i++)
 		{
 			boxes.push_back(std::make_unique<Box>(
 				m_Window.Gfx(), rng, adist,
 				ddist, odist, rdist
 			));
+			boxes.push_back(std::make_unique<Plane>(
+				m_Window.Gfx(), rng, adist,
+				ddist, odist, rdist
+				));
 		}
 		m_Window.Gfx().SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, static_cast<float>(height) / static_cast<float>(width), 0.5f, 40.0f));
 	}
