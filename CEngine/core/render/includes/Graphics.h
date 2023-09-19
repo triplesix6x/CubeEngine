@@ -14,6 +14,7 @@ namespace wrl = Microsoft::WRL;
 class Graphics
 {
 	friend class Bindable;
+	friend class Texture;
 public:
 	class GraphicsException : public CubeException
 	{

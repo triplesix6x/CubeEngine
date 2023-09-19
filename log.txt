@@ -1,5 +1,5 @@
-[14:13:26] CUBE_ENGINE: Initialized Log.
-[14:13:26] CUBE_ENGINE: Window was created.
-[14:13:26] CUBE_ENGINE: Window was shown.
-[14:13:27] CUBE_ENGINE: D3D was initialized.
-[14:13:48] CUBE_ENGINE: Window was closed.
+[19:24:02] CUBE_ENGINE: Initialized Log.
+[19:24:02] CUBE_ENGINE: Window was created.
+[19:24:02] CUBE_ENGINE: Window was shown.
+[19:24:02] CUBE_ENGINE: D3D was initialized.
+[19:24:04] CUBE_ENGINE: Window was closed.
