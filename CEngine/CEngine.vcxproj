@@ -141,8 +141,9 @@
     <ClCompile Include="core\render\src\Graphics.cpp" />
     <ClCompile Include="core\render\src\IndexBuffer.cpp" />
     <ClCompile Include="core\render\src\InputLayout.cpp" />
+    <ClCompile Include="core\render\src\Melon.cpp" />
     <ClCompile Include="core\render\src\PixelShader.cpp" />
-    <ClCompile Include="core\render\src\Plane.cpp" />
+    <ClCompile Include="core\render\src\Pyramid.cpp" />
     <ClCompile Include="core\render\src\Topology.cpp" />
     <ClCompile Include="core\render\src\TransformCBuf.cpp" />
     <ClCompile Include="core\render\src\VertexBuffer.cpp" />
@@ -160,6 +161,7 @@
   <ItemGroup>
     <ClInclude Include="core\CubeApp.h" />
     <ClInclude Include="core\includes\Application.h" />
+    <ClInclude Include="core\includes\CMath.h" />
     <ClInclude Include="core\includes\Keyboard.h" />
     <ClInclude Include="core\includes\Log.h" />
     <ClInclude Include="core\includes\Mouse.h" />
@@ -167,14 +169,21 @@
     <ClInclude Include="core\render\includes\Bindable.h" />
     <ClInclude Include="core\render\includes\BindableBase.h" />
     <ClInclude Include="core\render\includes\Box.h" />
+    <ClInclude Include="core\render\includes\Cone.h" />
     <ClInclude Include="core\render\includes\ConstantBuffers.h" />
+    <ClInclude Include="core\render\includes\Cube.h" />
     <ClInclude Include="core\render\includes\Drawable.h" />
     <ClInclude Include="core\render\includes\DrawableBase.h" />
     <ClInclude Include="core\render\includes\Graphics.h" />
     <ClInclude Include="core\render\includes\IndexBuffer.h" />
+    <ClInclude Include="core\render\includes\IndexedTriangleList.h" />
     <ClInclude Include="core\render\includes\InputLayout.h" />
+    <ClInclude Include="core\render\includes\Melon.h" />
     <ClInclude Include="core\render\includes\PixelShader.h" />
     <ClInclude Include="core\render\includes\Plane.h" />
+    <ClInclude Include="core\render\includes\Prism.h" />
+    <ClInclude Include="core\render\includes\Pyramid.h" />
+    <ClInclude Include="core\render\includes\Sphere.h" />
     <ClInclude Include="core\render\includes\Topology.h" />
     <ClInclude Include="core\render\includes\TransformCbuf.h" />
     <ClInclude Include="core\render\includes\VertexBuffer.h" />
@@ -189,7 +198,23 @@
     <Image Include="icons\kubik2.ico" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="core\shader\PixelShader.hlsl">
+    <FxCompile Include="core\shader\ColorBlendPS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)$(Platform)\$(Configuration)\shaders\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)$(Platform)\$(Configuration)\shaders\%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="core\shader\ColorBlendVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)$(Platform)\$(Configuration)\shaders\%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)$(Platform)\$(Configuration)\shaders\%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="core\shader\ColorIndexPS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
@@ -199,7 +224,7 @@
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4.0</ShaderModel>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4.0</ShaderModel>
     </FxCompile>
-    <FxCompile Include="core\shader\VertexShader.hlsl">
+    <FxCompile Include="core\shader\ColorIndexVS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>

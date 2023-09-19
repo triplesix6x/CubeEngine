@@ -1,7 +1,5 @@
-[14:26:38] APP: An instance of a Box was set up into pipeline
-[14:26:38] APP: An instance of a Box was set up into pipeline
-[14:26:38] CUBE_ENGINE: Initialized Log.
-[14:26:38] CUBE_ENGINE: Window was created.
-[14:26:38] CUBE_ENGINE: Window was shown.
-[14:26:38] CUBE_ENGINE: D3D was initialized.
-[14:26:58] CUBE_ENGINE: Window was closed.
+[14:13:26] CUBE_ENGINE: Initialized Log.
+[14:13:26] CUBE_ENGINE: Window was created.
+[14:13:26] CUBE_ENGINE: Window was shown.
+[14:13:27] CUBE_ENGINE: D3D was initialized.
+[14:13:48] CUBE_ENGINE: Window was closed.

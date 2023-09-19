@@ -14,7 +14,8 @@ namespace Cube
 		int run();
 	private:
 		void doFrame();
-		std::vector<std::unique_ptr<Drawable>> boxes;
+		std::vector<std::unique_ptr<Drawable>> drawables;
+		static constexpr size_t nDrawables = 50;
 		Window m_Window;
 		Timer timer;
 	};
