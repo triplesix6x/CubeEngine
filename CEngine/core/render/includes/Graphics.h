@@ -47,6 +47,8 @@ public:
 	DirectX::XMMATRIX GetCamera() const noexcept;
 	DirectX::XMMATRIX GetProjection() const;
 	void CleanupRenderTarget() noexcept;
+	void CreateTestViewport() noexcept;
+	void CreateViewport(int x, int y) noexcept;
 	void EnableImgui() noexcept;
 	void DisableImgui() noexcept;
 	bool IsImguiEnabled() const noexcept;

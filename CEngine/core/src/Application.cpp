@@ -56,6 +56,14 @@ namespace Cube
 		auto dt = timer.Mark() * speed_factor;
 		m_Window.Gfx().ClearBuffer(0.07f, 0.0f, 0.12f);		//Очистка текущего буфера свап чейна
 		m_Window.Gfx().SetCamera(cam.GetMatrix());
+		if (m_Window.kbd.KeyIsPressed(VK_SPACE))
+		{
+			m_Window.Gfx().CreateTestViewport();
+		}
+		else
+		{
+			m_Window.Gfx().CreateViewport(GetSystemMetrics(SM_CXSCREEN), GetSystemMetrics(SM_CYSCREEN));
+		}
 		for (auto& b : drawables)
 		{
 			b->Update(dt);

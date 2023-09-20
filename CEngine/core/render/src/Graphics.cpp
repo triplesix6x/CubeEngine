@@ -174,6 +174,29 @@ void Graphics::CleanupRenderTarget() noexcept
 {
 	if (this) { pTarget->Release(); pTarget = nullptr; }
 }
+void Graphics::CreateTestViewport() noexcept
+{
+	D3D11_VIEWPORT vp;
+	vp.Width = 100;
+	vp.Height = 100;
+	vp.MinDepth = 0;
+	vp.MaxDepth = 1;
+	vp.TopLeftX = 0;
+	vp.TopLeftY = 0;
+	pContext->RSSetViewports(1u, &vp);
+}
+
+void Graphics::CreateViewport(int x, int y) noexcept
+{
+	D3D11_VIEWPORT vp;
+	vp.Width = x;
+	vp.Height = y;
+	vp.MinDepth = 0;
+	vp.MaxDepth = 1;
+	vp.TopLeftX = 0;
+	vp.TopLeftY = 0;
+	pContext->RSSetViewports(1u, &vp);
+}
 
 
 //Ниже - обработка графических исключений
