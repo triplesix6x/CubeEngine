@@ -14,6 +14,7 @@ namespace dx = DirectX;
 
 Graphics::Graphics(HWND hwnd, int width, int height)
 {
+	//Дексриптор свап чейна DirectX
 	DXGI_SWAP_CHAIN_DESC sd = {};
 	sd.BufferDesc.Width = 0;
 	sd.BufferDesc.Height = 0;
@@ -33,12 +34,15 @@ Graphics::Graphics(HWND hwnd, int width, int height)
 
 	HRESULT hResult;
 
+	//Создание девайса и свап чейна
 	GFX_THROW_FAILED(D3D11CreateDeviceAndSwapChain(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, 0, nullptr, 0, D3D11_SDK_VERSION, &sd, &pSwap, &pDevice, nullptr, &pContext));
 
+	//Задание целевого вида 
 	wrl::ComPtr<ID3D11Resource> pBackBuffer;
 	GFX_THROW_FAILED(pSwap->GetBuffer(0, __uuidof(ID3D11Resource), &pBackBuffer));
 	GFX_THROW_FAILED(pDevice->CreateRenderTargetView(pBackBuffer.Get(), nullptr, &pTarget));
 
+	//Дескриптор для инициализации буфера оси Z(Глубина)
 	D3D11_DEPTH_STENCIL_DESC dsDesc = {};
 	wrl::ComPtr<ID3D11DepthStencilState> pDSState;
 	dsDesc.DepthEnable = true;
@@ -68,6 +72,7 @@ Graphics::Graphics(HWND hwnd, int width, int height)
 	pDevice->CreateDepthStencilView(pDepthStencil.Get(), &descDSV, &pDSV);
 	pContext->OMSetRenderTargets(1u, pTarget.GetAddressOf(), pDSV.Get());
 
+	//Дескриптор для инифиализации viewport
 	D3D11_VIEWPORT vp;
 	vp.Width = width;
 	vp.Height = height;
@@ -84,6 +89,7 @@ Graphics::Graphics(HWND hwnd, int width, int height)
 
 void Graphics::ClearBuffer(float red, float green, float blue)
 {
+	//Очистка текущего буфера свап чейна
 	const float color[] = { red, green, blue, 1.0f };
 	pContext->ClearRenderTargetView(pTarget.Get(), color);
 	pContext->ClearDepthStencilView(pDSV.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0u);
@@ -91,6 +97,7 @@ void Graphics::ClearBuffer(float red, float green, float blue)
 
 void Graphics::EndFrame()
 {
+	//Замена буфера свап чейна
 	HRESULT hResult;
 	if (FAILED(hResult = pSwap->Present(1u, 0u)))
 	{
@@ -108,7 +115,7 @@ void Graphics::EndFrame()
 
 void Graphics::DrawIndexed(UINT count)
 {
-
+	//Отрисовка пайплайна 
 	pContext->DrawIndexed( count, 0u, 0u);
 }
 
@@ -122,6 +129,8 @@ DirectX::XMMATRIX Graphics::GetProjection() const
 	return projection;
 }
 
+
+//Ниже - обработка графических исключений
 Graphics::GraphicsException::GraphicsException(int line, const char* file, HRESULT hResult) : CubeException(line, file), hResult(hResult)
 {
 

@@ -1,3 +1,5 @@
+//Файл обработки мыши
+
 #include "../includes/Mouse.h"
 
 

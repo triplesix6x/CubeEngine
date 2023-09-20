@@ -1,3 +1,5 @@
+//Файл с необходимой математикой
+
 #pragma once
 #include <math.h>
 

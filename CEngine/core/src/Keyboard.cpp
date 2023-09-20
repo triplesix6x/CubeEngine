@@ -1,3 +1,5 @@
+//Файл обработки клавиатуры 
+
 #include "../includes/Keyboard.h"
 
 bool Keyboard::KeyIsPressed(unsigned char keycode) const 

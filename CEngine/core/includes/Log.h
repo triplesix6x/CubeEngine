@@ -17,6 +17,8 @@ namespace Cube {
 	};
 }
 
+
+//Макросы для логирования в файл
 #define CUBE_CORE_ERROR(...)	::Cube::Log::GetCoreLogger()->error(__VA_ARGS__)
 #define CUBE_CORE_WARN(...)		::Cube::Log::GetCoreLogger()->warn(__VA_ARGS__)
 #define CUBE_CORE_INFO(...)		::Cube::Log::GetCoreLogger()->info(__VA_ARGS__)

@@ -1,3 +1,5 @@
+//Файл для создания и загрузки в pipeline сущности куба, для других геометрических фигур принцип такой же
+
 #include "../includes/Box.h"
 #include "../includes/BindableBase.h"
 #include "../includes/Cube.h"
@@ -25,6 +27,7 @@ Box::Box(Graphics& gfx,
 	namespace dx = DirectX;
 	if (!IsStaticInitialized())
 	{
+		//Матрица с позицией в пронстранстве
 		struct Vertex
 		{
 			dx::XMFLOAT3 pos;
@@ -51,6 +54,7 @@ Box::Box(Graphics& gfx,
 				float a;
 			} face_colors[8];
 		};
+		//Матрица с цветами для каждой стороны
 		const ConstantBuffer2 cb2 =
 		{
 			{

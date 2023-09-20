@@ -1,3 +1,5 @@
+//Файл инициализации и настройки окна
+
 #include "../includes/Log.h"
 #include <sstream>
 #include "../includes/Window.h"
@@ -7,6 +9,7 @@ namespace Cube
 	Window::WindowClass Window::WindowClass::wndClass;
 	Window::WindowClass::WindowClass() 
 	{
+		//Создание и настройка дескриптора класса окна
 		WNDCLASSEX wc = { 0 };
 		wc.cbSize = sizeof(wc);
 		wc.style = CS_OWNDC | CS_HREDRAW | CS_VREDRAW;
@@ -43,6 +46,7 @@ namespace Cube
 
 	Window::Window(int width, int height) : width(width), height(height)
 	{
+		//Создание и настройка окна
 		RECT wr;
 		wr.left = 100;
 		wr.top = 100;
@@ -73,11 +77,14 @@ namespace Cube
 
 	void Window::WindowShow()
 	{
+		//Отображение окна и запуск конструктора Graphics
 		CUBE_CORE_INFO("Window was shown.");
 		ShowWindow(hwnd, SW_SHOW);
 		pGfx = std::make_unique<Graphics>(hwnd, width, height);
 	}
 	
+	
+	//Ниже - обработка исключений окна
 	Window::Exception::Exception(int line, const char* file, HRESULT hResult) : CubeException(line, file), hResult(hResult)
 	{
 
@@ -125,6 +132,7 @@ namespace Cube
 		return TranslateErrorCode(hResult);
 	}
 
+	//Функция обработки сообщений внутри окна
 	std::optional<int> Window::ProcessMessages()
 	{
 		MSG message;
@@ -139,7 +147,7 @@ namespace Cube
 		}
 		return {};
 	}
-
+	//Функция возвращения указателя на экземпляр Graphics
 	Graphics& Window::Gfx()
 	{
 		if(!pGfx)
@@ -149,6 +157,7 @@ namespace Cube
 		return *pGfx;
 	}
 
+	//Ниже - обработка сообщений окна
 	LRESULT WINAPI Window::HandleMessageSetup(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 	{
 		if (message == WM_NCCREATE)

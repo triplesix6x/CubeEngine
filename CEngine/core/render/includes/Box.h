@@ -13,18 +13,19 @@ public:
 	void Update(float dt) noexcept override;
 	DirectX::XMMATRIX GetTransformXM() const noexcept override;
 private:
-	float r;
+	//Позиция в пространстве
+	float r;				//Радиус от центра
 	float roll = 0.0f;
 	float pitch = 0.0f;
 	float yaw = 0.0f;
 	float theta;
 	float phi;
 	float chi;
-
-	float droll;
+	//Скорость дельта/с
+	float droll;			//Скорости вращение вокруг своих осей
 	float dpitch;
 	float dyaw;
-	float dtheta;
+	float dtheta;			//Скорости вращения вокруг центра
 	float dphi;
 	float dchi;
 

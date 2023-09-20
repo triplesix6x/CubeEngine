@@ -60,12 +60,12 @@ namespace Cube
 	void Application::doFrame()
 	{
 		auto dt = timer.Mark();
-		m_Window.Gfx().ClearBuffer(0.07f, 0.0f, 0.12f);
+		m_Window.Gfx().ClearBuffer(0.07f, 0.0f, 0.12f);		//Очистка текущего буфера свап чейна
 		for (auto& b : drawables)
 		{
 			b->Update(dt);
 			b->Draw(m_Window.Gfx());
 		}
-		m_Window.Gfx().EndFrame();
+		m_Window.Gfx().EndFrame();							//Замена буфера свап чейна
 	}
 }

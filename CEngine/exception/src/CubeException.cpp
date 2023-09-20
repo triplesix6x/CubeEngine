@@ -1,3 +1,5 @@
+//Файл с обраточиком исключений
+
 #include "../includes/CubeException.h"
 #include <sstream>
 

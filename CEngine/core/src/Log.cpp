@@ -1,3 +1,5 @@
+//Файл работы системы логирования
+
 #include "../includes/Log.h"
 #include <fstream>
 
@@ -12,7 +14,7 @@ namespace Cube
 		logfile.open("../log.txt", std::ios::out);
 		logfile << "";
 		logfile.close();
-		spdlog::set_pattern("%^[%T] %n: %v%$");
+		spdlog::set_pattern("%^[%T] %n: %v%$");					//Задаем паттерн логирования
 		s_CoreLogger = spdlog::basic_logger_mt("CUBE_ENGINE", "../log.txt");
 		s_CoreLogger->set_level(spdlog::level::trace);
 

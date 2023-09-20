@@ -1,3 +1,5 @@
+//Файл запуска программы
+
 #include "../CubeApp.h"
 
 int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
@@ -5,11 +7,12 @@ int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	HRESULT hResult = CoInitialize(NULL);
 	try
 	{
-		Cube::Log::init();
-		Cube::Application app(1280, 720);
-		int Result = app.run();
+		Cube::Log::init();					//инициализация логирования
+		Cube::Application app(1280, 720);	//создание экземпляра приложения
+		int Result = app.run();				//запуск основной функции работы
 		return Result;
 	}
+	//Обработка исключений
 	catch (const CubeException& e)
 	{
 		MessageBoxA(nullptr, e.whatEx(), e.getType(), MB_OK | MB_ICONEXCLAMATION);

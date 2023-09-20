@@ -13,7 +13,7 @@ namespace Cube
 		virtual ~Application();
 		int run();
 	private:
-		void doFrame();
+		void doFrame();					//функция отрисовки одного кадра
 		std::vector<std::unique_ptr<Drawable>> drawables;
 		static constexpr size_t nDrawables = 50;
 		Window m_Window;
