@@ -43,11 +43,19 @@ public:
 	void ClearBuffer(float red, float green, float blue);
 	void DrawIndexed(UINT count);
 	void SetProjection(DirectX::FXMMATRIX proj);
+	void SetCamera(DirectX::FXMMATRIX cam) noexcept;
+	DirectX::XMMATRIX GetCamera() const noexcept;
 	DirectX::XMMATRIX GetProjection() const;
+	void CleanupRenderTarget() noexcept;
+	void EnableImgui() noexcept;
+	void DisableImgui() noexcept;
+	bool IsImguiEnabled() const noexcept;
 private:
+	bool imguiEnabled = true;
 	DirectX::XMMATRIX projection;
+	DirectX::XMMATRIX camera;
 	wrl::ComPtr<ID3D11Device> pDevice = nullptr;
-	wrl::ComPtr<IDXGISwapChain> pSwap;
+	wrl::ComPtr<IDXGISwapChain> pSwap = nullptr;
 	wrl::ComPtr<ID3D11DeviceContext> pContext;
 	wrl::ComPtr<ID3D11RenderTargetView> pTarget;
 	wrl::ComPtr<ID3D11DepthStencilView> pDSV;

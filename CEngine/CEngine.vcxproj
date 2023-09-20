@@ -137,6 +137,7 @@
   <ItemGroup>
     <ClCompile Include="core\render\src\Bindable.cpp" />
     <ClCompile Include="core\render\src\Box.cpp" />
+    <ClCompile Include="core\render\src\Camera.cpp" />
     <ClCompile Include="core\render\src\Drawable.cpp" />
     <ClCompile Include="core\render\src\Graphics.cpp" />
     <ClCompile Include="core\render\src\IndexBuffer.cpp" />
@@ -146,18 +147,27 @@
     <ClCompile Include="core\render\src\Pyramid.cpp" />
     <ClCompile Include="core\render\src\Sampler.cpp" />
     <ClCompile Include="core\render\src\Sheet.cpp" />
+    <ClCompile Include="core\render\src\SkinnedBox.cpp" />
     <ClCompile Include="core\render\src\Texture.cpp" />
     <ClCompile Include="core\render\src\Topology.cpp" />
     <ClCompile Include="core\render\src\TransformCBuf.cpp" />
     <ClCompile Include="core\render\src\VertexBuffer.cpp" />
     <ClCompile Include="core\render\src\VertexShader.cpp" />
     <ClCompile Include="core\src\Application.cpp" />
+    <ClCompile Include="core\src\ImguiManager.cpp" />
     <ClCompile Include="core\src\Keyboard.cpp" />
     <ClCompile Include="core\src\Log.cpp" />
     <ClCompile Include="core\src\EntryPoint.cpp" />
     <ClCompile Include="core\src\Mouse.cpp" />
     <ClCompile Include="core\src\Window.cpp" />
     <ClCompile Include="exception\src\CubeException.cpp" />
+    <ClCompile Include="imgui\imgui.cpp" />
+    <ClCompile Include="imgui\imgui_demo.cpp" />
+    <ClCompile Include="imgui\imgui_draw.cpp" />
+    <ClCompile Include="imgui\imgui_impl_dx11.cpp" />
+    <ClCompile Include="imgui\imgui_impl_win32.cpp" />
+    <ClCompile Include="imgui\imgui_tables.cpp" />
+    <ClCompile Include="imgui\imgui_widgets.cpp" />
     <ClCompile Include="memory\src\PoolAllocator.cpp" />
     <ClCompile Include="core\src\Timer.cpp" />
   </ItemGroup>
@@ -165,6 +175,7 @@
     <ClInclude Include="core\CubeApp.h" />
     <ClInclude Include="core\includes\Application.h" />
     <ClInclude Include="core\includes\CMath.h" />
+    <ClInclude Include="core\includes\ImguiManager.h" />
     <ClInclude Include="core\includes\Keyboard.h" />
     <ClInclude Include="core\includes\Log.h" />
     <ClInclude Include="core\includes\Mouse.h" />
@@ -172,6 +183,7 @@
     <ClInclude Include="core\render\includes\Bindable.h" />
     <ClInclude Include="core\render\includes\BindableBase.h" />
     <ClInclude Include="core\render\includes\Box.h" />
+    <ClInclude Include="core\render\includes\Camera.h" />
     <ClInclude Include="core\render\includes\Cone.h" />
     <ClInclude Include="core\render\includes\ConstantBuffers.h" />
     <ClInclude Include="core\render\includes\Cube.h" />
@@ -188,6 +200,7 @@
     <ClInclude Include="core\render\includes\Pyramid.h" />
     <ClInclude Include="core\render\includes\Sampler.h" />
     <ClInclude Include="core\render\includes\Sheet.h" />
+    <ClInclude Include="core\render\includes\SkinnedBox.h" />
     <ClInclude Include="core\render\includes\Sphere.h" />
     <ClInclude Include="core\render\includes\Texture.h" />
     <ClInclude Include="core\render\includes\Topology.h" />
@@ -195,6 +208,14 @@
     <ClInclude Include="core\render\includes\VertexBuffer.h" />
     <ClInclude Include="core\render\includes\VertexShader.h" />
     <ClInclude Include="exception\includes\CubeException.h" />
+    <ClInclude Include="imgui\imconfig.h" />
+    <ClInclude Include="imgui\imgui.h" />
+    <ClInclude Include="imgui\imgui_impl_dx11.h" />
+    <ClInclude Include="imgui\imgui_impl_win32.h" />
+    <ClInclude Include="imgui\imgui_internal.h" />
+    <ClInclude Include="imgui\imstb_rectpack.h" />
+    <ClInclude Include="imgui\imstb_textedit.h" />
+    <ClInclude Include="imgui\imstb_truetype.h" />
     <ClInclude Include="memory\includes\PoolAllocator.h" />
     <ClInclude Include="core\includes\Timer.h" />
   </ItemGroup>

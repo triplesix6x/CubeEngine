@@ -3,6 +3,8 @@
 #include "../includes/Log.h"
 #include <sstream>
 #include "../includes/Window.h"
+#include "../imgui/imgui.h"
+#include "../imgui/imgui_impl_win32.h"
 
 namespace Cube
 {
@@ -70,19 +72,23 @@ namespace Cube
 		};
 		CUBE_CORE_INFO("Window was created.");
 	}
-	Window::~Window()
-	{
-		DestroyWindow(hwnd);
-	}
 
 	void Window::WindowShow()
 	{
-		//Отображение окна и запуск конструктора Graphics
-		CUBE_CORE_INFO("Window was shown.");
+		//Отображение окна,ImGui и конструктора Graphics
 		ShowWindow(hwnd, SW_SHOW);
+		CUBE_CORE_INFO("Window was shown.");
+		ImGui_ImplWin32_Init(hwnd);
+		CUBE_CORE_INFO("ImGui Win32 was initialized.");
 		pGfx = std::make_unique<Graphics>(hwnd, width, height);
 	}
-	
+
+
+	Window::~Window()
+	{
+		ImGui_ImplWin32_Shutdown();
+		DestroyWindow(hwnd);
+	}
 	
 	//Ниже - обработка исключений окна
 	Window::Exception::Exception(int line, const char* file, HRESULT hResult) : CubeException(line, file), hResult(hResult)
@@ -133,14 +139,14 @@ namespace Cube
 	}
 
 	//Функция обработки сообщений внутри окна
-	std::optional<int> Window::ProcessMessages()
+	std::optional<MSG> Window::ProcessMessages()
 	{
 		MSG message;
 		while (PeekMessage(&message, nullptr, 0, 0, PM_REMOVE))
 		{
 			if (message.message == WM_QUIT)
 			{
-				return message.wParam;
+				return message;
 			}
 			TranslateMessage(&message);
 			DispatchMessage(&message);
@@ -178,13 +184,21 @@ namespace Cube
 		return pWnd->HandleMessage(hwnd, message, wParam, lParam);
 	}
 
-
 	LRESULT Window::HandleMessage(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 	{
+		if (ImGui_ImplWin32_WndProcHandler(hwnd, message, wParam, lParam))
+		{
+			return true;
+		}
+		const auto imguiio = ImGui::GetIO();
 		switch (message)
 		{
 		case WM_MOUSEMOVE:
 		{
+			if (imguiio.WantCaptureMouse)
+			{
+				break;
+			}
 			const POINTS pt = MAKEPOINTS(lParam);
 			if(pt.x >= 0 && pt.x < width && pt.y >= 0 && pt.y < height)
 			{ 
@@ -212,30 +226,50 @@ namespace Cube
 		}
 		case WM_LBUTTONDOWN:
 		{
+			if (imguiio.WantCaptureMouse)
+			{
+				break;
+			}
 			const POINTS pt = MAKEPOINTS(lParam);
 			mouse.OnLeftPressed(pt.x, pt.y);
 			break;
 		}
 		case WM_RBUTTONDOWN:
 		{
+			if (imguiio.WantCaptureMouse)
+			{
+				break;
+			}
 			const POINTS pt = MAKEPOINTS(lParam);
 			mouse.OnRightPressed(pt.x, pt.y);
 			break;
 		}
 		case WM_LBUTTONUP:
 		{
+			if (imguiio.WantCaptureMouse)
+			{
+				break;
+			}
 			const POINTS pt = MAKEPOINTS(lParam);
 			mouse.OnLeftReleased(pt.x, pt.y);
 			break;
 		}
 		case WM_RBUTTONUP:
 		{
+			if (imguiio.WantCaptureMouse)
+			{
+				break;
+			}
 			const POINTS pt = MAKEPOINTS(lParam);
 			mouse.OnRightReleased(pt.x, pt.y);
 			break;
 		}
 		case WM_MOUSEWHEEL:
 		{
+			if (imguiio.WantCaptureMouse)
+			{
+				break;
+			}
 			const POINTS pt = MAKEPOINTS(lParam);
 			if (GET_WHEEL_DELTA_WPARAM(wParam) > 0)
 			{
@@ -249,6 +283,10 @@ namespace Cube
 
 		case WM_KEYDOWN:
 		case WM_SYSKEYDOWN:
+			if (imguiio.WantCaptureKeyboard)
+			{
+				break;
+			}
 			if (!(lParam & 0x40000000) || kbd.AutorepeatIsEnabled())
 			{
 				kbd.OnKeyPressed(static_cast<unsigned char>(wParam));
@@ -256,9 +294,17 @@ namespace Cube
 			break;
 		case WM_KEYUP:
 		case WM_SYSKEYUP:
+			if (imguiio.WantCaptureKeyboard)
+			{
+				break;
+			}
 			kbd.OnKeyReleased(static_cast<unsigned char>(wParam));
 			break;
 		case WM_CHAR:
+			if (imguiio.WantCaptureKeyboard)
+			{
+				break;
+			}
 			kbd.OnChar(static_cast<unsigned char>(wParam));
 			break;
 		case WM_KILLFOCUS:

@@ -57,7 +57,7 @@ namespace Cube
 		~Window();
 		HWND handle() { return hwnd; }
 		void handle(HWND shwnd) { hwnd = shwnd; }
-		static std::optional<int> ProcessMessages();
+		static std::optional<MSG> ProcessMessages();
 		Graphics& Gfx();
 		Mouse mouse;
 		Keyboard kbd;

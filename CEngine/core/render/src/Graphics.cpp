@@ -3,6 +3,8 @@
 #include <DirectXMath.h>
 #include "../includes/Graphics.h"
 #include "../../includes/Log.h"
+#include "../imgui/imgui_impl_dx11.h"
+#include "../imgui/imgui_impl_win32.h"
 #define GFX_THROW_FAILED(hResultcall) if (FAILED(hResult=(hResultcall))) throw Graphics::GraphicsException(__LINE__, __FILE__, hResult)
 #define GFX_DEVICE_REMOVED_EXCEPTION(hResult) Graphics::DeviceRemovedException(__LINE__, __FILE__, (hResult))
 
@@ -21,7 +23,7 @@ Graphics::Graphics(HWND hwnd, int width, int height)
 	sd.BufferDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
 	sd.BufferDesc.RefreshRate.Numerator = 0;
 	sd.BufferDesc.RefreshRate.Denominator = 0;
-	sd.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
+	sd.BufferDesc.Scaling = DXGI_MODE_SCALING_CENTERED;
 	sd.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
 	sd.SampleDesc.Count = 1;
 	sd.SampleDesc.Quality = 0;
@@ -74,21 +76,29 @@ Graphics::Graphics(HWND hwnd, int width, int height)
 
 	//Дескриптор для инифиализации viewport
 	D3D11_VIEWPORT vp;
-	vp.Width = width;
+	vp.Width = width ;
 	vp.Height = height;
 	vp.MinDepth = 0;
 	vp.MaxDepth = 1;
 	vp.TopLeftX = 0;
 	vp.TopLeftY = 0;
 	pContext->RSSetViewports(1u, &vp);
-
 	CUBE_CORE_INFO("D3D was initialized.");
+
+	ImGui_ImplDX11_Init(pDevice.Get(), pContext.Get());
+	CUBE_CORE_INFO("ImGui DX11 was initialized.");
 }
 
 
 
 void Graphics::ClearBuffer(float red, float green, float blue)
 {
+	if (imguiEnabled)
+	{
+		ImGui_ImplDX11_NewFrame();
+		ImGui_ImplWin32_NewFrame();
+		ImGui::NewFrame();
+	}
 	//Очистка текущего буфера свап чейна
 	const float color[] = { red, green, blue, 1.0f };
 	pContext->ClearRenderTargetView(pTarget.Get(), color);
@@ -97,6 +107,12 @@ void Graphics::ClearBuffer(float red, float green, float blue)
 
 void Graphics::EndFrame()
 {
+	if (imguiEnabled)
+	{
+		ImGui::Render();
+		ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
+	}
+
 	//Замена буфера свап чейна
 	HRESULT hResult;
 	if (FAILED(hResult = pSwap->Present(1u, 0u)))
@@ -127,6 +143,36 @@ void Graphics::SetProjection(DirectX::FXMMATRIX proj)
 DirectX::XMMATRIX Graphics::GetProjection() const 
 {
 	return projection;
+}
+
+void Graphics::EnableImgui() noexcept
+{
+	imguiEnabled = true;
+}
+
+void Graphics::DisableImgui() noexcept
+{
+	imguiEnabled = false;
+}
+
+void Graphics::SetCamera(DirectX::FXMMATRIX cam) noexcept
+{
+	camera = cam;
+}
+
+bool Graphics::IsImguiEnabled() const noexcept
+{
+	return imguiEnabled;
+}
+
+DirectX::XMMATRIX Graphics::GetCamera() const noexcept
+{
+	return camera;
+}
+
+void Graphics::CleanupRenderTarget() noexcept
+{
+	if (this) { pTarget->Release(); pTarget = nullptr; }
 }
 
 

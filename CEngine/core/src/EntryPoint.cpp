@@ -8,7 +8,7 @@ int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	try
 	{
 		Cube::Log::init();					//инициализация логирования
-		Cube::Application app(1280, 720);	//создание экземпляра приложения
+		Cube::Application app(GetSystemMetrics(SM_CXSCREEN), GetSystemMetrics(SM_CYSCREEN));	//создание экземпляра приложения
 		int Result = app.run();				//запуск основной функции работы
 		return Result;
 	}
