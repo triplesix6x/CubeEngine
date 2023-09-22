@@ -50,11 +50,11 @@ namespace Cube
 	{
 		//Создание и настройка окна
 		RECT wr;
-		wr.left = 100;
-		wr.top = 100;
-		wr.right = width + wr.left;
-		wr.bottom = height + wr.top;
-		if (AdjustWindowRect(&wr, WindowType::FULL, FALSE) == 0)
+		wr.left = 0;
+		wr.top = 0;
+		wr.right = width;
+		wr.bottom = height;
+		if (AdjustWindowRect(&wr, WindowType::FULL, TRUE) == 0)
 		{
 			throw CUBE_LAST_EXCEPTION();
 		};
@@ -65,7 +65,7 @@ namespace Cube
 
 		hwnd = CreateWindowEx(0, WindowClass::getName(), L"Cube Engine", WindowType::FULL,
 							((desktop.right / 2) - (width / 2)), ((desktop.bottom / 2) - (height / 2)), 
-							width, height, nullptr, nullptr, WindowClass::getInstance(), this);
+							wr.right, wr.bottom - 50, nullptr, nullptr, WindowClass::getInstance(), this);
 		if (hwnd == nullptr)
 		{
 			throw CUBE_LAST_EXCEPTION();
@@ -81,6 +81,16 @@ namespace Cube
 		ImGui_ImplWin32_Init(hwnd);
 		CUBE_CORE_INFO("ImGui Win32 was initialized.");
 		pGfx = std::make_unique<Graphics>(hwnd, width, height);
+	}
+
+	int Window::GetWidth() const noexcept
+	{
+		return width;
+	}
+
+	int Window::GetHeight() const noexcept
+	{
+		return height;
 	}
 
 
@@ -309,6 +319,9 @@ namespace Cube
 			break;
 		case WM_KILLFOCUS:
 			kbd.ClearState();
+			break;
+		case WM_SIZE:
+			pGfx.get()->Resize((UINT)LOWORD(lParam), (UINT)HIWORD(lParam));
 			break;
 		case WM_CLOSE:
 			CUBE_CORE_INFO("Window was closed.");

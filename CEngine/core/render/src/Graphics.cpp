@@ -5,6 +5,7 @@
 #include "../../includes/Log.h"
 #include "../imgui/imgui_impl_dx11.h"
 #include "../imgui/imgui_impl_win32.h"
+#include "../imgui/imgui_internal.h"
 #define GFX_THROW_FAILED(hResultcall) if (FAILED(hResult=(hResultcall))) throw Graphics::GraphicsException(__LINE__, __FILE__, hResult)
 #define GFX_DEVICE_REMOVED_EXCEPTION(hResult) Graphics::DeviceRemovedException(__LINE__, __FILE__, (hResult))
 
@@ -40,23 +41,13 @@ Graphics::Graphics(HWND hwnd, int width, int height)
 	GFX_THROW_FAILED(D3D11CreateDeviceAndSwapChain(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, 0, nullptr, 0, D3D11_SDK_VERSION, &sd, &pSwap, &pDevice, nullptr, &pContext));
 
 	//Задание целевого вида 
-	wrl::ComPtr<ID3D11Resource> pBackBuffer;
 	GFX_THROW_FAILED(pSwap->GetBuffer(0, __uuidof(ID3D11Resource), &pBackBuffer));
 	GFX_THROW_FAILED(pDevice->CreateRenderTargetView(pBackBuffer.Get(), nullptr, &pTarget));
 
 	//Дескриптор для инициализации буфера оси Z(Глубина)
-	D3D11_DEPTH_STENCIL_DESC dsDesc = {};
-	wrl::ComPtr<ID3D11DepthStencilState> pDSState;
-	dsDesc.DepthEnable = true;
-	dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
-	dsDesc.DepthFunc = D3D11_COMPARISON_LESS;
-	pDevice->CreateDepthStencilState(&dsDesc, &pDSState);
-	pContext->OMSetDepthStencilState(pDSState.Get(), 1u);
-
-	wrl::ComPtr<ID3D11Texture2D> pDepthStencil;
 	D3D11_TEXTURE2D_DESC descDepth = {};
-	descDepth.Width = (UINT)width;
-	descDepth.Height = (UINT)height;
+	descDepth.Width = width;
+	descDepth.Height = height;
 	descDepth.MipLevels = 1u;
 	descDepth.ArraySize = 1u;
 	descDepth.Format = DXGI_FORMAT_D32_FLOAT;
@@ -70,19 +61,11 @@ Graphics::Graphics(HWND hwnd, int width, int height)
 	descDSV.Format = DXGI_FORMAT_D32_FLOAT;
 	descDSV.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
 	descDSV.Texture2D.MipSlice = 0u;
-
 	pDevice->CreateDepthStencilView(pDepthStencil.Get(), &descDSV, &pDSV);
 	pContext->OMSetRenderTargets(1u, pTarget.GetAddressOf(), pDSV.Get());
 
 	//Дескриптор для инифиализации viewport
-	D3D11_VIEWPORT vp;
-	vp.Width = width ;
-	vp.Height = height;
-	vp.MinDepth = 0;
-	vp.MaxDepth = 1;
-	vp.TopLeftX = 0;
-	vp.TopLeftY = 0;
-	pContext->RSSetViewports(1u, &vp);
+	CreateViewport(width, height, 0, 0);
 	CUBE_CORE_INFO("D3D was initialized.");
 
 	ImGui_ImplDX11_Init(pDevice.Get(), pContext.Get());
@@ -91,7 +74,7 @@ Graphics::Graphics(HWND hwnd, int width, int height)
 
 
 
-void Graphics::ClearBuffer(float red, float green, float blue)
+void Graphics::ClearBuffer(float red, float green, float blue, int width, int height)
 {
 	if (imguiEnabled)
 	{
@@ -101,21 +84,26 @@ void Graphics::ClearBuffer(float red, float green, float blue)
 	}
 	//Очистка текущего буфера свап чейна
 	const float color[] = { red, green, blue, 1.0f };
+	pContext->OMSetRenderTargets(1u, pTarget.GetAddressOf(), pDSV.Get());
 	pContext->ClearRenderTargetView(pTarget.Get(), color);
 	pContext->ClearDepthStencilView(pDSV.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0u);
 }
 
-void Graphics::EndFrame()
+void Graphics::EndFrame(int width, int height)
 {
 	if (imguiEnabled)
 	{
+		HRESULT hResult;
 		ImGui::Render();
+		pContext->OMSetRenderTargets(1u, pTarget.GetAddressOf(), pDSV.Get());
 		ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
+		ImGui::UpdatePlatformWindows();
+		ImGui::RenderPlatformWindowsDefault();
 	}
 
 	//Замена буфера свап чейна
 	HRESULT hResult;
-	if (FAILED(hResult = pSwap->Present(1u, 0u)))
+	if (FAILED(hResult = pSwap->Present(1u, DXGI_FORMAT_UNKNOWN)))
 	{
 		if (hResult == DXGI_ERROR_DEVICE_REMOVED)
 		{
@@ -128,6 +116,42 @@ void Graphics::EndFrame()
 	}
 }
 
+ImGuiID Graphics::ShowDocksape() noexcept
+{
+	bool show = true;
+		ImGuiViewport* viewport = ImGui::GetMainViewport();
+		ImGui::SetNextWindowPos(viewport->Pos);
+		ImGui::SetNextWindowSize(viewport->Size);
+		ImGui::SetNextWindowViewport(viewport->ID);
+		ImGui::SetNextWindowBgAlpha(0.0f);
+
+		ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
+		window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
+		window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
+
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
+		ImGui::Begin("DockSpace Demo", &show, window_flags);
+		ImGui::PopStyleVar(3);
+		ImGuiID dockspace_id = ImGui::GetID("MyDockspace");
+		ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_PassthruCentralNode;
+		ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
+		ImGui::End();
+		ImGuiDockNode* node = ImGui::DockBuilderGetCentralNode(dockspace_id);
+
+
+		//ImGui::GetBackgroundDrawList()->AddRect
+		//(
+		//	node->Pos,
+		//	{ node->Pos.x + node->Size.x, node->Pos.y + node->Size.y },
+		//	IM_COL32(255, 0, 0, 255),
+		//	0.f,
+		//	ImDrawFlags_None,
+		//	3.f
+		//);
+		return dockspace_id;
+}
 
 void Graphics::DrawIndexed(UINT count)
 {
@@ -170,31 +194,43 @@ DirectX::XMMATRIX Graphics::GetCamera() const noexcept
 	return camera;
 }
 
+
+void Graphics::SetupRenderTarget() noexcept
+{
+	HRESULT hResult;
+	wrl::ComPtr<ID3D11Resource> pBackBuffer;
+	GFX_THROW_FAILED(pSwap->GetBuffer(0, __uuidof(ID3D11Resource), &pBackBuffer));
+	GFX_THROW_FAILED(pDevice->CreateRenderTargetView(pBackBuffer.Get(), nullptr, &pTarget));
+
+}
+
+
 void Graphics::CleanupRenderTarget() noexcept
 {
 	if (this) { pTarget->Release(); pTarget = nullptr; }
 }
-void Graphics::CreateTestViewport() noexcept
+
+void Graphics::Resize(int width, int height) noexcept
 {
-	D3D11_VIEWPORT vp;
-	vp.Width = 100;
-	vp.Height = 100;
-	vp.MinDepth = 0;
-	vp.MaxDepth = 1;
-	vp.TopLeftX = 0;
-	vp.TopLeftY = 0;
-	pContext->RSSetViewports(1u, &vp);
+	if (this)
+	{
+		pContext->OMSetRenderTargets(0, NULL, NULL);
+		CleanupRenderTarget();
+		pSwap->ResizeBuffers(1u, width, height, DXGI_FORMAT_B8G8R8A8_UNORM, 0);
+		SetupRenderTarget();
+	}
 }
 
-void Graphics::CreateViewport(int x, int y) noexcept
+
+void Graphics::CreateViewport(int x, int y, int topx, int topy) noexcept
 {
 	D3D11_VIEWPORT vp;
 	vp.Width = x;
 	vp.Height = y;
 	vp.MinDepth = 0;
 	vp.MaxDepth = 1;
-	vp.TopLeftX = 0;
-	vp.TopLeftY = 0;
+	vp.TopLeftX = topx;
+	vp.TopLeftY = topy;
 	pContext->RSSetViewports(1u, &vp);
 }
 

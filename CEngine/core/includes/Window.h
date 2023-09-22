@@ -11,7 +11,7 @@ namespace Cube
 {
 	enum WindowType : DWORD
 	{
-		FULL = WS_OVERLAPPEDWINDOW | WS_BORDER,
+		FULL = WS_OVERLAPPEDWINDOW & ~WS_THICKFRAME & ~WS_MAXIMIZEBOX,
 		STATIC = WS_OVERLAPPED,
 		RESIZABLE = WS_SIZEBOX,
 		POPUP = WS_POPUP
@@ -58,6 +58,8 @@ namespace Cube
 		HWND handle() { return hwnd; }
 		void handle(HWND shwnd) { hwnd = shwnd; }
 		static std::optional<MSG> ProcessMessages();
+		int GetWidth() const noexcept;
+		int GetHeight() const noexcept;
 		Graphics& Gfx();
 		Mouse mouse;
 		Keyboard kbd;

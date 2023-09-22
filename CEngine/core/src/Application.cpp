@@ -8,6 +8,7 @@
 #include "../imgui/imgui.h"
 #include "../imgui/imgui_impl_win32.h"
 #include "../imgui/imgui_impl_dx11.h"
+#include "../imgui/imgui_internal.h"
 #include <memory>
 
 
@@ -26,13 +27,12 @@ namespace Cube
 		std::uniform_int_distribution<int> latdist{ 5,20 };
 		std::uniform_int_distribution<int> longdist{ 10,40 };
 		std::uniform_int_distribution<int> typedist{ 0,2 };
-		for (auto i = 0; i < nDrawables; i++)
+		for (auto i = 0; i < nDrawables; ++i)
 		{
 			drawables.push_back(std::make_unique<SkinnedBox>(
 				m_Window.Gfx(), rng, adist, ddist,
 				odist, rdist));
 		}
-		m_Window.Gfx().SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, static_cast<float>(height) / static_cast<float>(width), 0.5f, 40.0f));
 	}
 
 	Application::~Application()
@@ -54,29 +54,28 @@ namespace Cube
 	void Application::doFrame()
 	{
 		auto dt = timer.Mark() * speed_factor;
-		m_Window.Gfx().ClearBuffer(0.07f, 0.0f, 0.12f);		//Очистка текущего буфера свап чейна
+		m_Window.Gfx().ClearBuffer(0.07f, 0.0f, 0.12f, m_Window.GetWidth(), m_Window.GetHeight());		//Очистка текущего буфера свап чейна
 		m_Window.Gfx().SetCamera(cam.GetMatrix());
-		if (m_Window.kbd.KeyIsPressed(VK_SPACE))
-		{
-			m_Window.Gfx().CreateTestViewport();
-		}
-		else
-		{
-			m_Window.Gfx().CreateViewport(GetSystemMetrics(SM_CXSCREEN), GetSystemMetrics(SM_CYSCREEN));
-		}
 		for (auto& b : drawables)
 		{
 			b->Update(dt);
 			b->Draw(m_Window.Gfx());
 		}
-		ImGui::ShowDemoWindow();
-		if (ImGui::Begin("Simulation Speed", NULL, ImGuiWindowFlags_NoResize))
+		ImGuiID did = m_Window.Gfx().ShowDocksape();
+		ImGuiDockNode* node = ImGui::DockBuilderGetCentralNode(did);
+		m_Window.Gfx().CreateViewport(node->Size.x, node->Size.y, node->Pos.x - 8, node->Pos.y - 31);
+		m_Window.Gfx().SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, node->Size.y / node->Size.x, 0.5f, 100.0f));
+		if (ImGui::Begin("Simulation Speed"))
 		{
 			ImGui::SliderFloat("Speed Factor", &speed_factor, 0.0f, 10.0f);
 			ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+			if (ImGui::Button("Reset"))
+			{
+				speed_factor = 1.0f;
+			}
 		}
 		ImGui::End();
 		cam.SpawnControlWindow();
-		m_Window.Gfx().EndFrame();							//Замена буфера свап чейна
+		m_Window.Gfx().EndFrame(m_Window.GetWidth(), m_Window.GetHeight());							//Замена буфера свап чейна
 	}
 }
