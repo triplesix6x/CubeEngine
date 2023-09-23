@@ -24,7 +24,7 @@ Graphics::Graphics(HWND hwnd, int width, int height)
 	sd.BufferDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
 	sd.BufferDesc.RefreshRate.Numerator = 0;
 	sd.BufferDesc.RefreshRate.Denominator = 0;
-	sd.BufferDesc.Scaling = DXGI_MODE_SCALING_CENTERED;
+	sd.BufferDesc.Scaling = DXGI_MODE_SCALING_STRETCHED;
 	sd.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
 	sd.SampleDesc.Count = 1;
 	sd.SampleDesc.Quality = 0;
@@ -70,6 +70,7 @@ Graphics::Graphics(HWND hwnd, int width, int height)
 
 	ImGui_ImplDX11_Init(pDevice.Get(), pContext.Get());
 	CUBE_CORE_INFO("ImGui DX11 was initialized.");
+	
 }
 
 
@@ -87,6 +88,11 @@ void Graphics::ClearBuffer(float red, float green, float blue, int width, int he
 	pContext->OMSetRenderTargets(1u, pTarget.GetAddressOf(), pDSV.Get());
 	pContext->ClearRenderTargetView(pTarget.Get(), color);
 	pContext->ClearDepthStencilView(pDSV.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0u);
+}
+
+Graphics::~Graphics()
+{
+	ImGui_ImplDX11_Shutdown();
 }
 
 void Graphics::EndFrame(int width, int height)
@@ -116,9 +122,11 @@ void Graphics::EndFrame(int width, int height)
 	}
 }
 
+
 ImGuiID Graphics::ShowDocksape() noexcept
 {
-	bool show = true;
+
+		bool show = true;
 		ImGuiViewport* viewport = ImGui::GetMainViewport();
 		ImGui::SetNextWindowPos(viewport->Pos);
 		ImGui::SetNextWindowSize(viewport->Size);
@@ -134,23 +142,32 @@ ImGuiID Graphics::ShowDocksape() noexcept
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
 		ImGui::Begin("DockSpace Demo", &show, window_flags);
 		ImGui::PopStyleVar(3);
-		ImGuiID dockspace_id = ImGui::GetID("MyDockspace");
+		dockspace_id = ImGui::GetID("MyDockspace");
 		ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_PassthruCentralNode;
 		ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
 		ImGui::End();
 		ImGuiDockNode* node = ImGui::DockBuilderGetCentralNode(dockspace_id);
 
-
-		//ImGui::GetBackgroundDrawList()->AddRect
-		//(
-		//	node->Pos,
-		//	{ node->Pos.x + node->Size.x, node->Pos.y + node->Size.y },
-		//	IM_COL32(255, 0, 0, 255),
-		//	0.f,
-		//	ImDrawFlags_None,
-		//	3.f
-		//);
 		return dockspace_id;
+}
+
+void Graphics::ShowMenuBar() noexcept
+{
+	if (ImGui::BeginMainMenuBar()) 
+	{
+		if (ImGui::BeginMenu("File")) {
+			if (ImGui::MenuItem("Create")) {
+			}
+			if (ImGui::MenuItem("Open", "Ctrl+O")) {
+			}
+			if (ImGui::MenuItem("Save", "Ctrl+S")) {
+			}
+			if (ImGui::MenuItem("Save as..")) {
+			}
+			ImGui::EndMenu();
+		}
+		ImGui::EndMainMenuBar();
+	}
 }
 
 void Graphics::DrawIndexed(UINT count)
@@ -214,24 +231,25 @@ void Graphics::Resize(int width, int height) noexcept
 {
 	if (this)
 	{
-		pContext->OMSetRenderTargets(0, NULL, NULL);
 		CleanupRenderTarget();
-		pSwap->ResizeBuffers(1u, width, height, DXGI_FORMAT_B8G8R8A8_UNORM, 0);
+		pSwap->ResizeBuffers(0, width, height, DXGI_FORMAT_UNKNOWN, 0);
 		SetupRenderTarget();
 	}
 }
 
 
-void Graphics::CreateViewport(int x, int y, int topx, int topy) noexcept
+void Graphics::CreateViewport(float x, float y, float topx, float topy) noexcept
 {
+
 	D3D11_VIEWPORT vp;
 	vp.Width = x;
 	vp.Height = y;
 	vp.MinDepth = 0;
 	vp.MaxDepth = 1;
-	vp.TopLeftX = topx;
-	vp.TopLeftY = topy;
+	vp.TopLeftX = topx - ImGui::GetMainViewport()->Pos.x;
+	vp.TopLeftY = topy - ImGui::GetMainViewport()->Pos.y;
 	pContext->RSSetViewports(1u, &vp);
+
 }
 
 

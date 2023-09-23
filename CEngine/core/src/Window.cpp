@@ -14,7 +14,7 @@ namespace Cube
 		//Создание и настройка дескриптора класса окна
 		WNDCLASSEX wc = { 0 };
 		wc.cbSize = sizeof(wc);
-		wc.style = CS_OWNDC | CS_HREDRAW | CS_VREDRAW;
+		wc.style = CS_OWNDC/* | CS_HREDRAW | CS_VREDRAW*/;
 		wc.lpfnWndProc = HandleMessageSetup;
 		wc.cbClsExtra = 0;
 		wc.cbWndExtra = 0;
@@ -54,7 +54,7 @@ namespace Cube
 		wr.top = 0;
 		wr.right = width;
 		wr.bottom = height;
-		if (AdjustWindowRect(&wr, WindowType::FULL, TRUE) == 0)
+		if (AdjustWindowRect(&wr, WindowType::FULL, FALSE) == 0)
 		{
 			throw CUBE_LAST_EXCEPTION();
 		};
@@ -70,17 +70,13 @@ namespace Cube
 		{
 			throw CUBE_LAST_EXCEPTION();
 		};
-		CUBE_CORE_INFO("Window was created.");
-	}
-
-	void Window::WindowShow()
-	{
 		//Отображение окна,ImGui и конструктора Graphics
-		ShowWindow(hwnd, SW_SHOW);
+		ShowWindow(hwnd, SW_SHOWDEFAULT);
 		CUBE_CORE_INFO("Window was shown.");
 		ImGui_ImplWin32_Init(hwnd);
 		CUBE_CORE_INFO("ImGui Win32 was initialized.");
 		pGfx = std::make_unique<Graphics>(hwnd, width, height);
+		CUBE_CORE_INFO("Window was created.");
 	}
 
 	int Window::GetWidth() const noexcept
@@ -321,7 +317,10 @@ namespace Cube
 			kbd.ClearState();
 			break;
 		case WM_SIZE:
-			pGfx.get()->Resize((UINT)LOWORD(lParam), (UINT)HIWORD(lParam));
+			if (wParam == SIZE_MINIMIZED)
+				return 0;
+			wResize = (UINT)LOWORD(lParam);
+			hResize = (UINT)HIWORD(lParam);
 			break;
 		case WM_CLOSE:
 			CUBE_CORE_INFO("Window was closed.");

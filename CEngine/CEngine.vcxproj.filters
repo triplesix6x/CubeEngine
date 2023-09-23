@@ -75,9 +75,6 @@
     <ClCompile Include="core\render\src\Box.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="core\render\src\Melon.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
     <ClCompile Include="core\render\src\Pyramid.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
@@ -118,6 +115,18 @@
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="core\render\src\Camera.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="core\render\src\SolidSphere.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="core\render\src\PointLight.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="core\render\src\Cylinder.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="core\render\src\AssTest.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
@@ -206,9 +215,6 @@
     <ClInclude Include="core\render\includes\IndexedTriangleList.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="core\render\includes\Melon.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
     <ClInclude Include="core\render\includes\Prism.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
@@ -260,6 +266,21 @@
     <ClInclude Include="core\render\includes\Camera.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="core\render\includes\SolidSphere.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="core\render\includes\PointLight.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="core\render\includes\TestObject.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="core\render\includes\Cylinder.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="core\render\includes\AssTest.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="icons\cursor.ico">
@@ -275,10 +296,17 @@
   <ItemGroup>
     <FxCompile Include="core\shader\ColorBlendPS.hlsl" />
     <FxCompile Include="core\shader\ColorBlendVS.hlsl" />
-    <FxCompile Include="core\shader\ColorIndexPS.hlsl" />
-    <FxCompile Include="core\shader\ColorIndexVS.hlsl" />
     <FxCompile Include="core\shader\TexturePS.hlsl" />
     <FxCompile Include="core\shader\TextureVS.hlsl" />
+    <FxCompile Include="core\shader\SolidVS.hlsl" />
+    <FxCompile Include="core\shader\SolidPS.hlsl" />
+    <FxCompile Include="core\shader\PhongVS.hlsl" />
+    <FxCompile Include="core\shader\PhongPS.hlsl" />
+    <FxCompile Include="core\shader\IndexedPhongPS.hlsl" />
+    <FxCompile Include="core\shader\BlendedPhongVS.hlsl" />
+    <FxCompile Include="core\shader\BlendedPhongPS.hlsl" />
+    <FxCompile Include="core\shader\TexturedPhongVS.hlsl" />
+    <FxCompile Include="core\shader\TexturedPhongPS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

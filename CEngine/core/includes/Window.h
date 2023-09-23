@@ -52,7 +52,6 @@ namespace Cube
 			HINSTANCE hInst;
 		};
 	public:
-		void WindowShow();
 		Window(int width, int height);
 		~Window();
 		HWND handle() { return hwnd; }
@@ -63,6 +62,8 @@ namespace Cube
 		Graphics& Gfx();
 		Mouse mouse;
 		Keyboard kbd;
+		int wResize;
+		int hResize;
 	private:
 		static LRESULT WINAPI HandleMessageSetup(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam);
 		static LRESULT WINAPI HandleMessageThunk(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam);
