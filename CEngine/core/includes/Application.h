@@ -3,8 +3,8 @@
 #include "Timer.h"
 #include "ImguiManager.h"
 #include "../render/includes/Camera.h"
-#include "../render/includes/Box.h"
 #include "../render/includes/PointLight.h"
+#include "../render/includes/Mesh.h"
 #include <set>
 
 namespace Cube
@@ -18,19 +18,13 @@ namespace Cube
 		int run();
 	private:
 		void doFrame();					//функция отрисовки одного кадра
-		void SpawnSimulationWindow();
-		void SpawnBoxWindowManagerWindow();
-		void SpawnBoxWindows();
 		ImguiManager imgui;
 		float speed_factor = 1.0f;
 		Camera cam;
-		std::vector<std::unique_ptr<Drawable>> drawables;
-		static constexpr size_t nDrawables = 10;
 		Window m_Window;
 		PointLight light;
-		std::vector<class Box*> boxes;
+		Model nano{ m_Window.Gfx(),"models\\nanosuit.obj" };
+		Model suz{ m_Window.Gfx(),"models\\suzanne.obj" };
 		Timer timer;
-		std::optional<int> comboBoxIndex;
-		std::set<int> boxControlIDs;
 	};
 }

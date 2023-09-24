@@ -75,7 +75,7 @@ Graphics::Graphics(HWND hwnd, int width, int height)
 
 
 
-void Graphics::ClearBuffer(float red, float green, float blue, int width, int height)
+void Graphics::ClearBuffer(float red, float green, float blue)
 {
 	if (imguiEnabled)
 	{
@@ -95,7 +95,7 @@ Graphics::~Graphics()
 	ImGui_ImplDX11_Shutdown();
 }
 
-void Graphics::EndFrame(int width, int height)
+void Graphics::EndFrame()
 {
 	if (imguiEnabled)
 	{

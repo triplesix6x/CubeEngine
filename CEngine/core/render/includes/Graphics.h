@@ -40,8 +40,8 @@ public:
 	Graphics(const Graphics&) = delete;
 	Graphics& operator=(const Graphics&) = delete;
 	~Graphics();
-	void EndFrame(int width, int height);
-	void ClearBuffer(float red, float green, float blue, int width, int height);
+	void EndFrame();
+	void ClearBuffer(float red, float green, float blue);
 	void DrawIndexed(UINT count);
 	void SetProjection(DirectX::FXMMATRIX proj);
 	void SetCamera(DirectX::FXMMATRIX cam) noexcept;
