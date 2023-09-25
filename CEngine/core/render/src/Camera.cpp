@@ -1,5 +1,6 @@
 #include "../includes/Camera.h"
 #include "../imgui/imgui.h"
+#include "../imgui/imgui_internal.h"
 #include "../../includes/CMath.h"
 
 Camera::Camera() noexcept
@@ -16,13 +17,73 @@ void Camera::SpawnControlWindow() noexcept
 {
 	if (ImGui::TreeNode("Camera"))
 	{
+		ImGui::Columns(2);
+		ImGui::SetColumnWidth(0, 100);
 		ImGui::Text("Position");
-		ImGui::SliderFloat("X", &pos.x, -80.0f, 80.0f, "%.1f");
-		ImGui::SliderFloat("Y", &pos.y, -80.0f, 80.0f);
-		ImGui::SliderFloat("Z", &pos.z, -80.0f, 80.0f);
+		ImGui::NextColumn();
+		ImGui::PushMultiItemsWidths(3, ImGui::CalcItemWidth());
+		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2{ 0, 0 });
+
+		float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
+		ImVec2 buttonSize = { lineHeight + 3.0f, lineHeight };
+
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.8f, 0.1f, 0.15f, 1.0f });
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.9f, 0.3f, 0.2f, 1.0f });
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.8f, 0.1f, 0.15f, 1.0f });
+
+		if (ImGui::Button("X", buttonSize))
+			Reset();
+		ImGui::PopStyleColor(3);
+
+		ImGui::SameLine();
+		ImGui::DragFloat("##X", &pos.x, 0.1f);
+		ImGui::PopItemWidth();
+		ImGui::SameLine();
+
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.2f, 0.7f, 0.2f, 1.0f });
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.3f, 0.8f, 0.3f, 1.0f });
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.2f, 0.7f, 0.2f, 1.0f });
+
+		if (ImGui::Button("Y", buttonSize))
+			Reset();
+		ImGui::PopStyleColor(3);
+		
+		ImGui::SameLine();
+		ImGui::DragFloat("##Y", &pos.y, 0.1f);
+		ImGui::PopItemWidth();
+		ImGui::SameLine();
+
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.1f, 0.25f, 0.8f, 1.0f });
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.2f, 0.35f, 0.9f, 1.0f });
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.1f, 0.25f, 0.8f, 1.0f });
+
+		if (ImGui::Button("Z", buttonSize))
+			Reset();
+		ImGui::PopStyleColor(3);
+
+		ImGui::SameLine();
+		ImGui::DragFloat("##Z", &pos.z, 0.1f);
+		ImGui::PopItemWidth();
+		ImGui::Columns(1);
+
 		ImGui::Text("Orientation");
-		ImGui::SliderAngle("Pitch", &pitch, -180.0f, 180.0f);
-		ImGui::SliderAngle("Yaw", &yaw, -180.0f, 180.0f);
+
+		ImVec2 bbuttonSize = { lineHeight + 25.0f, lineHeight };
+
+		if (ImGui::Button("Pitch", bbuttonSize))
+			Reset();
+
+		ImGui::SameLine();
+		ImGui::SliderAngle("##Pitch", &pitch, -180.0f, 180.0f);
+
+
+		if (ImGui::Button("Yaw", bbuttonSize))
+			Reset();
+
+		ImGui::SameLine();
+		ImGui::SliderAngle("##Yaw", &yaw, -180.0f, 180.0f);
+
+		ImGui::PopStyleVar();
 		if (ImGui::Button("Reset"))
 		{
 			Reset();
@@ -54,6 +115,7 @@ void Camera::Translate(DirectX::XMFLOAT3 translation) noexcept
 
 void Camera::Reset() noexcept
 {
-	pos = { 0.0f,0.0f,18.0f };
-	yaw = to_rad(180.0f);
+	pos = { 0.0f,0.0f,-10.0f };
+	pitch = to_rad(0.0f);
+	yaw = to_rad(0.0f);
 }

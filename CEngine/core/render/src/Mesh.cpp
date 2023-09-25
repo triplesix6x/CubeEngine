@@ -121,14 +121,57 @@ public:
 					ImGui::SetNextWindowSize({ 400, 340 });
 					ImGui::Begin(name.c_str());
 					auto& pos = poses[pSelectedNode->GetId()];
+					ImGui::Columns(2);
+					ImGui::SetColumnWidth(0, 100);
+					ImGui::Text("Position");
+					ImGui::NextColumn();
+					ImGui::PushMultiItemsWidths(3, ImGui::CalcItemWidth());
+					ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2{ 0, 0 });
+
+					float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
+					ImVec2 buttonSize = { lineHeight + 3.0f, lineHeight };
+
+					ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.8f, 0.1f, 0.15f, 1.0f });
+					ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.9f, 0.3f, 0.2f, 1.0f });
+					ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.8f, 0.1f, 0.15f, 1.0f });
+
+					ImGui::Button("X", buttonSize);
+					ImGui::PopStyleColor(3);
+
+					ImGui::SameLine();
+					ImGui::DragFloat("##X", &pos.x, 0.1f);
+					ImGui::PopItemWidth();
+					ImGui::SameLine();
+
+					ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.2f, 0.7f, 0.2f, 1.0f });
+					ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.3f, 0.8f, 0.3f, 1.0f });
+					ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.2f, 0.7f, 0.2f, 1.0f });
+
+					ImGui::Button("Y", buttonSize);
+					ImGui::PopStyleColor(3);
+
+					ImGui::SameLine();
+					ImGui::DragFloat("##Y", &pos.y, 0.1f);
+					ImGui::PopItemWidth();
+					ImGui::SameLine();
+
+					ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.1f, 0.25f, 0.8f, 1.0f });
+					ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.2f, 0.35f, 0.9f, 1.0f });
+					ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.1f, 0.25f, 0.8f, 1.0f });
+
+					ImGui::Button("Z", buttonSize);
+					ImGui::PopStyleColor(3);
+
+					ImGui::SameLine();
+					ImGui::DragFloat("##Z", &pos.z, 0.1f);
+					ImGui::PopItemWidth();
+					ImGui::Columns(1);
+					ImGui::PopStyleVar();
+
 					ImGui::Text("Orientation");
 					ImGui::SliderAngle("Roll", &pos.roll, -180.0f, 180.0f);
 					ImGui::SliderAngle("Pitch", &pos.pitch, -180.0f, 180.0f);
 					ImGui::SliderAngle("Yaw", &pos.yaw, -180.0f, 180.0f);
-					ImGui::Text("Position");
-					ImGui::SliderFloat("X", &pos.x, -20.0f, 20.0f);
-					ImGui::SliderFloat("Y", &pos.y, -20.0f, 20.0f);
-					ImGui::SliderFloat("Z", &pos.z, -20.0f, 20.0f);
 					auto& scale = scales[pSelectedNode->GetId()];
 					ImGui::Text("Scale");
 					ImGui::SliderFloat("X Scale", &scale.xscale, 0.1f, 20.0f);
