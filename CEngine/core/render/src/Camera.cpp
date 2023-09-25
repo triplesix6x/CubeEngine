@@ -14,7 +14,7 @@ DirectX::XMMATRIX Camera::GetMatrix() const noexcept
 
 void Camera::SpawnControlWindow() noexcept
 {
-	if (ImGui::Begin("Camera"))
+	if (ImGui::TreeNode("Camera"))
 	{
 		ImGui::Text("Position");
 		ImGui::SliderFloat("X", &pos.x, -80.0f, 80.0f, "%.1f");
@@ -27,8 +27,9 @@ void Camera::SpawnControlWindow() noexcept
 		{
 			Reset();
 		}
+		ImGui::TreePop();
 	}
-	ImGui::End();
+
 }
 
 void Camera::Rotate(float dx, float dy) noexcept
@@ -53,6 +54,6 @@ void Camera::Translate(DirectX::XMFLOAT3 translation) noexcept
 
 void Camera::Reset() noexcept
 {
-	pos = { 0.0f,7.5f,18.0f };
+	pos = { 0.0f,0.0f,18.0f };
 	yaw = to_rad(180.0f);
 }

@@ -6,9 +6,6 @@
 SolidSphere::SolidSphere(Graphics& gfx, float radius)
 {
 	namespace dx = DirectX;
-
-	if (!IsStaticInitialized())
-	{
 		struct Vertex
 		{
 			dx::XMFLOAT3 pos;
@@ -20,31 +17,26 @@ SolidSphere::SolidSphere(Graphics& gfx, float radius)
 
 		auto pvs = std::make_unique<VertexShader>(gfx, L"shaders\\SolidVS.cso");
 		auto pvsbc = pvs->GetBytecode();
-		AddStaticBind(std::move(pvs));
+		AddBind(std::move(pvs));
 
-		AddStaticBind(std::make_unique<PixelShader>(gfx, L"shaders\\SolidPS.cso"));
+		AddBind(std::make_unique<PixelShader>(gfx, L"shaders\\SolidPS.cso"));
 
 		struct PSColorConstant
 		{
 			dx::XMFLOAT3 color = { 1.0f,1.0f,1.0f };
 			float padding;
 		} colorConst;
-		AddStaticBind(std::make_unique<PixelConstantBuffer<PSColorConstant>>(gfx, colorConst));
+		AddBind(std::make_unique<PixelConstantBuffer<PSColorConstant>>(gfx, colorConst));
 
 		const std::vector<D3D11_INPUT_ELEMENT_DESC> ied =
 		{
 			{ "Position",0,DXGI_FORMAT_R32G32B32_FLOAT,0,0,D3D11_INPUT_PER_VERTEX_DATA,0 },
 		};
-		AddStaticBind(std::make_unique<InputLayout>(gfx, ied, pvsbc));
+		AddBind(std::make_unique<InputLayout>(gfx, ied, pvsbc));
 
-		AddStaticBind(std::make_unique<Topology>(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
-	}
-	else
-	{
-		SetIndexFromStatic();
-	}
+		AddBind(std::make_unique<Topology>(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
 
-	AddBind(std::make_unique<TransformCbuf>(gfx, *this));
+		AddBind(std::make_unique<TransformCbuf>(gfx, *this));
 }
 
 void SolidSphere::Update(float dt) noexcept {}

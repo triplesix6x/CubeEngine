@@ -156,11 +156,14 @@ void Graphics::ShowMenuBar() noexcept
 	if (ImGui::BeginMainMenuBar()) 
 	{
 		if (ImGui::BeginMenu("File")) {
-			if (ImGui::MenuItem("Create")) {
+			if (ImGui::MenuItem("Create")) 
+			{
 			}
-			if (ImGui::MenuItem("Open", "Ctrl+O")) {
+			if (ImGui::MenuItem("Open")) 
+			{
 			}
-			if (ImGui::MenuItem("Save", "Ctrl+S")) {
+			if (ImGui::MenuItem("Save"))
+			{
 			}
 			if (ImGui::MenuItem("Save as..")) {
 			}

@@ -26,6 +26,7 @@ public:
 	void Draw(Graphics& gfx, DirectX::FXMMATRIX accumulatedTransform) const;
 	void SetAppliedTransform(DirectX::FXMMATRIX transform) noexcept;
 	int GetId() const noexcept;
+	std::string GetName() const noexcept;
 	void RenderTree(Node*& pSelectedNode) const noexcept;
 private:
 	void AddChild(std::unique_ptr<Node> pChild) ;

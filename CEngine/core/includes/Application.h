@@ -16,6 +16,7 @@ namespace Cube
 		Application(int width, int height);
 		virtual ~Application();
 		int run();
+		void ShowSceneWindow();
 	private:
 		void doFrame();					//функция отрисовки одного кадра
 		ImguiManager imgui;
@@ -23,8 +24,7 @@ namespace Cube
 		Camera cam;
 		Window m_Window;
 		PointLight light;
-		Model nano{ m_Window.Gfx(),"models\\nanosuit.obj" };
-		Model suz{ m_Window.Gfx(),"models\\suzanne.obj" };
+		std::vector<std::unique_ptr<Model>> models;
 		Timer timer;
 	};
 }

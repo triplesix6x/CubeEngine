@@ -1,6 +1,7 @@
 #include "../includes/Mesh.h"
 #include "../imgui/imgui.h"
 #include <unordered_map>
+#include <libloaderapi.h>
 
 
 Mesh::Mesh(Graphics& gfx, std::vector<std::unique_ptr<Bindable>> bindPtrs)
@@ -84,7 +85,6 @@ void Node::RenderTree(Node*& pSelectedNode) const noexcept
 			}
 			ImGui::TreePop();
 		}
-	
 }
 
 void Node::SetAppliedTransform(DirectX::FXMMATRIX transform) noexcept
@@ -97,6 +97,13 @@ int Node::GetId() const noexcept
 	return id;
 }
 
+std::string Node::GetName() const noexcept
+{
+	return name;
+}
+
+
+
 class ModelWindow
 {
 public:
@@ -104,43 +111,58 @@ public:
 	{
 		windowName = windowName ? windowName : "Model";
 		int nodeIndexTracker = 0;
-		if (ImGui::Begin(windowName))
-		{
-			ImGui::Columns(2, nullptr, true);
-			root.RenderTree(pSelectedNode);
-			ImGui::NextColumn();
-			if (pSelectedNode != nullptr)
-			{
-				auto& pos = poses[pSelectedNode->GetId()];
-				ImGui::Text("Orientation");
-				ImGui::SliderAngle("Roll", &pos.roll, -180.0f, 180.0f);
-				ImGui::SliderAngle("Pitch", &pos.pitch, -180.0f, 180.0f);
-				ImGui::SliderAngle("Yaw", &pos.yaw, -180.0f, 180.0f);
-				ImGui::Text("Position");
-				ImGui::SliderFloat("X", &pos.x, -20.0f, 20.0f);
-				ImGui::SliderFloat("Y", &pos.y, -20.0f, 20.0f);
-				ImGui::SliderFloat("Z", &pos.z, -20.0f, 20.0f);
-				if (ImGui::Button("Reset"))
-				{
-					pos.roll = 0.0f;
-					pos.pitch = 0.0f;
-					pos.yaw = 0.0f;
 
-					pos.x = 0.0f;
-					pos.y = 0.0f;
-					pos.z = 0.0f;
+		if (ImGui::TreeNode(windowName))
+		{
+				root.RenderTree(pSelectedNode);
+				if (pSelectedNode != nullptr)
+				{
+					std::string name = windowName + std::string(" Settings");
+					ImGui::SetNextWindowSize({ 400, 340 });
+					ImGui::Begin(name.c_str());
+					auto& pos = poses[pSelectedNode->GetId()];
+					ImGui::Text("Orientation");
+					ImGui::SliderAngle("Roll", &pos.roll, -180.0f, 180.0f);
+					ImGui::SliderAngle("Pitch", &pos.pitch, -180.0f, 180.0f);
+					ImGui::SliderAngle("Yaw", &pos.yaw, -180.0f, 180.0f);
+					ImGui::Text("Position");
+					ImGui::SliderFloat("X", &pos.x, -20.0f, 20.0f);
+					ImGui::SliderFloat("Y", &pos.y, -20.0f, 20.0f);
+					ImGui::SliderFloat("Z", &pos.z, -20.0f, 20.0f);
+					auto& scale = scales[pSelectedNode->GetId()];
+					ImGui::Text("Scale");
+					ImGui::SliderFloat("X Scale", &scale.xscale, 0.1f, 20.0f);
+					ImGui::SliderFloat("Y Scale", &scale.yscale, 0.1f, 20.0f);
+					ImGui::SliderFloat("Z Scale", &scale.zscale, 0.1f, 20.0f);
+					if (ImGui::Button("Reset"))
+					{
+						pos.roll = 0.0f;
+						pos.pitch = 0.0f;
+						pos.yaw = 0.0f;
+
+						pos.x = 0.0f;
+						pos.y = 0.0f;
+						pos.z = 0.0f;
+
+						scale.xscale = 1.0f;
+						scale.yscale = 1.0f;
+						scale.zscale = 1.0f;
+					}
+					ImGui::End();
 				}
-			}
+				ImGui::TreePop();
+				ImGui::Spacing();
 		}
-		ImGui::End();
 	}
 	DirectX::XMMATRIX GetTransform() const noexcept
 	{
 		assert(pSelectedNode != nullptr);
 		const auto& transform = poses.at(pSelectedNode->GetId());
+		const auto& scale = scales.at(pSelectedNode->GetId());
 		return
 			DirectX::XMMatrixRotationRollPitchYaw(transform.roll, transform.pitch, transform.yaw) *
-			DirectX::XMMatrixTranslation(transform.x, transform.y, transform.z);
+			DirectX::XMMatrixTranslation(transform.x, transform.y, transform.z) *
+			DirectX::XMMatrixScaling(scale.xscale,scale.yscale,scale.zscale);
 	}
 	Node* GetSelectedNode() const noexcept
 	{
@@ -158,16 +180,26 @@ private:
 		float z = 0.0f;
 	};
 	std::unordered_map<int, TransformParameters> poses;
+	struct ScaleParameters
+	{
+		float xscale = 1.0f;
+		float yscale = 1.0f;
+		float zscale = 1.0f;
+	};
+	std::unordered_map<int, ScaleParameters> scales;
 };
+
+
 
 Model::Model(Graphics& gfx, const std::string fileName) :
 	pWindow(std::make_unique<ModelWindow>())
 {
 	Assimp::Importer imp;
-	const auto pScene = imp.ReadFile(fileName.c_str(),
-		aiProcess_Triangulate |
-		aiProcess_JoinIdenticalVertices
-	);
+	const auto pScene = imp.ReadFile(fileName.c_str(), aiProcess_Triangulate | aiProcess_JoinIdenticalVertices);
+	if (pScene == NULL)
+	{
+		MessageBoxA(nullptr, imp.GetErrorString(), "Standart Exception", MB_OK | MB_ICONEXCLAMATION);
+	}
 
 	for (size_t i = 0; i < pScene->mNumMeshes; i++)
 	{
@@ -202,6 +234,7 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh)
 
 	for (unsigned int i = 0; i < mesh.mNumVertices; i++)
 	{
+		float scale = 3.0f;
 		vbuf.EmplaceBack(
 			*reinterpret_cast<dx::XMFLOAT3*>(&mesh.mVertices[i]),
 			*reinterpret_cast<dx::XMFLOAT3*>(&mesh.mNormals[i])
@@ -225,11 +258,25 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh)
 
 	bindablePtrs.push_back(std::make_unique<IndexBuffer>(gfx, indices));
 
-	auto pvs = std::make_unique<VertexShader>(gfx, L"shaders\\PhongVS.cso");
+	wchar_t path[260];
+	GetModuleFileName(NULL, path, 260);
+	int len = wcslen(path);
+	for (int i = 1; i < 15; ++i)
+	{
+		path[len - i] = '\0';
+	}
+	auto pvs = std::make_unique<VertexShader>(gfx, wcscat(path, L"shaders\\PhongVS.cso"));
+
 	auto pvsbc = pvs->GetBytecode();
 	bindablePtrs.push_back(std::move(pvs));
-
-	bindablePtrs.push_back(std::make_unique<PixelShader>(gfx, L"shaders\\PhongPS.cso"));
+	wchar_t bpath[260];
+	GetModuleFileName(NULL, bpath, 260);
+	int blen = wcslen(bpath);
+	for (int i = 1; i < 15; ++i)
+	{
+		bpath[len - i] = '\0';
+	}
+	bindablePtrs.push_back(std::make_unique<PixelShader>(gfx, wcscat(bpath, L"shaders\\PhongPS.cso")));
 
 	bindablePtrs.push_back(std::make_unique<InputLayout>(gfx, vbuf.GetLayout().GetD3DLayout(), pvsbc));
 

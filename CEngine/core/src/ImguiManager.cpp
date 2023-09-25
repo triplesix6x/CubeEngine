@@ -87,12 +87,14 @@ ImguiManager::ImguiManager()
 	style.TabBorderSize = 1;
 	style.WindowRounding = 7;
 	style.ChildRounding = 4;
-	style.FrameRounding = 3;
+	style.FrameRounding = 12;
 	style.PopupRounding = 4;
 	style.ScrollbarRounding = 9;
 	style.GrabRounding = 3;
 	style.LogSliderDeadzone = 4;
 	style.TabRounding = 4;
+	ImFont* font;
+	font = io.Fonts->AddFontFromFileTTF("fonts\\UnivaNova.ttf", 17.0f);
 
 }
 

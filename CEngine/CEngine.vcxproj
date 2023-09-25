@@ -111,7 +111,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>CUBE_BUILD_DLL;CUBE_PLATFORM_WINDOWS;_DEBUG;_CONSOLE;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>CUBE_BUILD_DLL;CUBE_PLATFORM_WINDOWS;_DEBUG;_CONSOLE;NOMINMAX;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <AdditionalIncludeDirectories>C:\Users\user999\source\repos\CubeEngine\CEngine\includes; $(SolutionDir)CEngine\vendor\spdlog\include;$(SolutionDir)CEngine\assimp\include\assimp;$(SolutionDir)CEngine\assimp\include</AdditionalIncludeDirectories>
@@ -129,7 +129,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;NOMINMAX;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
       <ConformanceMode>Default</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <AdditionalIncludeDirectories>C:\Users\user999\source\repos\CubeEngine\CEngine\includes; $(SolutionDir)CEngine\vendor\spdlog\include;$(SolutionDir)CEngine\assimp\include\assimp;$(SolutionDir)CEngine\assimp\include</AdditionalIncludeDirectories>
