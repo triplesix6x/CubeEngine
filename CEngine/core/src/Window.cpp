@@ -14,7 +14,7 @@ namespace Cube
 		//Создание и настройка дескриптора класса окна
 		WNDCLASSEX wc = { 0 };
 		wc.cbSize = sizeof(wc);
-		wc.style = CS_OWNDC/* | CS_HREDRAW | CS_VREDRAW*/;
+		wc.style = CS_OWNDC;
 		wc.lpfnWndProc = HandleMessageSetup;
 		wc.cbClsExtra = 0;
 		wc.cbWndExtra = 0;

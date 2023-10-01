@@ -5,6 +5,7 @@
 #include "../imgui/imgui_impl_win32.h"
 #include "../imgui/imgui_impl_dx11.h"
 #include "../imgui/imgui_internal.h"
+#include "../includes/CMath.h"
 #include <Commdlg.h>
 #include <memory>
 #include <stdio.h>
@@ -14,7 +15,7 @@
 
 namespace Cube
 {
-	Application::Application(int width, int height) : m_Window(width, height), light(m_Window.Gfx())
+	Application::Application(int width, int height) : m_Window(width, height), light(m_Window.Gfx()), skybox(m_Window.Gfx())
 	{
 	}
 
@@ -44,22 +45,26 @@ namespace Cube
 		ImGuiID did = m_Window.Gfx().ShowDocksape();
 		ImGuiDockNode* node = ImGui::DockBuilderGetCentralNode(did);
 		m_Window.Gfx().CreateViewport(node->Size.x, node->Size.y, node->Pos.x, node->Pos.y);
-		m_Window.Gfx().SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, node->Size.y / node->Size.x, 0.5f, 100.0f));
+		m_Window.Gfx().SetProjection(DirectX::XMMatrixPerspectiveFovLH(to_rad(75.0f), node->Size.x / node->Size.y, 0.5f, 100.0f));
 		m_Window.Gfx().ShowMenuBar();
 
 		light.Bind(m_Window.Gfx(), cam.GetMatrix());
 
 
-		for (auto& m : models)
+		for (auto& m : models) 
 		{
 			m->Draw(m_Window.Gfx());
 		}
 
+
+	
+
 		light.Draw(m_Window.Gfx());
 
 		ShowSceneWindow();
-
+		skybox.Draw(m_Window.Gfx());
 		m_Window.Gfx().EndFrame();							//Замена буфера свап чейна
+
 	}
 
 

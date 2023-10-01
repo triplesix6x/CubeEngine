@@ -145,6 +145,7 @@
   <ItemGroup>
     <ClCompile Include="core\render\src\Bindable.cpp" />
     <ClCompile Include="core\render\src\Camera.cpp" />
+    <ClCompile Include="core\render\src\DepthStencil.cpp" />
     <ClCompile Include="core\render\src\Drawable.cpp" />
     <ClCompile Include="core\render\src\Graphics.cpp" />
     <ClCompile Include="core\render\src\IndexBuffer.cpp" />
@@ -152,7 +153,11 @@
     <ClCompile Include="core\render\src\Mesh.cpp" />
     <ClCompile Include="core\render\src\PixelShader.cpp" />
     <ClCompile Include="core\render\src\PointLight.cpp" />
+    <ClCompile Include="core\render\src\Rasterizer.cpp" />
     <ClCompile Include="core\render\src\Sampler.cpp" />
+    <ClCompile Include="core\render\src\SkyBox.cpp" />
+    <ClCompile Include="core\render\src\SkyBoxTex.cpp" />
+    <ClCompile Include="core\render\src\SkyboxTransformCBuf.cpp" />
     <ClCompile Include="core\render\src\SolidSphere.cpp" />
     <ClCompile Include="core\render\src\Texture.cpp" />
     <ClCompile Include="core\render\src\Topology.cpp" />
@@ -190,6 +195,8 @@
     <ClInclude Include="core\render\includes\BindableBase.h" />
     <ClInclude Include="core\render\includes\Camera.h" />
     <ClInclude Include="core\render\includes\ConstantBuffers.h" />
+    <ClInclude Include="core\render\includes\Cube.h" />
+    <ClInclude Include="core\render\includes\DepthStencil.h" />
     <ClInclude Include="core\render\includes\Drawable.h" />
     <ClInclude Include="core\render\includes\DrawableBase.h" />
     <ClInclude Include="core\render\includes\Graphics.h" />
@@ -199,7 +206,11 @@
     <ClInclude Include="core\render\includes\Mesh.h" />
     <ClInclude Include="core\render\includes\PixelShader.h" />
     <ClInclude Include="core\render\includes\PointLight.h" />
+    <ClInclude Include="core\render\includes\Rasterizer.h" />
     <ClInclude Include="core\render\includes\Sampler.h" />
+    <ClInclude Include="core\render\includes\SkyBox.h" />
+    <ClInclude Include="core\render\includes\SkyBoxTex.h" />
+    <ClInclude Include="core\render\includes\SkyboxTransformCBuf.h" />
     <ClInclude Include="core\render\includes\SolidSphere.h" />
     <ClInclude Include="core\render\includes\Sphere.h" />
     <ClInclude Include="core\render\includes\Texture.h" />
@@ -241,6 +252,14 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)$(Platform)\$(Configuration)\shaders\%(Filename).cso</ObjectFileOutput>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)$(Platform)\$(Configuration)\shaders\%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="core\shader\SkyBoxPS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)$(Platform)\$(Configuration)\shaders\%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="core\shader\SkyBoxVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)$(Platform)\$(Configuration)\shaders\%(Filename).cso</ObjectFileOutput>
     </FxCompile>
     <FxCompile Include="core\shader\SolidPS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>

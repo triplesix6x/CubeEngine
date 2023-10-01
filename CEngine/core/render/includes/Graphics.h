@@ -16,6 +16,7 @@ class Graphics
 {
 	friend class Bindable;
 	friend class Texture;
+	friend class SkyBoxTex;
 public:
 	class GraphicsException : public CubeException
 	{
@@ -47,6 +48,7 @@ public:
 	void SetCamera(DirectX::FXMMATRIX cam) noexcept;
 	DirectX::XMMATRIX GetCamera() const noexcept;
 	DirectX::XMMATRIX GetProjection() const;
+
 	ImGuiID ShowDocksape() noexcept;
 	void ShowMenuBar() noexcept;
 	void SetupRenderTarget() noexcept;

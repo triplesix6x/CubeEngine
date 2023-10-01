@@ -444,11 +444,8 @@ void Graphics::SetupRenderTarget() noexcept
 
 void Graphics::CleanupRenderTarget() noexcept
 {
-	if (this) 
-	{
-		pContext->OMSetRenderTargets(0, NULL, NULL); 
-		pTarget->Release();
-	}
+	pContext->OMSetRenderTargets(0, NULL, NULL); 
+	pTarget->Release();
 }
 
 

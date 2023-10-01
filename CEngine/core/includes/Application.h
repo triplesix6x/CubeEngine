@@ -5,6 +5,7 @@
 #include "../render/includes/Camera.h"
 #include "../render/includes/PointLight.h"
 #include "../render/includes/Mesh.h"
+#include "../render/includes/SkyBox.h"
 #include <set>
 
 namespace Cube
@@ -24,6 +25,7 @@ namespace Cube
 		Window m_Window;
 		PointLight light;
 		std::vector<std::unique_ptr<Model>> models;
+		SkyBox skybox;
 		Timer timer;
 	};
 }
