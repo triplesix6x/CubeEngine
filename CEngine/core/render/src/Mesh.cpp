@@ -135,7 +135,8 @@ public:
 					ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.9f, 0.3f, 0.2f, 1.0f });
 					ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.8f, 0.1f, 0.15f, 1.0f });
 
-					ImGui::Button("X", buttonSize);
+					if(ImGui::Button("X", buttonSize))
+						pos.x = 0.0f;
 					ImGui::PopStyleColor(3);
 
 					ImGui::SameLine();
@@ -147,7 +148,8 @@ public:
 					ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.3f, 0.8f, 0.3f, 1.0f });
 					ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.2f, 0.7f, 0.2f, 1.0f });
 
-					ImGui::Button("Y", buttonSize);
+					if (ImGui::Button("Y", buttonSize))
+						pos.y = 0.0f;
 					ImGui::PopStyleColor(3);
 
 					ImGui::SameLine();
@@ -159,7 +161,8 @@ public:
 					ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.2f, 0.35f, 0.9f, 1.0f });
 					ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.1f, 0.25f, 0.8f, 1.0f });
 
-					ImGui::Button("Z", buttonSize);
+					if(ImGui::Button("Z", buttonSize))
+						pos.z = 0.0f;
 					ImGui::PopStyleColor(3);
 
 					ImGui::SameLine();
@@ -168,15 +171,102 @@ public:
 					ImGui::Columns(1);
 					ImGui::PopStyleVar();
 
-					ImGui::Text("Orientation");
-					ImGui::SliderAngle("Roll", &pos.roll, -180.0f, 180.0f);
-					ImGui::SliderAngle("Pitch", &pos.pitch, -180.0f, 180.0f);
-					ImGui::SliderAngle("Yaw", &pos.yaw, -180.0f, 180.0f);
+
 					auto& scale = scales[pSelectedNode->GetId()];
+					ImGui::Columns(2);
+					ImGui::SetColumnWidth(0, 100);
 					ImGui::Text("Scale");
-					ImGui::SliderFloat("X Scale", &scale.xscale, 0.1f, 20.0f);
-					ImGui::SliderFloat("Y Scale", &scale.yscale, 0.1f, 20.0f);
-					ImGui::SliderFloat("Z Scale", &scale.zscale, 0.1f, 20.0f);
+					ImGui::NextColumn();
+					ImGui::PushMultiItemsWidths(3, ImGui::CalcItemWidth());
+					ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2{ 0, 0 });
+					ImVec2 bbuttonSize = { lineHeight + 9.0f, lineHeight };
+					ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.8f, 0.1f, 0.15f, 1.0f });
+					ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.9f, 0.3f, 0.2f, 1.0f });
+					ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.8f, 0.1f, 0.15f, 1.0f });
+
+					if (ImGui::Button("XS", bbuttonSize))
+						scale.xscale = 1.0f;
+					ImGui::PopStyleColor(3);
+
+					ImGui::SameLine();
+					ImGui::DragFloat("##X Scale", &scale.xscale, 0.1f, 0.1f);
+					ImGui::PopItemWidth();
+					ImGui::SameLine();
+
+					ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.2f, 0.7f, 0.2f, 1.0f });
+					ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.3f, 0.8f, 0.3f, 1.0f });
+					ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.2f, 0.7f, 0.2f, 1.0f });
+
+					if (ImGui::Button("YS", bbuttonSize))
+						scale.yscale = 1.0f;
+					ImGui::PopStyleColor(3);
+
+					ImGui::SameLine();
+					ImGui::DragFloat("##Y Scale", &scale.yscale, 0.1f, 0.1f);
+					ImGui::PopItemWidth();
+					ImGui::SameLine();
+
+					ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.1f, 0.25f, 0.8f, 1.0f });
+					ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.2f, 0.35f, 0.9f, 1.0f });
+					ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.1f, 0.25f, 0.8f, 1.0f });
+
+					if (ImGui::Button("ZS", bbuttonSize))
+						scale.zscale = 1.0f;
+					ImGui::PopStyleColor(3);
+
+					ImGui::SameLine();
+					ImGui::DragFloat("##Z Scale", &scale.zscale, 0.1f, 0.1f);
+					ImGui::PopItemWidth();
+					ImGui::Columns(1);
+					ImGui::PopStyleVar();
+
+
+					ImGui::Columns(2);
+					ImGui::SetColumnWidth(0, 100);
+					ImGui::Text("Orientation");
+					ImGui::NextColumn();
+					ImGui::PushMultiItemsWidths(3, ImGui::CalcItemWidth());
+					ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2{ 0, 0 });
+					ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.8f, 0.1f, 0.15f, 1.0f });
+					ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.9f, 0.3f, 0.2f, 1.0f });
+					ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.8f, 0.1f, 0.15f, 1.0f });
+
+					if (ImGui::Button("XO", bbuttonSize))
+						pos.roll = 0.0f;
+					ImGui::PopStyleColor(3);
+
+					ImGui::SameLine();
+					ImGui::SliderAngle("##X Orientation", &pos.roll, -180.0f, 180.0f);
+					ImGui::PopItemWidth();
+					ImGui::SameLine();
+
+					ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.2f, 0.7f, 0.2f, 1.0f });
+					ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.3f, 0.8f, 0.3f, 1.0f });
+					ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.2f, 0.7f, 0.2f, 1.0f });
+
+					if (ImGui::Button("YO", bbuttonSize))
+						pos.pitch = 0.0f;
+					ImGui::PopStyleColor(3);
+
+					ImGui::SameLine();
+					ImGui::SliderAngle("##Y Orientation", &pos.pitch, -180.0f, 180.0f);
+					ImGui::PopItemWidth();
+					ImGui::SameLine();
+
+					ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.1f, 0.25f, 0.8f, 1.0f });
+					ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.2f, 0.35f, 0.9f, 1.0f });
+					ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.1f, 0.25f, 0.8f, 1.0f });
+
+					if (ImGui::Button("ZO", bbuttonSize))
+						pos.yaw = 0.0f;
+					ImGui::PopStyleColor(3);
+
+					ImGui::SameLine();
+					ImGui::SliderAngle("##Z Orientation", &pos.yaw, -180.0f, 180.0f);
+					ImGui::PopItemWidth();
+					ImGui::Columns(1);
+					ImGui::PopStyleVar();
+				
 					if (ImGui::Button("Reset"))
 					{
 						pos.roll = 0.0f;

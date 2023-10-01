@@ -20,7 +20,6 @@ namespace Cube
 	private:
 		void doFrame();					//функция отрисовки одного кадра
 		ImguiManager imgui;
-		float speed_factor = 1.0f;
 		Camera cam;
 		Window m_Window;
 		PointLight light;

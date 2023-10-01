@@ -99,7 +99,7 @@ namespace Cube
 	//Ниже - обработка исключений окна
 	Window::Exception::Exception(int line, const char* file, HRESULT hResult) : CubeException(line, file), hResult(hResult)
 	{
-
+		MessageBoxA(nullptr, whatEx(), getType(), MB_OK | MB_ICONEXCLAMATION);
 	}
 	const char* Window::Exception::whatEx() const
 	{
@@ -317,10 +317,10 @@ namespace Cube
 			kbd.ClearState();
 			break;
 		case WM_SIZE:
-			if (wParam == SIZE_MINIMIZED)
-				return 0;
-			wResize = (UINT)LOWORD(lParam);
-			hResize = (UINT)HIWORD(lParam);
+			if (pGfx)
+			{
+				Gfx().Resize((UINT)LOWORD(lParam), (UINT)HIWORD(lParam));
+			}
 			break;
 		case WM_CLOSE:
 			CUBE_CORE_INFO("Window was closed.");

@@ -36,12 +36,7 @@ namespace Cube
 
 	void Application::doFrame()
 	{
-		auto dt = timer.Mark() * speed_factor;
-		if (m_Window.wResize != 0 && m_Window.hResize != 0)
-		{
-			m_Window.Gfx().Resize(m_Window.wResize, m_Window.hResize);
-			m_Window.hResize = m_Window.wResize = 0;
-		}
+		auto dt = timer.Mark();
 
 		m_Window.Gfx().ClearBuffer(0.07f, 0.07f, 0.07f);		//Очистка текущего буфера свап чейна
 		m_Window.Gfx().SetCamera(cam.GetMatrix());

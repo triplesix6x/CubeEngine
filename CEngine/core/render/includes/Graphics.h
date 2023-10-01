@@ -51,10 +51,14 @@ public:
 	void ShowMenuBar() noexcept;
 	void SetupRenderTarget() noexcept;
 	void CleanupRenderTarget() noexcept;
-	void Resize(int width, int height) noexcept;
 	void CreateViewport(float x, float y, float topx, float topy) noexcept;
 	void EnableImgui() noexcept;
 	void DisableImgui() noexcept;
+	void SetDDTheme() noexcept;
+	void SetLightTheme() noexcept;
+	void SetDPTheme() noexcept;
+	void SetSMTheme() noexcept;
+	void Resize(UINT width, UINT height) noexcept;
 	bool IsImguiEnabled() const noexcept;
 private:
 	bool imguiEnabled = true;
@@ -66,6 +70,5 @@ private:
 	wrl::ComPtr<ID3D11DeviceContext> pContext;
 	wrl::ComPtr<ID3D11RenderTargetView> pTarget;
 	wrl::ComPtr<ID3D11DepthStencilView> pDSV;
-	wrl::ComPtr<ID3D11Resource> pBackBuffer;
 	wrl::ComPtr<ID3D11Texture2D> pDepthStencil;
 };

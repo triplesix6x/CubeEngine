@@ -28,7 +28,7 @@ void PointLight::SpawnControlWindow() noexcept
 		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.8f, 0.1f, 0.15f, 1.0f });
 
 		if (ImGui::Button("X", buttonSize))
-			Reset();
+			cbData.pos.x = 0.0f;
 		ImGui::PopStyleColor(3);
 
 		ImGui::SameLine();
@@ -41,7 +41,7 @@ void PointLight::SpawnControlWindow() noexcept
 		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.2f, 0.7f, 0.2f, 1.0f });
 
 		if (ImGui::Button("Y", buttonSize))
-			Reset();
+			cbData.pos.y = 0.0f;
 		ImGui::PopStyleColor(3);
 
 		ImGui::SameLine();
@@ -54,7 +54,7 @@ void PointLight::SpawnControlWindow() noexcept
 		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.1f, 0.25f, 0.8f, 1.0f });
 
 		if (ImGui::Button("Z", buttonSize))
-			Reset();
+			cbData.pos.z = 0.0f;
 		ImGui::PopStyleColor(3);
 
 		ImGui::SameLine();
