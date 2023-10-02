@@ -10,7 +10,12 @@ Camera::Camera() noexcept
 
 DirectX::XMMATRIX Camera::GetMatrix() const noexcept
 {
-	return DirectX::XMMatrixTranslation(-pos.x, -pos.y, -pos.z) * DirectX::XMMatrixRotationRollPitchYaw(-pitch, -yaw, 0.0f);
+	const DirectX::XMVECTOR forwardBaseVector = DirectX::XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
+	const auto lookVector = DirectX::XMVector3Transform(forwardBaseVector, DirectX::XMMatrixRotationRollPitchYaw(pitch, yaw, 0.0f));
+
+	const auto camPosition = XMLoadFloat3(&pos);
+	const auto camTarget = DirectX::XMVectorAdd(camPosition, lookVector);
+	return DirectX::XMMatrixLookAtLH(camPosition, camTarget, DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f));
 }
 
 void Camera::SpawnControlWindow() noexcept

@@ -9,6 +9,7 @@ Mesh::Mesh(Graphics& gfx, std::vector<std::unique_ptr<Bindable>> bindPtrs)
 	if (!IsStaticInitialized())
 	{
 		AddStaticBind(std::make_unique<Topology>(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
+		AddStaticBind(std::make_unique<Rasterizer>(gfx, true));
 	}
 
 	for (auto& pb : bindPtrs)

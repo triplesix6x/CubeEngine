@@ -55,9 +55,7 @@ namespace Cube
 		{
 			m->Draw(m_Window.Gfx());
 		}
-
-
-	
+		
 
 		light.Draw(m_Window.Gfx());
 

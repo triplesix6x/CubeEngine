@@ -10,6 +10,7 @@ SolidSphere::SolidSphere(Graphics& gfx, float radius)
 		{
 			dx::XMFLOAT3 pos;
 		};
+		AddStaticBind(std::make_unique<Rasterizer>(gfx, true));
 		auto model = Sphere::Make<Vertex>();
 		model.Transform(dx::XMMatrixScaling(radius, radius, radius));
 		AddBind(std::make_unique<VertexBuffer>(gfx, model.vertices));

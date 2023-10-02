@@ -153,6 +153,7 @@
     <ClCompile Include="core\render\src\Mesh.cpp" />
     <ClCompile Include="core\render\src\PixelShader.cpp" />
     <ClCompile Include="core\render\src\PointLight.cpp" />
+    <ClCompile Include="core\render\src\Rasterizer.cpp" />
     <ClCompile Include="core\render\src\Sampler.cpp" />
     <ClCompile Include="core\render\src\SkyBox.cpp" />
     <ClCompile Include="core\render\src\SkyBoxTex.cpp" />
@@ -205,6 +206,7 @@
     <ClInclude Include="core\render\includes\Mesh.h" />
     <ClInclude Include="core\render\includes\PixelShader.h" />
     <ClInclude Include="core\render\includes\PointLight.h" />
+    <ClInclude Include="core\render\includes\Rasterizer.h" />
     <ClInclude Include="core\render\includes\Sampler.h" />
     <ClInclude Include="core\render\includes\SkyBox.h" />
     <ClInclude Include="core\render\includes\SkyBoxTex.h" />
