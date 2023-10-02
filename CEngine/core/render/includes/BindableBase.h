@@ -9,5 +9,4 @@
 #include "VertexBuffer.h"
 #include "VertexShader.h"
 #include "SkyboxTransformCbuf.h"
-#include "Rasterizer.h"
 #include "DepthStencil.h"

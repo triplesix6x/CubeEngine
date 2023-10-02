@@ -123,9 +123,6 @@
     <ClCompile Include="core\render\src\SkyboxTransformCBuf.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="core\render\src\Rasterizer.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
     <ClCompile Include="core\render\src\DepthStencil.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
@@ -264,9 +261,6 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="core\render\includes\SkyboxTransformCBuf.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="core\render\includes\Rasterizer.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="core\render\includes\DepthStencil.h">

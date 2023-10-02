@@ -13,10 +13,6 @@ SkyBox::SkyBox(Graphics& gfx)
 	{
 		dx::XMFLOAT3 pos;
 	};
-	D3D11_RASTERIZER_DESC cmdesc;
-	cmdesc.CullMode = D3D11_CULL_NONE;
-	AddBind(std::make_unique<Rasterizer>(gfx, cmdesc));
-
 	D3D11_DEPTH_STENCIL_DESC dsDesc;
 	dsDesc.DepthFunc = D3D11_COMPARISON_LESS_EQUAL;
 	dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
@@ -28,7 +24,7 @@ SkyBox::SkyBox(Graphics& gfx)
 	AddIndexBuffer(std::make_unique<IndexBuffer>(gfx, model.indices));
 
 
-	AddBind(std::make_unique<SkyBoxTex>(gfx, L"textures\\skybox2.dds"));
+	AddBind(std::make_unique<SkyBoxTex>(gfx, L"textures\\earth.dds"));
 	AddBind(std::make_unique<Sampler>(gfx));
 
 	auto pvs = std::make_unique<VertexShader>(gfx, L"shaders\\SkyBoxVS.cso");

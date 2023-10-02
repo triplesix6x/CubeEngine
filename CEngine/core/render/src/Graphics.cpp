@@ -4,9 +4,9 @@
 #include <dxgi.h>
 #include "../includes/Graphics.h"
 #include "../../includes/Log.h"
-#include "../imgui/imgui_impl_dx11.h"
-#include "../imgui/imgui_impl_win32.h"
-#include "../imgui/imgui_internal.h"
+#include "../../imgui/imgui_impl_dx11.h"
+#include "../../imgui/imgui_impl_win32.h"
+#include "../../imgui/imgui_internal.h"
 #define GFX_THROW_FAILED(hResultcall) if (FAILED(hResult=(hResultcall))) throw Graphics::GraphicsException(__LINE__, __FILE__, hResult)
 #define GFX_DEVICE_REMOVED_EXCEPTION(hResult) Graphics::DeviceRemovedException(__LINE__, __FILE__, (hResult))
 

@@ -1,10 +1,10 @@
 #include "../includes/Application.h"
 #include "../render/includes/CVertex.h"
 #include "../includes/Window.h"
-#include "../imgui/imgui.h"
-#include "../imgui/imgui_impl_win32.h"
-#include "../imgui/imgui_impl_dx11.h"
-#include "../imgui/imgui_internal.h"
+#include "../../imgui/imgui.h"
+#include "../../imgui/imgui_impl_win32.h"
+#include "../../imgui/imgui_impl_dx11.h"
+#include "../../imgui/imgui_internal.h"
 #include "../includes/CMath.h"
 #include <Commdlg.h>
 #include <memory>

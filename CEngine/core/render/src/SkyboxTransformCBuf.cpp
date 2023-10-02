@@ -4,10 +4,6 @@ SkyboxTransformCbuf::SkyboxTransformCbuf(Graphics& gfx, const Drawable& parent, 
 	:
 	parent(parent), pVcbuf{std::make_unique<VertexConstantBuffer<Transforms>>(gfx, slot)}
 {
-	if (!pVcbuf)
-	{
-		pVcbuf = std::make_unique<VertexConstantBuffer<Transforms>>(gfx, slot);
-	}
 }
 
 void SkyboxTransformCbuf::Bind(Graphics& gfx)  noexcept
