@@ -14,6 +14,6 @@ VSOut main(float3 Pos : Position)
 {
     VSOut vso;
     vso.worldPos = Pos;
-    vso.pos = mul(float4(Pos, 0.0f), viewProj).xyww;
+    vso.pos = mul(float4(Pos, 1.0f), viewProj).xyzw;
     return vso;
 }
