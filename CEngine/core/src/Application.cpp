@@ -17,12 +17,38 @@ namespace Cube
 {
 	Application::Application(int width, int height) : m_Window(width, height), light(m_Window.Gfx()), skybox(m_Window.Gfx(), L"textures\\skyboxmain.dds")
 	{
+		models.push_back(std::make_unique<Model>(m_Window.Gfx(), "models\\cube.obj"));
 	}
 
 	Application::~Application()
 	{
 
 	}
+
+	void Application::HadleInput(float dt)
+	{
+		const auto io = ImGui::GetIO();
+		if (!io.WantCaptureMouse)
+		{
+			if (m_Window.kbd.KeyIsPressed('W'))
+			{
+				cam.Translate({ 0.0f, 0.0f, dt });
+			}
+			if (m_Window.kbd.KeyIsPressed('S'))
+			{
+				cam.Translate({ 0.0f, 0.0f, -dt });
+			}
+			if (m_Window.kbd.KeyIsPressed('A'))
+			{
+				cam.Translate({ -dt, 0.0f, 0.0f });
+			}
+			if (m_Window.kbd.KeyIsPressed('D'))
+			{
+				cam.Translate({ dt, 0.0f, 0.0f });
+			}
+		}
+	}
+
 	int Application::run()
 	{
 		while ( true )
@@ -31,13 +57,15 @@ namespace Cube
 			{
 				return ecode->wParam;
 			}
+			auto dt = timer.Mark();
+			HadleInput(dt);
 			doFrame();
 		}
 	}
 
 	void Application::doFrame()
 	{
-		auto dt = timer.Mark();
+
 
 		m_Window.Gfx().ClearBuffer(0.07f, 0.07f, 0.07f);		//Очистка текущего буфера свап чейна
 		m_Window.Gfx().SetCamera(cam.GetMatrix());
@@ -60,6 +88,7 @@ namespace Cube
 		light.Draw(m_Window.Gfx());
 
 		ShowSceneWindow();
+		ShowToolBar();
 
 		m_Window.Gfx().EndFrame();							//Замена буфера свап чейна
 
@@ -69,6 +98,7 @@ namespace Cube
 
 	void Application::ShowSceneWindow()
 	{
+		ImGui::SetNextWindowSize(ImGui::GetContentRegionAvail(), ImGuiCond_FirstUseEver);
 		ImGui::Begin("Scene");
 		if (ImGui::BeginPopupContextWindow())
 		{
@@ -129,6 +159,21 @@ namespace Cube
 		std::string text = "Application average %.3f ms/frame (%.1f FPS)";
 		ImGui::SetCursorPosY(th - ImGui::CalcTextSize(text.c_str()).y - 10.0f);
 		ImGui::Text(text.c_str(), 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+		ImGui::End();
+	}
+
+	void Application::ShowToolBar()
+	{
+		ImGui::SetNextWindowSize({ 100, ImGui::GetContentRegionAvail().y}, ImGuiCond_FirstUseEver);
+		ID3D11ShaderResourceView* pTextureView;
+		m_Window.Gfx().SetTexture(&pTextureView, L"icons\\cubeico2.png");
+		ImGui::Begin("ToolBar");
+
+		ImGui::Image((void*)pTextureView, ImVec2{ 24.0f, 24.0f });
+		ImGui::SameLine();
+		if (ImGui::Button("Add Cube"))
+			models.push_back(std::make_unique<Model>(m_Window.Gfx(), "models\\cube.obj"));
+
 		ImGui::End();
 	}
 

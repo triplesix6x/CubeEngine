@@ -120,7 +120,7 @@ public:
 				if (pSelectedNode != nullptr)
 				{
 					std::string name = windowName + std::string(" Settings");
-					ImGui::SetNextWindowSize({ 400, 340 });
+					ImGui::SetNextWindowSize({ 400, 340 }, ImGuiCond_FirstUseEver);
 					ImGui::Begin(name.c_str());
 					auto& pos = poses[pSelectedNode->GetId()];
 					ImGui::Columns(2);

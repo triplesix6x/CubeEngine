@@ -2,6 +2,7 @@
 #include <d3dcompiler.h>
 #include <DirectXMath.h>
 #include <dxgi.h>
+#include <WICTextureLoader.h>
 #include "../includes/Graphics.h"
 #include "../../includes/Log.h"
 #include "../../imgui/imgui_impl_dx11.h"
@@ -127,7 +128,6 @@ void Graphics::EndFrame()
 
 ImGuiID Graphics::ShowDocksape() noexcept
 {
-
 		bool show = true;
 		ImGuiViewport* viewport = ImGui::GetMainViewport();
 		ImGui::SetNextWindowPos(viewport->Pos);
@@ -148,7 +148,6 @@ ImGuiID Graphics::ShowDocksape() noexcept
 		ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_PassthruCentralNode;
 		ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
 		ImGui::End();
-		ImGuiDockNode* node = ImGui::DockBuilderGetCentralNode(dockspace_id);
 
 		return dockspace_id;
 }
@@ -419,6 +418,11 @@ void Graphics::DisableImgui() noexcept
 void Graphics::SetCamera(DirectX::FXMMATRIX cam) noexcept
 {
 	camera = cam;
+}
+
+void Graphics::SetTexture(ID3D11ShaderResourceView** tv, const wchar_t* file)
+{
+	DirectX::CreateWICTextureFromFile(pDevice.Get(), pContext.Get(), file, nullptr, tv);
 }
 
 bool Graphics::IsImguiEnabled() const noexcept

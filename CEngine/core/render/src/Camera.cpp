@@ -139,7 +139,7 @@ void Camera::Translate(DirectX::XMFLOAT3 translation) noexcept
 
 void Camera::Reset() noexcept
 {
-	pos = { 0.0f,0.0f,-10.0f };
-	pitch = to_rad(0.0f);
-	yaw = to_rad(0.0f);
+	pos = { 5.0f,5.0f,-10.0f };
+	pitch = to_rad(15.0f);
+	yaw = to_rad(-30.0f);
 }

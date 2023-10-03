@@ -46,6 +46,7 @@ public:
 	void DrawIndexed(UINT count);
 	void SetProjection(DirectX::FXMMATRIX proj);
 	void SetCamera(DirectX::FXMMATRIX cam) noexcept;
+	void SetTexture(ID3D11ShaderResourceView** tv, const wchar_t* file);
 	DirectX::XMMATRIX GetCamera() const noexcept;
 	DirectX::XMMATRIX GetProjection() const;
 

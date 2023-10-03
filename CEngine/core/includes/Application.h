@@ -18,6 +18,8 @@ namespace Cube
 		virtual ~Application();
 		int run();
 		void ShowSceneWindow();
+		void ShowToolBar();
+		void HadleInput(float dt);
 	private:
 		void doFrame();					//функция отрисовки одного кадра
 		ImguiManager imgui;
