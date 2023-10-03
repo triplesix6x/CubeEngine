@@ -13,13 +13,11 @@ SkyBox::SkyBox(Graphics& gfx)
 	{
 		dx::XMFLOAT3 pos;
 	};
+
 	if (!IsStaticInitialized())
 	{
 		AddStaticBind(std::make_unique<Rasterizer>(gfx, true));
-
-
-		AddStaticBind(std::make_unique<DepthStencil>(gfx));
-
+		AddStaticBind(std::make_unique<DepthStencil>(gfx, true));
 		auto model = Cube::Make<Vertex>();
 		AddStaticBind(std::make_unique<VertexBuffer>(gfx, model.vertices));
 		AddStaticIndexBuffer(std::make_unique<IndexBuffer>(gfx, model.indices));
@@ -43,7 +41,6 @@ SkyBox::SkyBox(Graphics& gfx)
 
 		AddStaticBind(std::make_unique<Topology>(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
 	}
-
 	AddBind(std::make_unique<SkyboxTransformCbuf>(gfx));
 }
 

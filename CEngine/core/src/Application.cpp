@@ -49,7 +49,7 @@ namespace Cube
 		m_Window.Gfx().ShowMenuBar();
 
 		light.Bind(m_Window.Gfx(), cam.GetMatrix());
-
+		skybox.Draw(m_Window.Gfx());
 
 		for (auto& m : models) 
 		{
@@ -60,7 +60,7 @@ namespace Cube
 		light.Draw(m_Window.Gfx());
 
 		ShowSceneWindow();
-		skybox.Draw(m_Window.Gfx());
+
 		m_Window.Gfx().EndFrame();							//Замена буфера свап чейна
 
 	}
