@@ -89,7 +89,7 @@ void Graphics::ClearBuffer(float red, float green, float blue)
 	const float color[] = { red, green, blue, 1.0f };
 	pContext->OMSetRenderTargets(1u, pTarget.GetAddressOf(), pDSV.Get());
 	pContext->ClearRenderTargetView(pTarget.Get(), color);
-	pContext->ClearDepthStencilView(pDSV.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0u);
+	pContext->ClearDepthStencilView(pDSV.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0u);
 }
 
 Graphics::~Graphics()
@@ -455,8 +455,8 @@ void Graphics::CreateViewport(float x, float y, float topx, float topy) noexcept
 	D3D11_VIEWPORT vp;
 	vp.Width = x;
 	vp.Height = y;
-	vp.MinDepth = 0;
-	vp.MaxDepth = 1;
+	vp.MinDepth = 0.0f;
+	vp.MaxDepth = 1.0f;
 	vp.TopLeftX = topx - ImGui::GetMainViewport()->Pos.x;
 	vp.TopLeftY = topy - ImGui::GetMainViewport()->Pos.y;
 	pContext->RSSetViewports(1u, &vp);

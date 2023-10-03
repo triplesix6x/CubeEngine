@@ -21,7 +21,6 @@ SkyBox::SkyBox(Graphics& gfx)
 		AddStaticBind(std::make_unique<DepthStencil>(gfx));
 
 		auto model = Cube::Make<Vertex>();
-		model.Transform(dx::XMMatrixScaling(50.0f, 50.0f, 50.0f));
 		AddStaticBind(std::make_unique<VertexBuffer>(gfx, model.vertices));
 		AddStaticIndexBuffer(std::make_unique<IndexBuffer>(gfx, model.indices));
 
