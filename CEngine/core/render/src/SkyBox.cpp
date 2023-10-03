@@ -6,7 +6,7 @@
 #include "../includes/Sampler.h"
 
 
-SkyBox::SkyBox(Graphics& gfx)
+SkyBox::SkyBox(Graphics& gfx, const wchar_t* name)
 {
 	namespace dx = DirectX;
 	struct Vertex
@@ -23,7 +23,7 @@ SkyBox::SkyBox(Graphics& gfx)
 		AddStaticIndexBuffer(std::make_unique<IndexBuffer>(gfx, model.indices));
 
 
-		AddStaticBind(std::make_unique<SkyBoxTex>(gfx, L"textures\\skybox2.dds"));
+		AddStaticBind(std::make_unique<SkyBoxTex>(gfx, name));
 		AddStaticBind(std::make_unique<Sampler>(gfx));
 
 		auto pvs = std::make_unique<VertexShader>(gfx, L"shaders\\SkyBoxVS.cso");

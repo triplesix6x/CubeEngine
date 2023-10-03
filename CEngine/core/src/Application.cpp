@@ -15,7 +15,7 @@
 
 namespace Cube
 {
-	Application::Application(int width, int height) : m_Window(width, height), light(m_Window.Gfx()), skybox(m_Window.Gfx())
+	Application::Application(int width, int height) : m_Window(width, height), light(m_Window.Gfx()), skybox(m_Window.Gfx(), L"textures\\skyboxmain.dds")
 	{
 	}
 
@@ -47,9 +47,9 @@ namespace Cube
 		m_Window.Gfx().CreateViewport(node->Size.x, node->Size.y, node->Pos.x, node->Pos.y);
 		m_Window.Gfx().SetProjection(DirectX::XMMatrixPerspectiveFovLH(to_rad(75.0f), node->Size.x / node->Size.y, 0.5f, 100.0f));
 		m_Window.Gfx().ShowMenuBar();
-
-		light.Bind(m_Window.Gfx(), cam.GetMatrix());
 		skybox.Draw(m_Window.Gfx());
+		light.Bind(m_Window.Gfx(), cam.GetMatrix());
+	
 
 		for (auto& m : models) 
 		{

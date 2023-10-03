@@ -10,8 +10,8 @@ DepthStencil::DepthStencil(Graphics& gfx, bool skybox)
 	}
 	else
 	{
-		dsDesc.DepthEnable = FALSE;
-		dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
+		dsDesc.DepthEnable = TRUE;
+		dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
 		dsDesc.StencilEnable = TRUE;
 		dsDesc.StencilWriteMask = 0xFF;
 		dsDesc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
