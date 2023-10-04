@@ -10,10 +10,10 @@ public:
 	void Reset() noexcept;
 	void Rotate(float dx, float dy) noexcept;
 	void Translate(DirectX::XMFLOAT3 translation) noexcept;
-private:
 	DirectX::XMFLOAT3 pos;
+private:
 	float pitch;
 	float yaw;
-	static constexpr float travelSpeed = 12.0f;
+    float travelSpeed = 12.0f;
 	static constexpr float rotationSpeed = 0.004f;
 };

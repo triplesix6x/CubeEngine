@@ -71,9 +71,6 @@ void Camera::SpawnControlWindow() noexcept
 		ImGui::PopItemWidth();
 		ImGui::Columns(1);
 		ImGui::PopStyleVar();
-
-		ImGui::Text("Orientation");
-
 		ImVec2 bbuttonSize = { lineHeight + 9.0f, lineHeight };
 
 		ImGui::Columns(2);
@@ -108,6 +105,9 @@ void Camera::SpawnControlWindow() noexcept
 		ImGui::PopItemWidth();
 		ImGui::Columns(1);
 		ImGui::PopStyleVar();
+		ImGui::Text("Camera Speed");
+		ImGui::SameLine();
+		ImGui::SliderFloat(" ", &travelSpeed, 0.1f, 100.0f);
 		if (ImGui::Button("Reset"))
 		{
 			Reset();
@@ -137,9 +137,11 @@ void Camera::Translate(DirectX::XMFLOAT3 translation) noexcept
 	};
 }
 
+
 void Camera::Reset() noexcept
 {
 	pos = { 5.0f,5.0f,-10.0f };
 	pitch = to_rad(15.0f);
 	yaw = to_rad(-30.0f);
+	travelSpeed = 12.0f;
 }

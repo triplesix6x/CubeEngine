@@ -1,6 +1,7 @@
 #pragma once
 #include <windows.h>
 #include <string>
+#include "DXTKIncludes.h"
 #include <wrl.h>
 #include "../../../exception/includes/CubeException.h"
 #include <d3d11.h>
@@ -50,17 +51,14 @@ public:
 	DirectX::XMMATRIX GetCamera() const noexcept;
 	DirectX::XMMATRIX GetProjection() const;
 
+	void DrawGrid(DirectX::XMFLOAT3 camPos) noexcept;
+
 	ImGuiID ShowDocksape() noexcept;
-	void ShowMenuBar() noexcept;
 	void SetupRenderTarget() noexcept;
 	void CleanupRenderTarget() noexcept;
 	void CreateViewport(float x, float y, float topx, float topy) noexcept;
 	void EnableImgui() noexcept;
 	void DisableImgui() noexcept;
-	void SetDDTheme() noexcept;
-	void SetLightTheme() noexcept;
-	void SetDPTheme() noexcept;
-	void SetSMTheme() noexcept;
 	void Resize(UINT width, UINT height) noexcept;
 	bool IsImguiEnabled() const noexcept;
 private:

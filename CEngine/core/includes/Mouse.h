@@ -77,6 +77,7 @@ public:
 public:
 	Mouse() = default;
 	std::pair<int, int> GetPos() const ;
+	std::optional<RawDelta> ReadRawDelta();
 	int GetPosX() const ;
 	int GetPosY() const ;
 	bool IsInWindow() const;
@@ -90,6 +91,7 @@ public:
 	void Flush() ;
 
 public:
+	void OnRawDelta(int dx, int dy);
 	void OnMouseMove(int x, int y) ;
 	void OnMouseLeave();
 	void OnMouseEnter();
@@ -100,6 +102,7 @@ public:
 	void OnWheelUp(int x, int y) ;
 	void OnWheelDown(int x, int y) ;
 	void TrimBuffer() ;
+	void TrimRawInputBuffer();
 private:
 	static constexpr unsigned int bufferSize = 16u;
 	int x;
@@ -108,4 +111,5 @@ private:
 	bool rightIsPressed = false;
 	bool isInWindow = false;
 	std::queue<Event> buffer;
+	std::queue <RawDelta> rawDeltaBuffer;
 };

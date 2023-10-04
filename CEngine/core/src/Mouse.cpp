@@ -8,6 +8,16 @@ std::pair<int, int> Mouse::GetPos() const
 	return { x,y };
 }
 
+std::optional<Mouse::RawDelta> Mouse::ReadRawDelta()
+{
+	if (rawDeltaBuffer.empty())
+	{
+		return std::nullopt;
+	}
+	const RawDelta d = rawDeltaBuffer.front();
+	rawDeltaBuffer.pop();
+	return d;
+}
 
 int Mouse::GetPosX() const 
 {
@@ -50,6 +60,12 @@ void Mouse::Flush()
 	buffer = std::queue<Event>();
 }
 
+
+void Mouse::OnRawDelta(int dx, int dy)
+{
+	rawDeltaBuffer.push({ dx, dy });
+	TrimBuffer();
+}
 
 void Mouse::OnMouseMove(int newx, int newy) 
 {
@@ -116,6 +132,14 @@ void Mouse::OnWheelDown(int x, int y)
 {
 	buffer.push(Mouse::Event(Mouse::Event::Type::WheelDown, *this));
 	TrimBuffer();
+}
+
+void Mouse::TrimRawInputBuffer()
+{
+	while (rawDeltaBuffer.size() > bufferSize)
+	{
+		rawDeltaBuffer.pop();
+	}
 }
 
 void Mouse::TrimBuffer() 

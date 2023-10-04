@@ -59,18 +59,28 @@ namespace Cube
 		static std::optional<MSG> ProcessMessages();
 		int GetWidth() const noexcept;
 		int GetHeight() const noexcept;
+		void EnableCursor();
+		void DisableCursor();
+		void EnableImGuiCursor();
+		void DisableImGuiCursor();
 		Graphics& Gfx();
 		Mouse mouse;
 		Keyboard kbd;
 		int wResize;
 		int hResize;
 	private:
+		void HideCursor();
+		void ShowCursor();
+		void ConfineCursor();
+		void FreeCursor();
+		bool cursorEnabled = true;
 		static LRESULT WINAPI HandleMessageSetup(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam);
 		static LRESULT WINAPI HandleMessageThunk(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam);
 		LRESULT HandleMessage(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam);
 		int width;
 		int height;
 		HWND hwnd;
+		std::vector<char> rawBuffer;
 		std::unique_ptr<Graphics> pGfx;
 	};
 }

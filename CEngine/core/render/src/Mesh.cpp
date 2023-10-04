@@ -119,7 +119,7 @@ public:
 				root.RenderTree(pSelectedNode);
 				if (pSelectedNode != nullptr)
 				{
-					std::string name = windowName + std::string(" Settings");
+					std::string name = windowName + std::string(" Settings:");
 					ImGui::SetNextWindowSize({ 400, 340 }, ImGuiCond_FirstUseEver);
 					ImGui::Begin(name.c_str());
 					auto& pos = poses[pSelectedNode->GetId()];
@@ -151,7 +151,7 @@ public:
 					ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.2f, 0.7f, 0.2f, 1.0f });
 
 					if (ImGui::Button("Y", buttonSize))
-						pos.y = 0.0f;
+						pos.y = 1.0f;
 					ImGui::PopStyleColor(3);
 
 					ImGui::SameLine();
@@ -276,7 +276,7 @@ public:
 						pos.yaw = 0.0f;
 
 						pos.x = 0.0f;
-						pos.y = 0.0f;
+						pos.y = 1.0f;
 						pos.z = 0.0f;
 
 						scale.xscale = 1.0f;
@@ -311,7 +311,7 @@ private:
 		float pitch = 0.0f;
 		float yaw = 0.0f;
 		float x = 0.0f;
-		float y = 0.0f;
+		float y = 1.0f;
 		float z = 0.0f;
 	};
 	std::unordered_map<int, TransformParameters> poses;
@@ -342,10 +342,10 @@ Model::Model(Graphics& gfx, const std::string fileName) :
 	}
 	int nextId = 0;
 	pRoot = ParseNode(nextId, *pScene->mRootNode);
+	pRoot->SetAppliedTransform(DirectX::XMMatrixTranslation(0.0f, 1.0f, 0.0f));
 }
 void Model::Draw(Graphics& gfx) const
 {
-
 	if (auto node = pWindow->GetSelectedNode())
 	{
 		node->SetAppliedTransform(pWindow->GetTransform());
@@ -409,7 +409,7 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh)
 	int blen = wcslen(bpath);
 	for (int i = 1; i < 15; ++i)
 	{
-		bpath[len - i] = '\0';
+		bpath[blen - i] = '\0';
 	}
 	bindablePtrs.push_back(std::make_unique<PixelShader>(gfx, wcscat(bpath, L"shaders\\PhongPS.cso")));
 

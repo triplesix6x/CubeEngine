@@ -129,6 +129,12 @@
     <ClCompile Include="core\render\src\Rasterizer.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="core\includes\ImGuiThemes.h">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="core\render\includes\DXTKIncludes.h">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core\includes\Application.h">

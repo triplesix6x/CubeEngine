@@ -143,6 +143,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="core\includes\ImGuiThemes.h" />
+    <ClCompile Include="core\render\includes\DXTKIncludes.h" />
     <ClCompile Include="core\render\src\Bindable.cpp" />
     <ClCompile Include="core\render\src\Camera.cpp" />
     <ClCompile Include="core\render\src\DepthStencil.cpp" />

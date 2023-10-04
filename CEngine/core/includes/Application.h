@@ -18,6 +18,11 @@ namespace Cube
 		virtual ~Application();
 		int run();
 		void ShowSceneWindow();
+		void ShowMenuBar();
+
+		void AddObj();
+		void AddCube();
+
 		void ShowToolBar();
 		void HadleInput(float dt);
 	private:

@@ -9,7 +9,7 @@
 namespace Cube
 {
 	Window::WindowClass Window::WindowClass::wndClass;
-	Window::WindowClass::WindowClass() 
+	Window::WindowClass::WindowClass()
 	{
 		//Создание и настройка дескриптора класса окна
 		WNDCLASSEX wc = { 0 };
@@ -19,15 +19,14 @@ namespace Cube
 		wc.cbClsExtra = 0;
 		wc.cbWndExtra = 0;
 		wc.hInstance = getInstance();
-		wc.hIcon = (HICON)LoadImage(getInstance(), L"icons\\kubik2.ico", 
-													IMAGE_ICON, 32, 32, LR_LOADFROMFILE);
-		wc.hCursor = (HCURSOR)LoadImage(getInstance(), L"icons\\cursor.ico", 
-													IMAGE_ICON, 24, 24, LR_LOADFROMFILE);
+		wc.hIcon = (HICON)LoadImage(getInstance(), L"icons\\kubik2.ico",
+			IMAGE_ICON, 32, 32, LR_LOADFROMFILE);
+		wc.hCursor = nullptr;
 		wc.hbrBackground = nullptr;
 		wc.lpszMenuName = nullptr;
 		wc.lpszClassName = getName();
-		wc.hIconSm = (HICON)LoadImage(getInstance(), L"icons\\kubik.ico", 
-													IMAGE_ICON, 16, 16, LR_LOADFROMFILE);
+		wc.hIconSm = (HICON)LoadImage(getInstance(), L"icons\\kubik.ico",
+			IMAGE_ICON, 16, 16, LR_LOADFROMFILE);
 		RegisterClassEx(&wc);
 	}
 
@@ -64,8 +63,8 @@ namespace Cube
 		GetWindowRect(hDesktop, &desktop);
 
 		hwnd = CreateWindowEx(0, WindowClass::getName(), L"Cube Engine", WindowType::FULL,
-							((desktop.right / 2) - (width / 2)), ((desktop.bottom / 2) - (height / 2)), 
-							wr.right, wr.bottom - 50, nullptr, nullptr, WindowClass::getInstance(), this);
+			((desktop.right / 2) - (width / 2)), ((desktop.bottom / 2) - (height / 2)),
+			wr.right, wr.bottom - 50, nullptr, nullptr, WindowClass::getInstance(), this);
 		if (hwnd == nullptr)
 		{
 			throw CUBE_LAST_EXCEPTION();
@@ -77,6 +76,16 @@ namespace Cube
 		CUBE_CORE_INFO("ImGui Win32 was initialized.");
 		pGfx = std::make_unique<Graphics>(hwnd, width, height);
 		CUBE_CORE_INFO("Window was created.");
+
+		RAWINPUTDEVICE rid;
+		rid.usUsagePage = 0x01;
+		rid.usUsage = 0x02;
+		rid.dwFlags = 0;
+		rid.hwndTarget = nullptr;
+		if (RegisterRawInputDevices(&rid, 1, sizeof(rid)) == FALSE)
+		{
+			throw CUBE_LAST_EXCEPTION();
+		}
 	}
 
 	int Window::GetWidth() const noexcept
@@ -89,6 +98,54 @@ namespace Cube
 		return height;
 	}
 
+	void Window::EnableCursor()
+	{
+		cursorEnabled = true;
+		ShowCursor();
+		EnableImGuiCursor();
+		FreeCursor();
+	}
+	
+	void Window::DisableCursor()
+	{
+		cursorEnabled = false;
+		HideCursor();
+		DisableImGuiCursor();
+		ConfineCursor();
+	}
+
+	void Window::HideCursor()
+	{
+		while (::ShowCursor(FALSE) >= 0);
+	}
+	
+	void Window::ShowCursor()
+	{
+		while (::ShowCursor(TRUE) < 0);
+	}
+
+	void Window::EnableImGuiCursor()
+	{
+		ImGui::GetIO().ConfigFlags &= ~ImGuiConfigFlags_NoMouse;
+	}
+
+	void Window::DisableImGuiCursor()
+	{
+		ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_NoMouse;
+	}
+
+	void Window::ConfineCursor()
+	{
+		RECT rect;
+		GetClientRect(hwnd, &rect);
+		MapWindowPoints(hwnd, nullptr, reinterpret_cast<POINT*>(&rect), 2);
+		ClipCursor(&rect);
+	}
+
+	void Window::FreeCursor()
+	{
+		ClipCursor(nullptr);
+	}
 
 	Window::~Window()
 	{
@@ -199,6 +256,25 @@ namespace Cube
 		const auto imguiio = ImGui::GetIO();
 		switch (message)
 		{
+		case WM_INPUT:
+		{
+			UINT size;
+			if (GetRawInputData(reinterpret_cast<HRAWINPUT>(lParam), RID_INPUT, nullptr, &size, sizeof(RAWINPUTHEADER)) == -1)
+			{
+				break;
+			}
+			rawBuffer.resize(size);
+			if (GetRawInputData(reinterpret_cast<HRAWINPUT>(lParam), RID_INPUT, rawBuffer.data(), &size, sizeof(RAWINPUTHEADER)) != size)
+			{
+				break;
+			}
+			auto& ri = reinterpret_cast<const RAWINPUT&>(*rawBuffer.data());
+			if (ri.header.dwType == RIM_TYPEMOUSE && (ri.data.mouse.lLastX != 0 || ri.data.mouse.lLastY != 0))
+			{
+				mouse.OnRawDelta(ri.data.mouse.lLastX, ri.data.mouse.lLastY);
+			}
+			break;
+		}
 		case WM_MOUSEMOVE:
 		{
 			if (imguiio.WantCaptureMouse)
@@ -285,10 +361,11 @@ namespace Cube
 			{
 				mouse.OnWheelDown(pt.x, pt.y);
 			}
+			break;
 		}
-
 		case WM_KEYDOWN:
 		case WM_SYSKEYDOWN:
+		{
 			if (imguiio.WantCaptureKeyboard)
 			{
 				break;
@@ -298,14 +375,17 @@ namespace Cube
 				kbd.OnKeyPressed(static_cast<unsigned char>(wParam));
 			}
 			break;
+		}
 		case WM_KEYUP:
 		case WM_SYSKEYUP:
+		{
 			if (imguiio.WantCaptureKeyboard)
 			{
 				break;
 			}
 			kbd.OnKeyReleased(static_cast<unsigned char>(wParam));
 			break;
+		}
 		case WM_CHAR:
 			if (imguiio.WantCaptureKeyboard)
 			{
@@ -322,6 +402,23 @@ namespace Cube
 				Gfx().Resize((UINT)LOWORD(lParam), (UINT)HIWORD(lParam));
 			}
 			break;
+		case WM_ACTIVATE:
+		{
+			if (!cursorEnabled)
+			{
+				if (wParam & WA_ACTIVE || wParam & WA_CLICKACTIVE)
+				{
+					ConfineCursor();
+					HideCursor();
+				}
+				else
+				{
+					FreeCursor();
+					ShowCursor();
+				}
+			}
+			break;
+		}
 		case WM_CLOSE:
 			CUBE_CORE_INFO("Window was closed.");
 			PostQuitMessage(0);
