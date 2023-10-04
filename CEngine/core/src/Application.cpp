@@ -18,12 +18,24 @@ namespace Cube
 {
 	Application::Application(int width, int height) : m_Window(width, height), light(m_Window.Gfx()), skybox(m_Window.Gfx(), L"textures\\skyboxmain.dds")
 	{
+
 		models.push_back(std::make_unique<Model>(m_Window.Gfx(), "models\\cube.obj"));
+
+		wchar_t path[260];
+		GetModuleFileName(NULL, path, 260);
+		int len = wcslen(path);
+		for (int i = 1; i < 15; ++i)
+		{
+			path[len - i] = '\0';
+		}
+		m_Window.Gfx().SetTexture(&pCubeIco, wcscat(path, L"icons\\cubeico2.png"));
+		ZeroMemory(path, sizeof(path));
 	}
 
 	Application::~Application()
 	{
-
+		pCubeIco->Release();
+		models.clear();
 	}
 
 	void Application::HadleInput(float dt)
@@ -264,14 +276,6 @@ namespace Cube
 
 	void Application::AddCube()
 	{
-		wchar_t path[260];
-		GetModuleFileName(NULL, path, 260);
-		int len = wcslen(path);
-		for (int i = 1; i < 15; ++i)
-		{
-			path[len - i] = '\0';
-		}
-
 		char bpath[260];
 		GetModuleFileNameA(NULL, bpath, 260);
 		int blen = strlen(bpath);
@@ -280,11 +284,11 @@ namespace Cube
 			bpath[blen - i] = '\0';
 		}
 
-		ID3D11ShaderResourceView* pTextureView;
-		m_Window.Gfx().SetTexture(&pTextureView, wcscat(path, L"icons\\cubeico2.png"));
-		ImGui::Image((void*)pTextureView, ImVec2{ 24.0f, 24.0f });
+		ImGui::Image((void*)pCubeIco, ImVec2{ 24.0f, 24.0f });
 		ImGui::SameLine();
 		if (ImGui::Button("Add Cube"))
 			models.push_back(std::make_unique<Model>(m_Window.Gfx(), strcat(bpath, "models\\cube.obj")));
+
+		ZeroMemory(bpath, sizeof(bpath));
 	}
 }
