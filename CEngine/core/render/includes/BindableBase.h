@@ -11,3 +11,5 @@
 #include "SkyboxTransformCBuf.h"
 #include "DepthStencil.h"
 #include "Rasterizer.h"
+#include "Texture.h"
+#include "Sampler.h"

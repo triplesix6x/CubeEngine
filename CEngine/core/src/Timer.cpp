@@ -19,3 +19,8 @@ float Timer::Peek() const
 {
 	return duration<float>(steady_clock::now() - last).count();
 }
+
+float Timer::GetTime(std::chrono::steady_clock::time_point start)
+{
+	return duration<float>(steady_clock::now() - start).count();
+}

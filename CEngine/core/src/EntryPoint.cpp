@@ -2,6 +2,8 @@
 
 #include "../CubeApp.h"
 
+
+
 int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
 	HRESULT hResult = CoInitialize(NULL);

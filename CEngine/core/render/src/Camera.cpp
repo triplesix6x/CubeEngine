@@ -25,6 +25,7 @@ void Camera::SpawnControlWindow() noexcept
 		ImGui::Columns(2);
 		ImGui::SetColumnWidth(0, 100);
 		ImGui::Text("Position");
+		ImGui::PushID("Position");
 		ImGui::NextColumn();
 		ImGui::PushMultiItemsWidths(3, ImGui::CalcItemWidth());
 		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2{ 0, 0 });
@@ -37,7 +38,7 @@ void Camera::SpawnControlWindow() noexcept
 		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.8f, 0.1f, 0.15f, 1.0f });
 
 		if (ImGui::Button("X", buttonSize))
-			pos.x = 0.0f;
+			pos.x = 5.0f;
 		ImGui::PopStyleColor(3);
 
 		ImGui::SameLine();
@@ -50,7 +51,7 @@ void Camera::SpawnControlWindow() noexcept
 		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.2f, 0.7f, 0.2f, 1.0f });
 
 		if (ImGui::Button("Y", buttonSize))
-			pos.y = 0.0f;
+			pos.y = 5.0f;
 		ImGui::PopStyleColor(3);
 		
 		ImGui::SameLine();
@@ -71,11 +72,12 @@ void Camera::SpawnControlWindow() noexcept
 		ImGui::PopItemWidth();
 		ImGui::Columns(1);
 		ImGui::PopStyleVar();
-		ImVec2 bbuttonSize = { lineHeight + 9.0f, lineHeight };
+		ImGui::PopID();
 
 		ImGui::Columns(2);
 		ImGui::SetColumnWidth(0, 100);
 		ImGui::Text("Orientation");
+		ImGui::PushID("Orientation");
 		ImGui::NextColumn();
 		ImGui::PushMultiItemsWidths(2, ImGui::CalcItemWidth());
 		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2{ 0, 0 });
@@ -83,12 +85,12 @@ void Camera::SpawnControlWindow() noexcept
 		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.9f, 0.3f, 0.2f, 1.0f });
 		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.8f, 0.1f, 0.15f, 1.0f });
 
-		if (ImGui::Button("XO", bbuttonSize))
-			yaw = 0.0f;
+		if (ImGui::Button("X", buttonSize))
+			yaw = to_rad(-30.0f);
 		ImGui::PopStyleColor(3);
 
 		ImGui::SameLine();
-		ImGui::SliderAngle("##X Orientation", &yaw, -180.0f, 180.0f);
+		ImGui::SliderAngle("##X", &yaw, -180.0f, 180.0f);
 		ImGui::PopItemWidth();
 		ImGui::SameLine();
 
@@ -96,15 +98,16 @@ void Camera::SpawnControlWindow() noexcept
 		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.3f, 0.8f, 0.3f, 1.0f });
 		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.2f, 0.7f, 0.2f, 1.0f });
 
-		if (ImGui::Button("YO", bbuttonSize))
-			pitch = 0.0f;
+		if (ImGui::Button("Y", buttonSize))
+			pitch = to_rad(15.0f);
 		ImGui::PopStyleColor(3);
 
 		ImGui::SameLine();
-		ImGui::SliderAngle("##Y Orientation", &pitch, -180.0f, 180.0f);
+		ImGui::SliderAngle("##Y", &pitch, 0.995f * -90.0f, 0.995f * 90.0f);
 		ImGui::PopItemWidth();
 		ImGui::Columns(1);
 		ImGui::PopStyleVar();
+		ImGui::PopID();
 		ImGui::Text("Camera Speed");
 		ImGui::SameLine();
 		ImGui::SliderFloat(" ", &travelSpeed, 0.1f, 100.0f);
@@ -120,7 +123,7 @@ void Camera::SpawnControlWindow() noexcept
 void Camera::Rotate(float dx, float dy) noexcept
 {
 	yaw = wrap_angle(yaw + dx * rotationSpeed);
-	pitch = std::clamp(pitch + dy * rotationSpeed, -PI / 2.0f, PI / 2.0f);
+	pitch = std::clamp(pitch + dy * rotationSpeed, 0.995f *  -PI / 2.0f, 0.995f * PI / 2.0f);
 }
 
 void Camera::Translate(DirectX::XMFLOAT3 translation) noexcept

@@ -28,11 +28,15 @@ Mesh::Mesh(Graphics& gfx, std::vector<std::unique_ptr<Bindable>> bindPtrs)
 
 	AddBind(std::make_unique<TransformCbuf>(gfx, *this));
 }
+
+
 void Mesh::Draw(Graphics& gfx, DirectX::FXMMATRIX accumulatedTransform) const
 {
 	DirectX::XMStoreFloat4x4(&transform, accumulatedTransform);
 	Drawable::Draw(gfx);
 }
+
+
 DirectX::XMMATRIX Mesh::GetTransformXM() const noexcept
 {
 	return DirectX::XMLoadFloat4x4(&transform);
@@ -47,6 +51,8 @@ id(id), meshPtrs(std::move(meshPtrs)) , name(name)
 	DirectX::XMStoreFloat4x4(&baseTransform, transform);
 	DirectX::XMStoreFloat4x4(&appliedTransform, DirectX::XMMatrixIdentity());
 }
+
+
 void Node::Draw(Graphics& gfx, DirectX::FXMMATRIX accumulatedTransform) const 
 {
 	const auto built =
@@ -62,11 +68,15 @@ void Node::Draw(Graphics& gfx, DirectX::FXMMATRIX accumulatedTransform) const
 		pc->Draw(gfx, built);
 	}
 }
+
+
 void Node::AddChild(std::unique_ptr<Node> pChild) 
 {
 	assert(pChild);
 	childPtrs.push_back(std::move(pChild));
 }
+
+
 void Node::RenderTree(Node*& pSelectedNode) const noexcept
 {
 	const int selectedId = (pSelectedNode == nullptr) ? -1 : pSelectedNode->GetId();
@@ -87,17 +97,27 @@ void Node::RenderTree(Node*& pSelectedNode) const noexcept
 			}
 			ImGui::TreePop();
 		}
+		if (!expanded)
+		{
+			pSelectedNode = nullptr;
+		}
 }
+
+
 
 void Node::SetAppliedTransform(DirectX::FXMMATRIX transform) noexcept
 {
 	DirectX::XMStoreFloat4x4(&appliedTransform, transform);
 }
 
+
+
 int Node::GetId() const noexcept
 {
 	return id;
 }
+
+
 
 std::string Node::GetName() const noexcept
 {
@@ -105,229 +125,8 @@ std::string Node::GetName() const noexcept
 }
 
 
-
-class ModelWindow
-{
-public:
-	void Show(const char* windowName, const Node& root) noexcept
-	{
-		windowName = windowName ? windowName : "Model";
-		int nodeIndexTracker = 0;
-
-		if (ImGui::TreeNode(windowName))
-		{
-				root.RenderTree(pSelectedNode);
-				if (pSelectedNode != nullptr)
-				{
-					std::string name = windowName + std::string(" Settings:");
-					ImGui::SetNextWindowSize({ 400, 340 }, ImGuiCond_FirstUseEver);
-					ImGui::Begin(name.c_str());
-					auto& pos = poses[pSelectedNode->GetId()];
-					ImGui::Columns(2);
-					ImGui::SetColumnWidth(0, 100);
-					ImGui::Text("Position");
-					ImGui::NextColumn();
-					ImGui::PushMultiItemsWidths(3, ImGui::CalcItemWidth());
-					ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2{ 0, 0 });
-
-					float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
-					ImVec2 buttonSize = { lineHeight + 3.0f, lineHeight };
-
-					ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.8f, 0.1f, 0.15f, 1.0f });
-					ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.9f, 0.3f, 0.2f, 1.0f });
-					ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.8f, 0.1f, 0.15f, 1.0f });
-
-					if(ImGui::Button("X", buttonSize))
-						pos.x = 0.0f;
-					ImGui::PopStyleColor(3);
-
-					ImGui::SameLine();
-					ImGui::DragFloat("##X", &pos.x, 0.1f);
-					ImGui::PopItemWidth();
-					ImGui::SameLine();
-
-					ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.2f, 0.7f, 0.2f, 1.0f });
-					ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.3f, 0.8f, 0.3f, 1.0f });
-					ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.2f, 0.7f, 0.2f, 1.0f });
-
-					if (ImGui::Button("Y", buttonSize))
-						pos.y = 1.0f;
-					ImGui::PopStyleColor(3);
-
-					ImGui::SameLine();
-					ImGui::DragFloat("##Y", &pos.y, 0.1f);
-					ImGui::PopItemWidth();
-					ImGui::SameLine();
-
-					ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.1f, 0.25f, 0.8f, 1.0f });
-					ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.2f, 0.35f, 0.9f, 1.0f });
-					ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.1f, 0.25f, 0.8f, 1.0f });
-
-					if(ImGui::Button("Z", buttonSize))
-						pos.z = 0.0f;
-					ImGui::PopStyleColor(3);
-
-					ImGui::SameLine();
-					ImGui::DragFloat("##Z", &pos.z, 0.1f);
-					ImGui::PopItemWidth();
-					ImGui::Columns(1);
-					ImGui::PopStyleVar();
-
-
-					auto& scale = scales[pSelectedNode->GetId()];
-					ImGui::Columns(2);
-					ImGui::SetColumnWidth(0, 100);
-					ImGui::Text("Scale");
-					ImGui::NextColumn();
-					ImGui::PushMultiItemsWidths(3, ImGui::CalcItemWidth());
-					ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2{ 0, 0 });
-					ImVec2 bbuttonSize = { lineHeight + 9.0f, lineHeight };
-					ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.8f, 0.1f, 0.15f, 1.0f });
-					ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.9f, 0.3f, 0.2f, 1.0f });
-					ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.8f, 0.1f, 0.15f, 1.0f });
-
-					if (ImGui::Button("XS", bbuttonSize))
-						scale.xscale = 1.0f;
-					ImGui::PopStyleColor(3);
-
-					ImGui::SameLine();
-					ImGui::DragFloat("##X Scale", &scale.xscale, 0.1f, 0.1f);
-					ImGui::PopItemWidth();
-					ImGui::SameLine();
-
-					ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.2f, 0.7f, 0.2f, 1.0f });
-					ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.3f, 0.8f, 0.3f, 1.0f });
-					ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.2f, 0.7f, 0.2f, 1.0f });
-
-					if (ImGui::Button("YS", bbuttonSize))
-						scale.yscale = 1.0f;
-					ImGui::PopStyleColor(3);
-
-					ImGui::SameLine();
-					ImGui::DragFloat("##Y Scale", &scale.yscale, 0.1f, 0.1f);
-					ImGui::PopItemWidth();
-					ImGui::SameLine();
-
-					ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.1f, 0.25f, 0.8f, 1.0f });
-					ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.2f, 0.35f, 0.9f, 1.0f });
-					ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.1f, 0.25f, 0.8f, 1.0f });
-
-					if (ImGui::Button("ZS", bbuttonSize))
-						scale.zscale = 1.0f;
-					ImGui::PopStyleColor(3);
-
-					ImGui::SameLine();
-					ImGui::DragFloat("##Z Scale", &scale.zscale, 0.1f, 0.1f);
-					ImGui::PopItemWidth();
-					ImGui::Columns(1);
-					ImGui::PopStyleVar();
-
-
-					ImGui::Columns(2);
-					ImGui::SetColumnWidth(0, 100);
-					ImGui::Text("Orientation");
-					ImGui::NextColumn();
-					ImGui::PushMultiItemsWidths(3, ImGui::CalcItemWidth());
-					ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2{ 0, 0 });
-					ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.8f, 0.1f, 0.15f, 1.0f });
-					ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.9f, 0.3f, 0.2f, 1.0f });
-					ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.8f, 0.1f, 0.15f, 1.0f });
-
-					if (ImGui::Button("XO", bbuttonSize))
-						pos.roll = 0.0f;
-					ImGui::PopStyleColor(3);
-
-					ImGui::SameLine();
-					ImGui::SliderAngle("##X Orientation", &pos.roll, -180.0f, 180.0f);
-					ImGui::PopItemWidth();
-					ImGui::SameLine();
-
-					ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.2f, 0.7f, 0.2f, 1.0f });
-					ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.3f, 0.8f, 0.3f, 1.0f });
-					ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.2f, 0.7f, 0.2f, 1.0f });
-
-					if (ImGui::Button("YO", bbuttonSize))
-						pos.pitch = 0.0f;
-					ImGui::PopStyleColor(3);
-
-					ImGui::SameLine();
-					ImGui::SliderAngle("##Y Orientation", &pos.pitch, -180.0f, 180.0f);
-					ImGui::PopItemWidth();
-					ImGui::SameLine();
-
-					ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.1f, 0.25f, 0.8f, 1.0f });
-					ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.2f, 0.35f, 0.9f, 1.0f });
-					ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.1f, 0.25f, 0.8f, 1.0f });
-
-					if (ImGui::Button("ZO", bbuttonSize))
-						pos.yaw = 0.0f;
-					ImGui::PopStyleColor(3);
-
-					ImGui::SameLine();
-					ImGui::SliderAngle("##Z Orientation", &pos.yaw, -180.0f, 180.0f);
-					ImGui::PopItemWidth();
-					ImGui::Columns(1);
-					ImGui::PopStyleVar();
-				
-					if (ImGui::Button("Reset"))
-					{
-						pos.roll = 0.0f;
-						pos.pitch = 0.0f;
-						pos.yaw = 0.0f;
-
-						pos.x = 0.0f;
-						pos.y = 1.0f;
-						pos.z = 0.0f;
-
-						scale.xscale = 1.0f;
-						scale.yscale = 1.0f;
-						scale.zscale = 1.0f;
-					}
-					ImGui::End();
-				}
-				ImGui::TreePop();
-				ImGui::Spacing();
-		}
-	}
-	DirectX::XMMATRIX GetTransform() const noexcept
-	{
-		assert(pSelectedNode != nullptr);
-		const auto& transform = poses.at(pSelectedNode->GetId());
-		const auto& scale = scales.at(pSelectedNode->GetId());
-		return
-			DirectX::XMMatrixRotationRollPitchYaw(transform.roll, transform.pitch, transform.yaw) *
-			DirectX::XMMatrixTranslation(transform.x, transform.y, transform.z) *
-			DirectX::XMMatrixScaling(scale.xscale,scale.yscale,scale.zscale);
-	}
-	Node* GetSelectedNode() const noexcept
-	{
-		return pSelectedNode;
-	}
-private:
-	Node* pSelectedNode;
-	struct TransformParameters
-	{
-		float roll = 0.0f;
-		float pitch = 0.0f;
-		float yaw = 0.0f;
-		float x = 0.0f;
-		float y = 1.0f;
-		float z = 0.0f;
-	};
-	std::unordered_map<int, TransformParameters> poses;
-	struct ScaleParameters
-	{
-		float xscale = 1.0f;
-		float yscale = 1.0f;
-		float zscale = 1.0f;
-	};
-	std::unordered_map<int, ScaleParameters> scales;
-};
-
-
-
-Model::Model(Graphics& gfx, const std::string fileName) :
-	pWindow(std::make_unique<ModelWindow>())
+Model::Model(Graphics& gfx, const std::string fileName, int id, const char* modelName) :
+	modelName(modelName), id(id)
 {
 	Assimp::Importer imp;
 	const auto pScene = imp.ReadFile(fileName.c_str(), aiProcess_Triangulate | aiProcess_JoinIdenticalVertices);
@@ -342,20 +141,229 @@ Model::Model(Graphics& gfx, const std::string fileName) :
 	}
 	int nextId = 0;
 	pRoot = ParseNode(nextId, *pScene->mRootNode);
-	pRoot->SetAppliedTransform(DirectX::XMMatrixTranslation(0.0f, 1.0f, 0.0f));
 }
+
+
 void Model::Draw(Graphics& gfx) const
 {
-	if (auto node = pWindow->GetSelectedNode())
+	if (auto node = GetSelectedNode())
 	{
-		node->SetAppliedTransform(pWindow->GetTransform());
+		node->SetAppliedTransform(GetTransform());
 	}
 	pRoot->Draw(gfx, DirectX::XMMatrixIdentity());
 }
-void Model::ShowWindow(const char* windowName) noexcept
+
+
+void Model::ShowWindow(Model* pSelectedModel) noexcept
 {
-	pWindow->Show(windowName, *pRoot);
+	int nodeIndexTracker = 0;
+
+	if (pSelectedModel == this)
+	{
+		pRoot->RenderTree(pSelectedNode);
+		if (pSelectedNode != nullptr)
+		{
+			ImGui::SetNextWindowSize({ 400, 340 }, ImGuiCond_FirstUseEver);
+			ImGui::Begin("Proprieties");
+
+
+			char buffer[256];
+			memset(buffer, 0, sizeof(buffer));
+			strcpy_s(buffer, sizeof(buffer), modelName.c_str());
+			if (ImGui::InputText("ModelName", buffer, sizeof(buffer)))
+			{
+				modelName = std::string(buffer);
+			}
+
+			auto& pos = poses[pSelectedNode->GetId()];
+			ImGui::Columns(2);
+			ImGui::SetColumnWidth(0, 100);
+			ImGui::Text("Position");
+			ImGui::PushID("Position");
+			ImGui::NextColumn();
+			ImGui::PushMultiItemsWidths(3, ImGui::CalcItemWidth());
+			ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2{ 0, 0 });
+
+			float lineHeight = GImGui->Font->FontSize + GImGui->Style.FramePadding.y * 2.0f;
+			ImVec2 buttonSize = { lineHeight + 3.0f, lineHeight };
+
+			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.8f, 0.1f, 0.15f, 1.0f });
+			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.9f, 0.3f, 0.2f, 1.0f });
+			ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.8f, 0.1f, 0.15f, 1.0f });
+
+			if (ImGui::Button("X", buttonSize))
+				pos.x = 0.0f;
+			ImGui::PopStyleColor(3);
+
+			ImGui::SameLine();
+			ImGui::DragFloat("##X", &pos.x, 0.1f);
+			ImGui::PopItemWidth();
+			ImGui::SameLine();
+
+			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.2f, 0.7f, 0.2f, 1.0f });
+			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.3f, 0.8f, 0.3f, 1.0f });
+			ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.2f, 0.7f, 0.2f, 1.0f });
+
+			if (ImGui::Button("Y", buttonSize))
+				pos.y = 0.0f;
+			ImGui::PopStyleColor(3);
+
+			ImGui::SameLine();
+			ImGui::DragFloat("##Y", &pos.y, 0.1f);
+			ImGui::PopItemWidth();
+			ImGui::SameLine();
+
+			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.1f, 0.25f, 0.8f, 1.0f });
+			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.2f, 0.35f, 0.9f, 1.0f });
+			ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.1f, 0.25f, 0.8f, 1.0f });
+
+			if (ImGui::Button("Z", buttonSize))
+				pos.z = 0.0f;
+			ImGui::PopStyleColor(3);
+
+			ImGui::SameLine();
+			ImGui::DragFloat("##Z", &pos.z, 0.1f);
+			ImGui::PopItemWidth();
+			ImGui::Columns(1);
+			ImGui::PopStyleVar();
+			ImGui::PopID();
+
+			auto& scale = scales[pSelectedNode->GetId()];
+			ImGui::Columns(2);
+			ImGui::SetColumnWidth(0, 100);
+			ImGui::Text("Scale");
+			ImGui::PushID("Scale");
+			ImGui::NextColumn();
+			ImGui::PushMultiItemsWidths(3, ImGui::CalcItemWidth());
+			ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2{ 0, 0 });
+			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.8f, 0.1f, 0.15f, 1.0f });
+			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.9f, 0.3f, 0.2f, 1.0f });
+			ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.8f, 0.1f, 0.15f, 1.0f });
+
+			if (ImGui::Button("X", buttonSize))
+				scale.xscale = 1.0f;
+			ImGui::PopStyleColor(3);
+
+			ImGui::SameLine();
+			ImGui::DragFloat("##X", &scale.xscale, 0.1f, 0.1f);
+			ImGui::PopItemWidth();
+			ImGui::SameLine();
+
+			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.2f, 0.7f, 0.2f, 1.0f });
+			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.3f, 0.8f, 0.3f, 1.0f });
+			ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.2f, 0.7f, 0.2f, 1.0f });
+
+			if (ImGui::Button("Y", buttonSize))
+				scale.yscale = 1.0f;
+			ImGui::PopStyleColor(3);
+
+			ImGui::SameLine();
+			ImGui::DragFloat("##Y", &scale.yscale, 0.1f, 0.1f);
+			ImGui::PopItemWidth();
+			ImGui::SameLine();
+
+			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.1f, 0.25f, 0.8f, 1.0f });
+			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.2f, 0.35f, 0.9f, 1.0f });
+			ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.1f, 0.25f, 0.8f, 1.0f });
+
+			if (ImGui::Button("Z", buttonSize))
+				scale.zscale = 1.0f;
+			ImGui::PopStyleColor(3);
+
+			ImGui::SameLine();
+			ImGui::DragFloat("##Z", &scale.zscale, 0.1f, 0.1f);
+			ImGui::PopItemWidth();
+			ImGui::Columns(1);
+			ImGui::PopStyleVar();
+			ImGui::PopID();
+
+			ImGui::Columns(2);
+			ImGui::SetColumnWidth(0, 100);
+			ImGui::Text("Orientation");
+			ImGui::PushID("Orientation");
+			ImGui::NextColumn();
+			ImGui::PushMultiItemsWidths(3, ImGui::CalcItemWidth());
+			ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2{ 0, 0 });
+			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.8f, 0.1f, 0.15f, 1.0f });
+			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.9f, 0.3f, 0.2f, 1.0f });
+			ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.8f, 0.1f, 0.15f, 1.0f });
+
+			if (ImGui::Button("X", buttonSize))
+				pos.roll = 0.0f;
+			ImGui::PopStyleColor(3);
+
+			ImGui::SameLine();
+			ImGui::SliderAngle("##X", &pos.roll, -180.0f, 180.0f);
+			ImGui::PopItemWidth();
+			ImGui::SameLine();
+
+			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.2f, 0.7f, 0.2f, 1.0f });
+			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.3f, 0.8f, 0.3f, 1.0f });
+			ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.2f, 0.7f, 0.2f, 1.0f });
+
+			if (ImGui::Button("Y", buttonSize))
+				pos.pitch = 0.0f;
+			ImGui::PopStyleColor(3);
+
+			ImGui::SameLine();
+			ImGui::SliderAngle("##Y", &pos.pitch, -180.0f, 180.0f);
+			ImGui::PopItemWidth();
+			ImGui::SameLine();
+
+			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4{ 0.1f, 0.25f, 0.8f, 1.0f });
+			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.2f, 0.35f, 0.9f, 1.0f });
+			ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.1f, 0.25f, 0.8f, 1.0f });
+
+			if (ImGui::Button("Z", buttonSize))
+				pos.yaw = 0.0f;
+			ImGui::PopStyleColor(3);
+
+			ImGui::SameLine();
+			ImGui::SliderAngle("##Z", &pos.yaw, -180.0f, 180.0f);
+			ImGui::PopItemWidth();
+			ImGui::Columns(1);
+			ImGui::PopStyleVar();
+			ImGui::PopID();
+
+			if (ImGui::Button("Reset"))
+			{
+				pos.roll = 0.0f;
+				pos.pitch = 0.0f;
+				pos.yaw = 0.0f;
+
+				pos.x = 0.0f;
+				pos.y = 0.0f;
+				pos.z = 0.0f;
+
+				scale.xscale = 1.0f;
+				scale.yscale = 1.0f;
+				scale.zscale = 1.0f;
+			}
+			ImGui::End();
+		}
+	}
 }
+
+
+DirectX::XMMATRIX Model::GetTransform() const noexcept
+{
+	assert(pSelectedNode != nullptr);
+	const auto& transform = poses.at(pSelectedNode->GetId());
+	const auto& scale = scales.at(pSelectedNode->GetId());
+	return
+		DirectX::XMMatrixRotationRollPitchYaw(transform.roll, transform.pitch, transform.yaw) *
+		DirectX::XMMatrixTranslation(transform.x, transform.y, transform.z) *
+		DirectX::XMMatrixScaling(scale.xscale, scale.yscale, scale.zscale);
+}
+
+
+Node* Model::GetSelectedNode() const noexcept
+{
+	return pSelectedNode;
+}
+
+
+
 std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh)
 {
 	namespace dx = DirectX;
@@ -417,7 +425,7 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh)
 
 	struct PSMaterialConstant
 	{
-		DirectX::XMFLOAT3 color = { 0.6f,0.6f,0.8f };
+		DirectX::XMFLOAT3 color = { 0.7f,0.7f,0.7f };
 		float specularIntensity = 0.6f;
 		float specularPower = 30.0f;
 		float padding[3];
@@ -427,8 +435,17 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh)
 	return std::make_unique<Mesh>(gfx, std::move(bindablePtrs));
 }
 
+
+
 Model::~Model() noexcept
 {}
+
+int Model::GetId() const noexcept
+{
+	return id;
+}
+
+
 
 std::unique_ptr<Node> Model::ParseNode(int& nextId, const aiNode& node)
 {
@@ -450,6 +467,5 @@ std::unique_ptr<Node> Model::ParseNode(int& nextId, const aiNode& node)
 	{
 		pNode->AddChild(ParseNode(nextId, *node.mChildren[i]));
 	}
-
 	return pNode;
 }

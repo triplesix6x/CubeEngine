@@ -110,7 +110,6 @@ void Graphics::EndFrame()
 		ImGui::UpdatePlatformWindows();
 		ImGui::RenderPlatformWindowsDefault();
 	}
-
 	//Замена буфера свап чейна
 	HRESULT hResult;
 	if (FAILED(hResult = pSwap->Present(1u, 0u)))
@@ -127,7 +126,7 @@ void Graphics::EndFrame()
 }
 
 
-ImGuiID Graphics::ShowDocksape() noexcept
+std::vector<ImGuiID> Graphics::ShowDocksape(bool first_time) noexcept
 {
 		bool show = true;
 		ImGuiViewport* viewport = ImGui::GetMainViewport();
@@ -135,7 +134,7 @@ ImGuiID Graphics::ShowDocksape() noexcept
 		ImGui::SetNextWindowSize(viewport->Size);
 		ImGui::SetNextWindowViewport(viewport->ID);
 		ImGui::SetNextWindowBgAlpha(0.0f);
-
+		std::vector<ImGuiID> ids;
 		ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
 		window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
 		window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
@@ -146,11 +145,27 @@ ImGuiID Graphics::ShowDocksape() noexcept
 		ImGui::Begin("DockSpace Demo", &show, window_flags);
 		ImGui::PopStyleVar(3);
 		dockspace_id = ImGui::GetID("MyDockspace");
+		ids.push_back(dockspace_id);
 		ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_PassthruCentralNode;
 		ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
-		ImGui::End();
+		if (first_time)
+		{
+			ImGui::DockBuilderRemoveNode(dockspace_id);
+			ImGui::DockBuilderAddNode(dockspace_id, dockspace_flags | ImGuiDockNodeFlags_DockSpace);
+			ImGui::DockBuilderSetNodeSize(dockspace_id, viewport->Size);
+			auto dock_id_down = ImGui::DockBuilderSplitNode(dockspace_id, ImGuiDir_Down, 0.1f, nullptr, &dockspace_id);
+			auto dock_id_left = ImGui::DockBuilderSplitNode(dockspace_id, ImGuiDir_Left, 0.08f, nullptr, &dockspace_id);
+			auto dock_id_right = ImGui::DockBuilderSplitNode(dockspace_id, ImGuiDir_Right, 0.2f, nullptr, &dockspace_id);
+			ids.push_back(dock_id_down);
+			ids.push_back(dock_id_left);
+			ids.push_back(dock_id_right);
+			ImGui::DockBuilderDockWindow("Scene", dock_id_right);
+			ImGui::DockBuilderDockWindow("ToolBar", dock_id_left);
+			ImGui::DockBuilderFinish(dockspace_id);
 
-		return dockspace_id;
+		}
+		ImGui::End();
+		return ids;
 }
 
 
@@ -179,6 +194,12 @@ DirectX::XMMATRIX Graphics::GetProjection() const
 	return projection;
 }
 
+void Graphics::ClearScreen(float factor)
+{
+	const float color[] = { 1.0f, 0.0f, 0.0f, 0.1f};
+	pContext->ClearRenderTargetView(pTarget.Get(), color);
+}
+
 void Graphics::DrawGrid(DirectX::XMFLOAT3 camPos) noexcept
 {
 	std::unique_ptr<DirectX::CommonStates> m_states;
@@ -189,7 +210,7 @@ void Graphics::DrawGrid(DirectX::XMFLOAT3 camPos) noexcept
 
 	CD3D11_RASTERIZER_DESC rastDesc(D3D11_FILL_SOLID, D3D11_CULL_NONE, FALSE,
 		D3D11_DEFAULT_DEPTH_BIAS, D3D11_DEFAULT_DEPTH_BIAS_CLAMP,
-		D3D11_DEFAULT_SLOPE_SCALED_DEPTH_BIAS, TRUE, FALSE, FALSE, TRUE);
+		D3D11_DEFAULT_SLOPE_SCALED_DEPTH_BIAS, TRUE, FALSE, FALSE, FALSE);
 
 	pDevice->CreateRasterizerState(&rastDesc, m_raster.ReleaseAndGetAddressOf());
 
@@ -224,8 +245,8 @@ void Graphics::DrawGrid(DirectX::XMFLOAT3 camPos) noexcept
 
 		DirectX::SimpleMath::Vector3 scale = xaxis * fPercent + origin;
 
-		DirectX::VertexPositionColor v1(scale - zaxis, DirectX::Colors::LightGray);
-		DirectX::VertexPositionColor v2(scale + zaxis, DirectX::Colors::LightGray);
+		DirectX::VertexPositionColor v1(scale - zaxis, DirectX::Colors::SlateGray);
+		DirectX::VertexPositionColor v2(scale + zaxis, DirectX::Colors::SlateGray);
 		m_batch->DrawLine(v1, v2);
 	}
 
@@ -236,8 +257,8 @@ void Graphics::DrawGrid(DirectX::XMFLOAT3 camPos) noexcept
 
 		DirectX::SimpleMath::Vector3 scale = zaxis * fPercent + origin;
 
-		DirectX::VertexPositionColor v1(scale - xaxis, DirectX::Colors::LightGray);
-		DirectX::VertexPositionColor v2(scale + xaxis, DirectX::Colors::LightGray);
+		DirectX::VertexPositionColor v1(scale - xaxis, DirectX::Colors::SlateGray);
+		DirectX::VertexPositionColor v2(scale + xaxis, DirectX::Colors::SlateGray);
 		m_batch->DrawLine(v1, v2);
 	}
 

@@ -42,15 +42,36 @@ private:
 class Model
 {
 public:
-	Model(Graphics& gfx, const std::string fileName);
+	Model(Graphics& gfx, const std::string fileName, int id=0, const char* modelName = "Unnamed Object");
 	void Draw(Graphics& gfx) const;
-	void ShowWindow(const char* windowName = nullptr) noexcept;
+	void ShowWindow(Model* pSelectedModel) noexcept;
 	~Model() noexcept;
+	int GetId() const noexcept;
+	std::string modelName;
 private:
+	DirectX::XMMATRIX GetTransform() const noexcept;
+	Node* GetSelectedNode() const noexcept;
 	static std::unique_ptr<Mesh> ParseMesh(Graphics& gfx, const aiMesh& mesh);
 	std::unique_ptr<Node> ParseNode(int& nextId, const aiNode& node);
-private:
 	std::unique_ptr<Node> pRoot;
 	std::vector<std::unique_ptr<Mesh>> meshPtrs;
-	std::unique_ptr<class ModelWindow> pWindow;
+	Node* pSelectedNode;
+	int id;
+	struct TransformParameters
+	{
+		float roll = 0.0f;
+		float pitch = 0.0f;
+		float yaw = 0.0f;
+		float x = 0.0f;
+		float y = 0.0f;
+		float z = 0.0f;
+	};
+	std::unordered_map<int, TransformParameters> poses;
+	struct ScaleParameters
+	{
+		float xscale = 1.0f;
+		float yscale = 1.0f;
+		float zscale = 1.0f;
+	};
+	std::unordered_map<int, ScaleParameters> scales;
 };

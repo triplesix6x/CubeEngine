@@ -50,10 +50,10 @@ public:
 	void SetTexture(ID3D11ShaderResourceView** tv, const wchar_t* file);
 	DirectX::XMMATRIX GetCamera() const noexcept;
 	DirectX::XMMATRIX GetProjection() const;
-
+	void ClearScreen(float factor);
 	void DrawGrid(DirectX::XMFLOAT3 camPos) noexcept;
 
-	ImGuiID ShowDocksape() noexcept;
+	std::vector<ImGuiID> ShowDocksape(bool first_time) noexcept;
 	void SetupRenderTarget() noexcept;
 	void CleanupRenderTarget() noexcept;
 	void CreateViewport(float x, float y, float topx, float topy) noexcept;
@@ -61,6 +61,7 @@ public:
 	void DisableImgui() noexcept;
 	void Resize(UINT width, UINT height) noexcept;
 	bool IsImguiEnabled() const noexcept;
+
 private:
 	bool imguiEnabled = true;
 	DirectX::XMMATRIX projection;
