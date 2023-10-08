@@ -1,7 +1,7 @@
-[01:22:55] CUBE_ENGINE: Initialized Log.
-[01:22:55] CUBE_ENGINE: Window was shown.
-[01:22:55] CUBE_ENGINE: ImGui Win32 was initialized.
-[01:22:55] CUBE_ENGINE: D3D was initialized.
-[01:22:55] CUBE_ENGINE: ImGui DX11 was initialized.
-[01:22:55] CUBE_ENGINE: Window was created.
-[01:23:18] CUBE_ENGINE: Window was closed.
+[02:27:40] CUBE_ENGINE: Initialized Log.
+[02:27:40] CUBE_ENGINE: Window was shown.
+[02:27:40] CUBE_ENGINE: ImGui Win32 was initialized.
+[02:27:40] CUBE_ENGINE: D3D was initialized.
+[02:27:40] CUBE_ENGINE: ImGui DX11 was initialized.
+[02:27:40] CUBE_ENGINE: Window was created.
+[02:29:56] CUBE_ENGINE: Window was closed.

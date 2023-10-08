@@ -309,7 +309,7 @@ namespace Cube
 					ofn.nFilterIndex = 1;
 					ofn.nMaxFileTitle = 0;
 					ofn.lpstrInitialDir = L"";
-					ofn.Flags = OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST | OFN_EXPLORER;
+					ofn.Flags = OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST | OFN_EXPLORER | OFN_NOCHANGEDIR;
 					if (GetOpenFileName(&ofn))
 					{
 						std::wstring name(fname);
