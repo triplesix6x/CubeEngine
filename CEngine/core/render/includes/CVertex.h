@@ -45,7 +45,7 @@ namespace CubeR
 		{
 			using SysType = DirectX::XMFLOAT2;
 			static constexpr DXGI_FORMAT dxgiFormat = DXGI_FORMAT_R32G32_FLOAT;
-			static constexpr const char* semantic = "Texcoord";
+			static constexpr const char* semantic = "TexCoord";
 		};
 		template<> struct Map<Normal>
 		{

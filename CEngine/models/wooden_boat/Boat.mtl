@@ -1,0 +1,128 @@
+# Blender MTL File: 'Wooden boat.blend'
+# Material Count: 9
+
+newmtl bench_1
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Bump bench 1_Normal.png
+map_Kd bench 1_Base_color.png
+map_Ns bench 1_Roughness.png
+refl bench 1_Metallic.png
+
+newmtl bench_2
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Bump bench 2_Normal.png
+map_Kd bench 2_Base_color.png
+map_Ns bench 2_Roughness.png
+refl bench 2_Metallic.png
+
+newmtl bench_3
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Bump bench 3_Normal.png
+map_Kd bench 3_Base_color.png
+map_Ns bench 3_Roughness.png
+refl bench 3_Metallic.png
+
+newmtl board
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Bump board_Normal_OpenGL.png
+map_Kd board_Base_color.png
+map_Ns board_Roughness.png
+refl board_Metallic.png
+
+newmtl body_1
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Bump body 1_Normal.png
+map_Kd body 1_Base_color.png
+map_Ns body 1_Roughness.png
+refl body 1_Metallic.png
+
+newmtl body_2
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Bump body 2_Normal.png
+map_Kd body 2_Base_color.png
+map_Ns body 2_Roughness.png
+refl body 2_Metallic.png
+
+newmtl bottom
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Bump bottom_Normal.png
+map_Kd bottom_Base_color.png
+map_Ns bottom_Roughness.png
+refl bottom_Metallic.png
+
+newmtl paddle_
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Bump paddle 1_Normal.png
+map_Kd paddle 1_Base_color.png
+map_Ns paddle 1_Roughness.png
+refl paddle 1_Metallic.png
+
+newmtl the_bow_of_the_boat
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Bump the bow of the boat_Normal.png
+map_Kd the bow of the boat_Base_color.png
+map_Ns the bow of the boat_Roughness.png
+refl the bow of the boat_Metallic.png

@@ -53,7 +53,7 @@ public:
 	void ClearScreen(float factor);
 	void DrawGrid(DirectX::XMFLOAT3 camPos) noexcept;
 
-	std::vector<ImGuiID> ShowDocksape(bool first_time) noexcept;
+	ImGuiID ShowDocksape() noexcept;
 	void SetupRenderTarget() noexcept;
 	void CleanupRenderTarget() noexcept;
 	void CreateViewport(float x, float y, float topx, float topy) noexcept;

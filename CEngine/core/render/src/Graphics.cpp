@@ -126,7 +126,7 @@ void Graphics::EndFrame()
 }
 
 
-std::vector<ImGuiID> Graphics::ShowDocksape(bool first_time) noexcept
+ImGuiID Graphics::ShowDocksape() noexcept
 {
 		bool show = true;
 		ImGuiViewport* viewport = ImGui::GetMainViewport();
@@ -134,7 +134,6 @@ std::vector<ImGuiID> Graphics::ShowDocksape(bool first_time) noexcept
 		ImGui::SetNextWindowSize(viewport->Size);
 		ImGui::SetNextWindowViewport(viewport->ID);
 		ImGui::SetNextWindowBgAlpha(0.0f);
-		std::vector<ImGuiID> ids;
 		ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
 		window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
 		window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
@@ -145,27 +144,25 @@ std::vector<ImGuiID> Graphics::ShowDocksape(bool first_time) noexcept
 		ImGui::Begin("DockSpace Demo", &show, window_flags);
 		ImGui::PopStyleVar(3);
 		dockspace_id = ImGui::GetID("MyDockspace");
-		ids.push_back(dockspace_id);
 		ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_PassthruCentralNode;
 		ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
+		static bool first_time = true;
 		if (first_time)
 		{
+			first_time = false;
 			ImGui::DockBuilderRemoveNode(dockspace_id);
 			ImGui::DockBuilderAddNode(dockspace_id, dockspace_flags | ImGuiDockNodeFlags_DockSpace);
 			ImGui::DockBuilderSetNodeSize(dockspace_id, viewport->Size);
-			auto dock_id_down = ImGui::DockBuilderSplitNode(dockspace_id, ImGuiDir_Down, 0.1f, nullptr, &dockspace_id);
-			auto dock_id_left = ImGui::DockBuilderSplitNode(dockspace_id, ImGuiDir_Left, 0.08f, nullptr, &dockspace_id);
-			auto dock_id_right = ImGui::DockBuilderSplitNode(dockspace_id, ImGuiDir_Right, 0.2f, nullptr, &dockspace_id);
-			ids.push_back(dock_id_down);
-			ids.push_back(dock_id_left);
-			ids.push_back(dock_id_right);
+			ImGuiID dock_id_down = ImGui::DockBuilderSplitNode(dockspace_id, ImGuiDir_Down, 0.1f, nullptr, &dockspace_id);
+			ImGuiID dock_id_left = ImGui::DockBuilderSplitNode(dockspace_id, ImGuiDir_Left, 0.08f, nullptr, &dockspace_id);
+			ImGuiID dock_id_right = ImGui::DockBuilderSplitNode(dockspace_id, ImGuiDir_Right, 0.2f, nullptr, &dockspace_id);
 			ImGui::DockBuilderDockWindow("Scene", dock_id_right);
 			ImGui::DockBuilderDockWindow("ToolBar", dock_id_left);
 			ImGui::DockBuilderFinish(dockspace_id);
 
 		}
 		ImGui::End();
-		return ids;
+		return dockspace_id;
 }
 
 

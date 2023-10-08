@@ -297,6 +297,9 @@
     <FxCompile Include="core\shader\PhongPS.hlsl" />
     <FxCompile Include="core\shader\SkyBoxPS.hlsl" />
     <FxCompile Include="core\shader\SkyBoxVS.hlsl" />
+    <FxCompile Include="core\shader\NoTexPhongVS.hlsl" />
+    <FxCompile Include="core\shader\NoTexPhongPS.hlsl" />
+    <FxCompile Include="core\shader\PhongSpecPS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

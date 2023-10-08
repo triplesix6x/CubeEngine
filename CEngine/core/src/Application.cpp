@@ -19,18 +19,10 @@ namespace Cube
 {
 	Application::Application(int width, int height) : m_Window(width, height), light(m_Window.Gfx()), skybox(std::make_unique<SkyBox>(m_Window.Gfx(), L"textures\\skyboxmain.dds"))
 	{
-		start = std::chrono::steady_clock::now();
-		models.push_back(std::make_unique<Model>(m_Window.Gfx(), "models\\cube.obj", models.size(), "Cube"));
+		models.push_back(std::make_unique<Model>(m_Window.Gfx(), "models\\cube.obj", id, false, "Cube"));
+		++id;
 
-		wchar_t path[260];
-		GetModuleFileName(NULL, path, 260);
-		int len = wcslen(path);
-		for (int i = 1; i < 15; ++i)
-		{
-			path[len - i] = '\0';
-		}
-		m_Window.Gfx().SetTexture(&pCubeIco, wcscat(path, L"icons\\cubeico2.png"));
-		ZeroMemory(path, sizeof(path));
+		m_Window.Gfx().SetTexture(&pCubeIco, L"icons\\cubeico2.png");
 	}
 
 	Application::~Application()
@@ -99,28 +91,19 @@ namespace Cube
 
 		m_Window.Gfx().ClearBuffer(0.07f, 0.07f, 0.07f);		//Очистка текущего буфера свап чейна
 		m_Window.Gfx().SetCamera(cam.GetMatrix());
-		static bool first_time = true;
-		if (first_time)
-		{
-			nodes = m_Window.Gfx().ShowDocksape(first_time);
-			ImGuiID did = nodes[0];
-			ImGuiDockNode* node = ImGui::DockBuilderGetCentralNode(did);
-			m_Window.Gfx().CreateViewport(node->Size.x, node->Size.y, node->Pos.x, node->Pos.y);
-			m_Window.Gfx().SetProjection(DirectX::XMMatrixPerspectiveFovLH(to_rad(75.0f), node->Size.x / node->Size.y, 0.5f, 150.0f));
-			first_time = false;
-		}
-		else
-		{
-			ImGuiID did = m_Window.Gfx().ShowDocksape(first_time)[0];
-			ImGuiDockNode* node = ImGui::DockBuilderGetCentralNode(did);
-			m_Window.Gfx().CreateViewport(node->Size.x, node->Size.y, node->Pos.x, node->Pos.y);
-			m_Window.Gfx().SetProjection(DirectX::XMMatrixPerspectiveFovLH(to_rad(75.0f), node->Size.x / node->Size.y, 0.5f, 150.0f));
-		}
+
+		ImGuiID did = m_Window.Gfx().ShowDocksape();
+		ImGuiDockNode* node = ImGui::DockBuilderGetCentralNode(did);
+		m_Window.Gfx().CreateViewport(node->Size.x, node->Size.y, node->Pos.x, node->Pos.y);
+		m_Window.Gfx().SetProjection(DirectX::XMMatrixPerspectiveFovLH(to_rad(75.0f), node->Size.x / node->Size.y, 0.01f, 150.0f));
+
 		ShowMenuBar();
+
 		if (skybox)
 		{
 			skybox->Draw(m_Window.Gfx());
 		}
+
 		light.Bind(m_Window.Gfx(), cam.GetMatrix());
 	
 
@@ -149,7 +132,7 @@ namespace Cube
 
 		ImGuiID dockspace_id = ImGui::GetID("DockSpace");
 		ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), ImGuiDockNodeFlags_NoTabBar);
-		static auto first_time = true;
+		static bool first_time = true;
 		if (first_time) {
 			first_time = false;
 			ImGui::DockBuilderRemoveNode(dockspace_id);
@@ -157,8 +140,8 @@ namespace Cube
 			ImGui::DockBuilderSetNodePos(dockspace_id, ImGui::GetWindowPos());
 			ImGui::DockBuilderSetNodeSize(dockspace_id, ImGui::GetWindowSize());
 
-			auto dock_id_up = ImGui::DockBuilderSplitNode(dockspace_id, ImGuiDir_Up, 0.8f, nullptr, &dockspace_id);
-			auto dock_id_down = ImGui::DockBuilderSplitNode(dockspace_id, ImGuiDir_Down, 0.2f, nullptr, &dockspace_id);
+			ImGuiID dock_id_up = ImGui::DockBuilderSplitNode(dockspace_id, ImGuiDir_Up, 0.8f, nullptr, &dockspace_id);
+			ImGuiID dock_id_down = ImGui::DockBuilderSplitNode(dockspace_id, ImGuiDir_Down, 0.2f, nullptr, &dockspace_id);
 			ImGui::DockBuilderDockWindow("Objects", dock_id_up);
 			ImGui::DockBuilderDockWindow("Proprieties", dock_id_down);
 
@@ -167,9 +150,13 @@ namespace Cube
 		ImGui::Begin("Objects");
 		if (ImGui::BeginPopupContextWindow())
 		{
-			if (ImGui::MenuItem("Add object from file..."))
+			if (ImGui::MenuItem("Add textured object from file..."))
 			{
-				AddObj();
+				AddObj(true);
+			}
+			if (ImGui::MenuItem("Add non-textured object from file..."))
+			{
+				AddObj(false);
 			}
 			if (models.size() != 0)
 			{
@@ -182,13 +169,16 @@ namespace Cube
 					}
 				}
 			}
+			if (ImGui::MenuItem("Clear Scene"))
+			{
+				models.clear();
+			}
 			ImGui::EndPopup();
 		}
 		for (int i = 0; i < models.size(); ++i)
 		{
 			const int selectedId = (pSelectedModel == nullptr) ? -1 : pSelectedModel->GetId();
-			const auto node_flags = ((models[i]->GetId() == selectedId) ? ImGuiTreeNodeFlags_Selected : 0) | ImGuiTreeNodeFlags_OpenOnArrow;
-			bool expanded = ImGui::TreeNodeEx((void*)(intptr_t)models[i]->GetId(), node_flags, models[i]->modelName.c_str());
+			bool expanded = ImGui::TreeNodeEx((void*)(intptr_t)models[i]->GetId(), 0, models[i]->modelName.c_str());
 			if (ImGui::IsItemClicked())
 			{
 				pSelectedModel = models[i].get();
@@ -241,9 +231,13 @@ namespace Cube
 				ImGui::EndMenu();
 			}
 			if (ImGui::BeginMenu("Scene")) {
-				if (ImGui::MenuItem("Add object from file..."))
+				if (ImGui::MenuItem("Add textured object from file..."))
 				{
-					AddObj();
+					AddObj(true);
+				}
+				if (ImGui::MenuItem("Add non-textured object from file..."))
+				{
+					AddObj(false);
 				}
 				if (models.size() != 0)
 				{
@@ -255,6 +249,10 @@ namespace Cube
 							models.erase(models.begin() + i);
 						}
 					}
+				}
+				if (ImGui::MenuItem("Clear Scene"))
+				{
+					models.clear();
 				}
 				ImGui::EndMenu();
 			}
@@ -277,7 +275,7 @@ namespace Cube
 				}
 				ImGui::EndMenu();
 			}
-			/*if (ImGui::BeginMenu("Skybox")) {
+			if (ImGui::BeginMenu("Skybox")) {
 				if (ImGui::MenuItem("Set Skybox 1"))
 				{
 					skybox.release();
@@ -330,7 +328,7 @@ namespace Cube
 					}
 				}
 				ImGui::EndMenu();
-			}*/
+			}
 			ImGui::EndMainMenuBar();
 		}
 	}
@@ -347,32 +345,39 @@ namespace Cube
 		ImGui::End();
 	}
 
-	void Application::AddObj()
+	void Application::AddObj(bool istextured)
 	{
-		wchar_t fname[260];
-		OPENFILENAME ofn;
+		char cname[260];
+		OPENFILENAMEA ofn;
 		ZeroMemory(&ofn, sizeof(ofn));
 		ofn.lStructSize = sizeof(ofn);
 		ofn.hwndOwner = NULL;
-		ofn.lpstrFile = fname;
+		ofn.lpstrFile = cname;
 		ofn.lpstrFile[0] = '\0';
-		ofn.nMaxFile = sizeof(fname);
-		ofn.lpstrFilter = L"OBJ files(*.obj)\0*.obj\0GLTF files(*.gltf)\0*.gltf\0\0";
+		ofn.nMaxFile = sizeof(cname);
+		ofn.lpstrFilter = "OBJ files(*.obj)\0*.obj\0GLTF files(*.gltf)\0*.gltf\0\0";
 		ofn.lpstrFileTitle = NULL;
 		ofn.nFilterIndex = 1;
 		ofn.nMaxFileTitle = 0;
-		ofn.lpstrInitialDir = L"";
-		ofn.Flags = OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST | OFN_EXPLORER;
-		if (GetOpenFileName(&ofn))
+		ofn.lpstrInitialDir = "";
+		ofn.Flags = OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST | OFN_EXPLORER | OFN_NOCHANGEDIR;
+		if (GetOpenFileNameA(&ofn))
 		{
-			char cname[260];
-			WideCharToMultiByte(CP_UTF8, 0, fname, -1, cname, 260, NULL, NULL);
 			std::string nname(cname);
 			auto x = strtok(cname, ".");
 			x = strtok(NULL, ".");
 			if (strcmp(x, "obj") == 0 or strcmp(x, "gltf") == 0)
 			{
-				models.push_back(std::make_unique<Model>(m_Window.Gfx(), nname, models.size()));
+				if (istextured)
+				{
+					models.push_back(std::make_unique<Model>(m_Window.Gfx(), nname, id, true));
+					++id;
+				}
+				else
+				{
+					models.push_back(std::make_unique<Model>(m_Window.Gfx(), nname, id, false));
+					++id;
+				}
 			}
 			else
 			{
@@ -383,19 +388,13 @@ namespace Cube
 
 	void Application::AddCube()
 	{
-		char bpath[260];
-		GetModuleFileNameA(NULL, bpath, 260);
-		int blen = strlen(bpath);
-		for (int i = 1; i < 15; ++i)
-		{
-			bpath[blen - i] = '\0';
-		}
 
 		ImGui::Image((void*)pCubeIco, ImVec2{ 24.0f, 24.0f });
 		ImGui::SameLine();
 		if (ImGui::Button("Add Cube"))
-			models.push_back(std::make_unique<Model>(m_Window.Gfx(), strcat(bpath, "models\\cube.obj"), models.size(), "Cube"));
-
-		ZeroMemory(bpath, sizeof(bpath));
+		{
+			models.push_back(std::make_unique<Model>(m_Window.Gfx(), "models\\cube.obj", id, false, "Cube"));
+			++id;
+		}
 	}
 }

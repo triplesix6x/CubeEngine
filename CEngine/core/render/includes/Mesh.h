@@ -42,7 +42,7 @@ private:
 class Model
 {
 public:
-	Model(Graphics& gfx, const std::string fileName, int id=0, const char* modelName = "Unnamed Object");
+	Model(Graphics& gfx, const std::string fileName, int id=0, bool istextured=false, const char* modelName = "Unnamed Object");
 	void Draw(Graphics& gfx) const;
 	void ShowWindow(Model* pSelectedModel) noexcept;
 	~Model() noexcept;
@@ -51,7 +51,7 @@ public:
 private:
 	DirectX::XMMATRIX GetTransform() const noexcept;
 	Node* GetSelectedNode() const noexcept;
-	static std::unique_ptr<Mesh> ParseMesh(Graphics& gfx, const aiMesh& mesh);
+	static std::unique_ptr<Mesh> ParseMesh(Graphics& gfx, const aiMesh& mesh, const aiMaterial *const *pMaterials, bool istextured, std::string fileName, std::string modelName);
 	std::unique_ptr<Node> ParseNode(int& nextId, const aiNode& node);
 	std::unique_ptr<Node> pRoot;
 	std::vector<std::unique_ptr<Mesh>> meshPtrs;

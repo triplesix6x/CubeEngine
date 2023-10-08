@@ -20,7 +20,7 @@ namespace Cube
 		void ShowSceneWindow();
 		void ShowMenuBar();
 
-		void AddObj();
+		void AddObj(bool istextured);
 		void AddCube();
 
 		void ShowToolBar();
@@ -28,16 +28,14 @@ namespace Cube
 	private:
 		void doFrame();					//функция отрисовки одного кадра
 		ImguiManager imgui;
-		Camera cam;
 		Window m_Window;
+		Timer timer;
+		Camera cam;
 		PointLight light;
 		std::vector<std::unique_ptr<Model>> models;
 		ID3D11ShaderResourceView* pCubeIco = nullptr;
 		std::unique_ptr<SkyBox> skybox;
-		Timer timer;
-		std::vector<ImGuiID> nodes;
 		Model* pSelectedModel;
-		std::chrono::steady_clock::time_point start;
-		wchar_t path[260];
+		int id = 0;
 	};
 }
