@@ -3,6 +3,7 @@
 #include <unordered_map>
 #include <libloaderapi.h>
 
+
 std::string operator-(std::string source, const std::string& target)
 {
 	for
@@ -26,7 +27,6 @@ Mesh::Mesh(Graphics& gfx, std::vector<std::unique_ptr<Bindable>> bindPtrs)
 	if (!IsStaticInitialized())
 	{
 		AddStaticBind(std::make_unique<Topology>(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
-		AddStaticBind(std::make_unique<Rasterizer>(gfx, false));
 		AddStaticBind(std::make_unique<DepthStencil>(gfx, false));
 	}
 
@@ -146,7 +146,7 @@ Model::Model(Graphics& gfx, const std::string fileName, int id, bool istextured,
 	modelName(modelName), id(id)
 {
 	Assimp::Importer imp;
-	const auto pScene = imp.ReadFile(fileName.c_str(), aiProcess_Triangulate | aiProcess_JoinIdenticalVertices);
+	const auto pScene = imp.ReadFile(fileName.c_str(), aiProcess_Triangulate | aiProcess_JoinIdenticalVertices | aiProcess_ConvertToLeftHanded | aiProcess_GenNormals);
 	if (pScene == NULL)
 	{
 		MessageBoxA(nullptr, imp.GetErrorString(), "Standart Exception", MB_OK | MB_ICONEXCLAMATION);
@@ -428,7 +428,7 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh, const 
 			{
 				bindablePtrs.push_back(std::make_unique<Texture>(gfx, dir + texFileName.C_Str()));
 			}
-			bindablePtrs.push_back(std::make_unique<Sampler>(gfx));
+
 
 			if (material.GetTexture(aiTextureType_SPECULAR, 0, &texFileName) == aiReturn_SUCCESS)
 			{
@@ -439,6 +439,7 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh, const 
 			{
 				material.Get(AI_MATKEY_SHININESS, shine);
 			}
+			bindablePtrs.push_back(std::make_unique<Sampler>(gfx));
 		}
 
 		bindablePtrs.push_back(std::make_unique<VertexBuffer>(gfx, vbuf));
@@ -464,7 +465,7 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh, const 
 
 			struct PSMaterialConstant
 			{
-				float specularIntensity = 1.6f;
+				float specularIntensity = 0.8f;
 				float specularPower;
 				float padding[2];
 			} pmc;
@@ -510,25 +511,12 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh, const 
 
 		bindablePtrs.push_back(std::make_unique<IndexBuffer>(gfx, indices));
 
-		wchar_t path[260];
-		GetModuleFileName(NULL, path, 260);
-		int len = wcslen(path);
-		for (int i = 1; i < 15; ++i)
-		{
-			path[len - i] = '\0';
-		}
-		auto pvs = std::make_unique<VertexShader>(gfx, wcscat(path, L"shaders\\NoTexPhongVS.cso"));
+		auto pvs = std::make_unique<VertexShader>(gfx, L"shaders\\NoTexPhongVS.cso");
 
 		auto pvsbc = pvs->GetBytecode();
 		bindablePtrs.push_back(std::move(pvs));
-		wchar_t bpath[260];
-		GetModuleFileName(NULL, bpath, 260);
-		int blen = wcslen(bpath);
-		for (int i = 1; i < 15; ++i)
-		{
-			bpath[blen - i] = '\0';
-		}
-		bindablePtrs.push_back(std::make_unique<PixelShader>(gfx, wcscat(bpath, L"shaders\\NoTexPhongPS.cso")));
+
+		bindablePtrs.push_back(std::make_unique<PixelShader>(gfx, L"shaders\\NoTexPhongPS.cso"));
 
 		bindablePtrs.push_back(std::make_unique<InputLayout>(gfx, vbuf.GetLayout().GetD3DLayout(), pvsbc));
 

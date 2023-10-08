@@ -14,7 +14,7 @@ DepthStencil::DepthStencil(Graphics& gfx, bool skybox)
 		dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
 		dsDesc.StencilEnable = TRUE;
 		dsDesc.StencilWriteMask = 0xFF;
-		dsDesc.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+		dsDesc.FrontFace.StencilFunc = D3D11_COMPARISON_NEVER;
 		dsDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_REPLACE;
 	}
 	GetDevice(gfx)->CreateDepthStencilState(&dsDesc, &pDss);

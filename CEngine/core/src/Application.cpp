@@ -14,7 +14,6 @@
 #include <chrono>
 
 
-
 namespace Cube
 {
 	Application::Application(int width, int height) : m_Window(width, height), light(m_Window.Gfx()), skybox(std::make_unique<SkyBox>(m_Window.Gfx(), L"textures\\skyboxmain.dds"))

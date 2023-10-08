@@ -9,8 +9,9 @@ Texture::Texture(Graphics& gfx, const std::string name, unsigned int slot) : slo
 {
 	std::wstring wname = std::wstring(name.begin(), name.end());
 
-	DirectX::CreateWICTextureFromFile(gfx.pDevice.Get(), gfx.pContext.Get(), wname.c_str(), nullptr, pTextureView.GetAddressOf());
+	DirectX::CreateWICTextureFromFileEx(gfx.pDevice.Get(), gfx.pContext.Get(), wname.c_str(), 0, D3D11_USAGE_DEFAULT, D3D11_BIND_SHADER_RESOURCE, 0, D3D11_RESOURCE_DIMENSION_TEXTURE2D, DirectX::DX11::WIC_LOADER_FORCE_RGBA32, nullptr, pTextureView.GetAddressOf());
 }
+
 
 void Texture::Bind(Graphics& gfx) noexcept
 {
