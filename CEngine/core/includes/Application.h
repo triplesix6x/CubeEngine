@@ -14,7 +14,7 @@ namespace Cube
 	class Application
 	{
 	public:
-		Application(int width, int height);
+		Application(int width, int height, WindowType type);
 		virtual ~Application();
 		int run();
 		void ShowSceneWindow();
@@ -36,6 +36,7 @@ namespace Cube
 		ID3D11ShaderResourceView* pCubeIco = nullptr;
 		std::unique_ptr<SkyBox> skybox;
 		Model* pSelectedModel;
+		bool drawGrid = true;
 		int id = 0;
 	};
 }

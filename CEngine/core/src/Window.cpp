@@ -6,6 +6,7 @@
 #include "../../imgui/imgui.h"
 #include "../../imgui/imgui_impl_win32.h"
 
+
 namespace Cube
 {
 	Window::WindowClass Window::WindowClass::wndClass;
@@ -14,7 +15,7 @@ namespace Cube
 		//Создание и настройка дескриптора класса окна
 		WNDCLASSEX wc = { 0 };
 		wc.cbSize = sizeof(wc);
-		wc.style = CS_OWNDC;
+		wc.style = CS_HREDRAW | CS_VREDRAW;
 		wc.lpfnWndProc = HandleMessageSetup;
 		wc.cbClsExtra = 0;
 		wc.cbWndExtra = 0;
@@ -45,7 +46,7 @@ namespace Cube
 		return wndClass.hInst;
 	}
 
-	Window::Window(int width, int height) : width(width), height(height)
+	Window::Window(int width, int height, WindowType type) : width(width), height(height), type(type)
 	{
 		//Создание и настройка окна
 		RECT wr;
@@ -53,7 +54,7 @@ namespace Cube
 		wr.top = 0;
 		wr.right = width;
 		wr.bottom = height;
-		if (AdjustWindowRect(&wr, WindowType::FULL, FALSE) == 0)
+		if (AdjustWindowRect(&wr, type, FALSE) == 0)
 		{
 			throw CUBE_LAST_EXCEPTION();
 		};
@@ -62,9 +63,9 @@ namespace Cube
 		const HWND hDesktop = GetDesktopWindow();
 		GetWindowRect(hDesktop, &desktop);
 
-		hwnd = CreateWindowEx(0, WindowClass::getName(), L"Cube Engine", WindowType::FULL,
+		hwnd = CreateWindowEx(0, WindowClass::getName(), L"Cube Engine", type,
 			((desktop.right / 2) - (width / 2)), ((desktop.bottom / 2) - (height / 2)),
-			wr.right, wr.bottom - 50, nullptr, nullptr, WindowClass::getInstance(), this);
+			wr.right - 50, wr.bottom - 50, nullptr, nullptr, WindowClass::getInstance(), this);
 		if (hwnd == nullptr)
 		{
 			throw CUBE_LAST_EXCEPTION();
@@ -153,6 +154,17 @@ namespace Cube
 		DestroyWindow(hwnd);
 	}
 	
+	static bool win32_window_is_maximized(HWND handle) 
+	{
+		WINDOWPLACEMENT placement = { 0 };
+		placement.length = sizeof(WINDOWPLACEMENT);
+		if (GetWindowPlacement(handle, &placement)) 
+		{
+			return placement.showCmd == SW_SHOWMAXIMIZED;
+		}
+		return false;
+	}
+
 	//Ниже - обработка исключений окна
 	Window::Exception::Exception(int line, const char* file, HRESULT hResult) : CubeException(line, file), hResult(hResult)
 	{
@@ -282,8 +294,8 @@ namespace Cube
 				break;
 			}
 			const POINTS pt = MAKEPOINTS(lParam);
-			if(pt.x >= 0 && pt.x < width && pt.y >= 0 && pt.y < height)
-			{ 
+			if (pt.x >= 0 && pt.x < width && pt.y >= 0 && pt.y < height)
+			{
 				mouse.OnMouseMove(pt.x, pt.y);
 				if (!mouse.IsInWindow())
 				{
@@ -303,7 +315,7 @@ namespace Cube
 					mouse.OnMouseLeave();
 				}
 			}
-			
+
 			break;
 		}
 		case WM_LBUTTONDOWN:
@@ -397,6 +409,19 @@ namespace Cube
 			kbd.ClearState();
 			break;
 		case WM_SIZE:
+			if (wParam == SIZE_MINIMIZED)
+				return 0;
+			if (wParam == SIZE_MAXIMIZED) 
+			{
+				if (type == CUSTOM) 
+				{
+					if (pGfx) 
+					{
+						Gfx().Resize(GetSystemMetrics(SM_CXSCREEN), GetSystemMetrics(SM_CYSCREEN));
+					}
+					return 0;
+				}
+			}
 			if (pGfx)
 			{
 				Gfx().Resize((UINT)LOWORD(lParam), (UINT)HIWORD(lParam));
@@ -419,11 +444,107 @@ namespace Cube
 			}
 			break;
 		}
-		case WM_CLOSE:
-			CUBE_CORE_INFO("Window was closed.");
-			PostQuitMessage(0);
-			return 0;
-		}
+			case WM_NCCALCSIZE:
+			{
+				if (type != CUSTOM)
+				{
+					return DefWindowProc(handle(), message, wParam, lParam);
+				}
+				const int resizeBorderX = GetSystemMetrics(SM_CXFRAME);
+				const int resizeBorderY = GetSystemMetrics(SM_CYFRAME);
+				int padding = GetSystemMetrics(SM_CXPADDEDBORDER);
+				NCCALCSIZE_PARAMS* params = (NCCALCSIZE_PARAMS*)lParam;
+				RECT* reqClientRect = params->rgrc;
+
+				reqClientRect->right -= resizeBorderX + padding - 1;
+				reqClientRect->left += resizeBorderX + padding - 1;
+				reqClientRect->bottom -= resizeBorderY + padding - 1;
+				if (win32_window_is_maximized(handle()))
+				{
+					reqClientRect->top += padding;
+				}
+				else
+				{
+					reqClientRect->top += 1;
+				}
+				return WVR_ALIGNTOP | WVR_ALIGNLEFT;
+			}
+			case WM_NCHITTEST:
+			{
+				if (type != CUSTOM)
+				{
+					return DefWindowProc(handle(), message, wParam, lParam);
+				}
+				LRESULT hit = DefWindowProc(handle(), message, wParam, lParam);
+				switch (hit) {
+				case HTNOWHERE:
+				case HTRIGHT:
+				case HTLEFT:
+				case HTTOPLEFT:
+				case HTTOP:
+				case HTTOPRIGHT:
+				case HTBOTTOMRIGHT:
+				case HTBOTTOM:
+				case HTBOTTOMLEFT: {
+					return hit;
+				}
+				}
+				if (m_CloseButton)
+				{
+					return HTCLOSE;
+				}
+				if (m_MinButton)
+				{
+					return HTMINBUTTON;
+				}
+				if (m_MaxButton)
+				{
+					return HTMAXBUTTON;
+				}
+				if (m_titleBarHovered)
+				{
+					return HTCAPTION;
+				}
+
+				return HTCLIENT;
+			}
+			case WM_NCLBUTTONDOWN:
+			{
+				if (type != CUSTOM)
+				{
+					return DefWindowProc(handle(), message, wParam, lParam);
+				}
+				if (m_CloseButton)
+				{
+					PostMessage(handle(), WM_CLOSE, 0, 0);
+					return 0;
+				}
+				if (m_MinButton)
+				{
+					ShowWindow(handle(), SW_MINIMIZE);
+				}
+				if (m_MaxButton)
+				{
+					int mode = win32_window_is_maximized(handle()) ? SW_NORMAL : SW_MAXIMIZE;
+					ShowWindow(handle(), mode);
+				}
+				return DefWindowProc(handle(), message, wParam, lParam);
+			}
+			case WM_NCLBUTTONDBLCLK:
+			{
+				if (type != CUSTOM) 
+				{
+					return DefWindowProc(handle(), message, wParam, lParam); 
+				}
+				int mode = win32_window_is_maximized(handle()) ? SW_NORMAL : SW_MAXIMIZE; 
+				ShowWindow(handle(), mode); 
+				return 0;
+			}
+			case WM_CLOSE:
+				CUBE_CORE_INFO("Window was closed.");
+				PostQuitMessage(0);
+				return 0;
+			}
 		return DefWindowProc(hwnd, message, wParam, lParam);
 	}
 

@@ -8,11 +8,12 @@ ImguiManager::ImguiManager()
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGui::StyleColorsDark();
-	ImGuiIO& io = ImGui::GetIO(); (void)io;
 
+	ImGuiIO& io = ImGui::GetIO(); (void)io;
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 	io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
 	io.ConfigWindowsResizeFromEdges = true;
+
 	ImVec4* colors = ImGui::GetStyle().Colors;
 	colors[ImGuiCol_Text] =						ImVec4(1.00f, 1.00f, 1.00f, 1.00f);
 	colors[ImGuiCol_TextDisabled] =				ImVec4(0.50f, 0.50f, 0.50f, 1.00f);

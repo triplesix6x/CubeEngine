@@ -14,7 +14,7 @@ namespace Cube
 		FULL = WS_OVERLAPPEDWINDOW,
 		STATIC = WS_OVERLAPPED,
 		RESIZABLE = WS_SIZEBOX,
-		POPUP = WS_POPUP
+		CUSTOM = WS_POPUP | WS_THICKFRAME
 	};
 	class Window
 	{
@@ -52,7 +52,7 @@ namespace Cube
 			HINSTANCE hInst;
 		};
 	public:
-		Window(int width, int height);
+		Window(int width, int height, WindowType type);
 		~Window();
 		HWND handle() { return hwnd; }
 		void handle(HWND shwnd) { hwnd = shwnd; }
@@ -66,8 +66,11 @@ namespace Cube
 		Graphics& Gfx();
 		Mouse mouse;
 		Keyboard kbd;
-		int wResize;
-		int hResize;
+		bool m_titleBarHovered = false;
+		bool m_CloseButton = false;
+		bool m_MaxButton = false;
+		bool m_MinButton = false;
+		WindowType type;
 	private:
 		void HideCursor();
 		void ShowCursor();

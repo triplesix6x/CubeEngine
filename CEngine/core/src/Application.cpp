@@ -1,4 +1,4 @@
-#include "../includes/Application.h"
+п»ї#include "../includes/Application.h"
 #include "../render/includes/CVertex.h"
 #include "../includes/Window.h"
 #include "../../imgui/imgui.h"
@@ -16,7 +16,7 @@
 
 namespace Cube
 {
-	Application::Application(int width, int height) : m_Window(width, height), light(m_Window.Gfx()), skybox(std::make_unique<SkyBox>(m_Window.Gfx(), L"textures\\skyboxmain.dds"))
+	Application::Application(int width, int height, WindowType type) : m_Window(width, height, type), light(m_Window.Gfx()), skybox(std::make_unique<SkyBox>(m_Window.Gfx(), L"textures\\skyboxmain.dds"))
 	{
 		models.push_back(std::make_unique<Model>(m_Window.Gfx(), "models\\cube.obj", id, false, "Cube"));
 		++id;
@@ -88,7 +88,7 @@ namespace Cube
 	{
 
 
-		m_Window.Gfx().ClearBuffer(0.07f, 0.07f, 0.07f);		//Очистка текущего буфера свап чейна
+		m_Window.Gfx().ClearBuffer(0.07f, 0.07f, 0.07f);		//РћС‡РёСЃС‚РєР° С‚РµРєСѓС‰РµРіРѕ Р±СѓС„РµСЂР° СЃРІР°Рї С‡РµР№РЅР°
 		m_Window.Gfx().SetCamera(cam.GetMatrix());
 
 		ImGuiID did = m_Window.Gfx().ShowDocksape();
@@ -113,11 +113,14 @@ namespace Cube
 		
 		light.Draw(m_Window.Gfx());
 
-		m_Window.Gfx().DrawGrid(cam.pos);
+		if (drawGrid)
+		{
+			m_Window.Gfx().DrawGrid(cam.pos);
+		}
 
 		ShowSceneWindow();
 		ShowToolBar();
-		m_Window.Gfx().EndFrame();							//Замена буфера свап чейна
+		m_Window.Gfx().EndFrame();							//Р—Р°РјРµРЅР° Р±СѓС„РµСЂР° СЃРІР°Рї С‡РµР№РЅР°
 
 	}
 
@@ -212,9 +215,77 @@ namespace Cube
 
 
 	void Application::ShowMenuBar()
-	{
+	{ 
 		if (ImGui::BeginMainMenuBar())
 		{
+			if (m_Window.type == CUSTOM)
+			{
+				if (ImGui::IsWindowHovered() && !ImGui::IsAnyItemHovered())
+				{
+					m_Window.m_titleBarHovered = true;
+				}
+				else
+				{
+					m_Window.m_titleBarHovered = false;
+				}
+				auto tw = ImGui::GetWindowWidth();
+				std::string text = "Cube Engine";
+				ImGui::SetCursorPosX((tw - ImGui::CalcTextSize(text.c_str()).x) / 2);
+				ImGui::Text(text.c_str());
+
+				std::string close_text = "X";
+				ImGui::SetCursorPosX((tw - ImGui::CalcTextSize(close_text.c_str()).x) - 10.0f);
+				ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 0.0f);
+				ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 0.0f);
+				ImGui::PushStyleColor(ImGuiCol_Button, ImGui::GetStyle().Colors[ImGuiCol_MenuBarBg]);
+				ImGui::Button(close_text.c_str(), ImVec2{ 20.0f, 20.0f });
+				if (ImGui::IsItemHovered())
+				{
+					m_Window.m_CloseButton = true;
+				}
+				else
+				{
+					m_Window.m_CloseButton = false;
+				}
+				ImGui::PopStyleVar(2);
+				ImGui::PopStyleColor();
+
+				char max_sym = '=';
+				std::string max_text{max_sym};
+				ImGui::SetCursorPosX(tw - ImGui::CalcTextSize(max_text.c_str()).x - 32.5f);
+				ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 0.0f);
+				ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 0.0f);
+				ImGui::PushStyleColor(ImGuiCol_Button, ImGui::GetStyle().Colors[ImGuiCol_MenuBarBg]);
+				ImGui::Button(max_text.c_str(), ImVec2{ 20.0f, 20.0f });
+				if (ImGui::IsItemHovered())
+				{
+					m_Window.m_MaxButton = true;
+				}
+				else
+				{
+					m_Window.m_MaxButton = false;
+				}
+				ImGui::PopStyleVar(2);
+				ImGui::PopStyleColor();
+
+				std::string min_text = "_";
+				ImGui::SetCursorPosX(tw - ImGui::CalcTextSize(min_text.c_str()).x - 57.5f);
+				ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 0.0f);
+				ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 0.0f);
+				ImGui::PushStyleColor(ImGuiCol_Button, ImGui::GetStyle().Colors[ImGuiCol_MenuBarBg]);
+				ImGui::Button(min_text.c_str(), ImVec2{ 20.0f, 20.0f });
+				if (ImGui::IsItemHovered())
+				{
+					m_Window.m_MinButton = true;
+				}
+				else
+				{
+					m_Window.m_MinButton = false;
+				}
+				ImGui::PopStyleVar(2);
+				ImGui::PopStyleColor();
+			}
+			ImGui::SetCursorPosX(10.0f);
 			if (ImGui::BeginMenu("File")) {
 				if (ImGui::MenuItem("Create"))
 				{
@@ -338,9 +409,8 @@ namespace Cube
 		ImGui::SetNextWindowSize({ 150, ImGui::GetContentRegionAvail().y }, ImGuiCond_FirstUseEver);
 		ImGui::Begin("ToolBar");
 
-
 		AddCube();
-
+		ImGui::Checkbox("Draw Grid", &drawGrid);
 		ImGui::End();
 	}
 
