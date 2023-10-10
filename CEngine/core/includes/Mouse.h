@@ -83,7 +83,7 @@ public:
 	bool IsInWindow() const;
 	bool LeftIsPressed() const ;
 	bool RightIsPressed() const ;
-	Mouse::Event Read();
+	std::optional<Mouse::Event> Read();
 	bool IsEmpty() const 
 	{
 		return buffer.empty();

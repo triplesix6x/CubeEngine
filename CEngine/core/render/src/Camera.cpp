@@ -99,7 +99,7 @@ void Camera::SpawnControlWindow() noexcept
 		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4{ 0.2f, 0.7f, 0.2f, 1.0f });
 
 		if (ImGui::Button("Y", buttonSize))
-			pitch = to_rad(15.0f);
+			pitch = to_rad(20.0f);
 		ImGui::PopStyleColor(3);
 
 		ImGui::SameLine();
@@ -144,7 +144,7 @@ void Camera::Translate(DirectX::XMFLOAT3 translation) noexcept
 void Camera::Reset() noexcept
 {
 	pos = { 5.0f,5.0f,-10.0f };
-	pitch = to_rad(15.0f);
+	pitch = to_rad(20.0f);
 	yaw = to_rad(-30.0f);
 	travelSpeed = 12.0f;
 }

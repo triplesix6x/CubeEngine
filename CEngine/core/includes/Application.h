@@ -20,12 +20,15 @@ namespace Cube
 		void ShowSceneWindow();
 		void ShowMenuBar();
 
-		void AddObj(bool istextured);
+		void AddObj();
 		void AddCube();
 
 		void ShowToolBar();
 		void HadleInput(float dt);
+
+		void showLightHelp();
 	private:
+		bool lopen = false;
 		void doFrame();					//функция отрисовки одного кадра
 		ImguiManager imgui;
 		Window m_Window;

@@ -44,7 +44,7 @@ bool Mouse::RightIsPressed() const
 	return rightIsPressed;
 }
 
-Mouse::Event Mouse::Read() 
+std::optional<Mouse::Event> Mouse::Read()
 {
 	if (buffer.size() > 0u)
 	{

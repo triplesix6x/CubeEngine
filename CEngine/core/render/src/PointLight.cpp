@@ -1,16 +1,23 @@
 #include "../includes/PointLight.h"
 #include "../../imgui/imgui.h"
 
-Lights::PointLight::PointLight(Graphics& gfx, int id, float radius) : id(id), mesh(gfx, radius)
+Lights::PointLight::PointLight(Graphics& gfx, int id, float radius, std::string lightName) : id(id), mesh(gfx, radius), lightName(lightName)
 {
 	Reset();
 }
 
 void Lights::PointLight::SpawnControlWindow() noexcept
 {
-	std::string name = "Light " + std::to_string(id);
-	if (ImGui::TreeNode(name.c_str()))
+	if (ImGui::TreeNode(&id, lightName.c_str()))
 	{
+		char buffer[256];
+		memset(buffer, 0, sizeof(buffer));
+		strcpy_s(buffer, sizeof(buffer), lightName.c_str());
+		if (ImGui::InputText("Light Name", buffer, sizeof(buffer)))
+		{
+			lightName = std::string(buffer);
+		}
+
 		ImGui::Columns(2);
 		ImGui::SetColumnWidth(0, 100);
 		ImGui::Text("Position");
@@ -83,7 +90,6 @@ bool Lights::PointLight::DrawSphere()
 	return drawSphere;
 }
 
-
 void Lights::PointLight::Reset() noexcept
 {
 	cbData = {
@@ -102,13 +108,6 @@ PointLightCBuf Lights::PointLight::getCbuf() const
 	return cbData;
 }
 
-void Lights::PointLight::Bind(Graphics& gfx, DirectX::FXMMATRIX view) const noexcept
-{
-	auto dataCopy = cbData;
-	const auto pos = DirectX::XMLoadFloat3(&cbData.pos);
-	DirectX::XMStoreFloat3(&dataCopy.pos, DirectX::XMVector3Transform(pos, view));
-}
-
 void Lights::PointLight::Draw(Graphics& gfx) const noexcept
 {
 	mesh.SetPos(cbData.pos);
@@ -117,22 +116,60 @@ void Lights::PointLight::Draw(Graphics& gfx) const noexcept
 
 Lights::Lights(Graphics& gfx, float radius) : cbuf(gfx, 0u, 32u)
 {
-	sceneLights.push_back(std::make_unique<PointLight>(gfx, id));
+	sceneLights.push_back(std::make_unique<PointLight>(gfx, id, 0.5f, "Point Light (R10)"));
 	++id;
 	UpdateCbufs();
 }
 
 void Lights::AddLight(Graphics& gfx)
 {
-	sceneLights.push_back(std::make_unique<PointLight>(gfx, id));
-	++id;
-	UpdateCbufs();
+	if (sceneLights.size() < 32)
+	{
+		sceneLights.push_back(std::make_unique<PointLight>(gfx, id));
+		++id;
+		UpdateCbufs();
+	}
+	else
+	{
+		MessageBoxA(nullptr, "There can only be 32 light sources in a scene.", "Light error", MB_OK | MB_ICONEXCLAMATION);
+	}
+}
+
+int Lights::getLighstCount()
+{
+	return sceneLights.size();
+}
+
+int Lights::getId(int i)
+{
+	return sceneLights[i]->id;
 }
 
 void Lights::DeleteLight(int i)
 {
-	sceneLights.erase(sceneLights.begin() + i);
-	UpdateCbufs();
+	if (sceneLights.size() > 1)
+	{
+		sceneLights.erase(sceneLights.begin() + i);
+		UpdateCbufs();
+	}
+	else
+	{
+		MessageBoxA(nullptr, "There must be at least 1 light source.", "Light error", MB_OK | MB_ICONEXCLAMATION);
+	}
+}
+
+void Lights::clearLights()
+{
+	if (sceneLights.size() > 1)
+	{
+		sceneLights.erase(sceneLights.begin() + 1, sceneLights.end());
+	}
+}
+
+
+std::string Lights::getName(int i)
+{
+	return sceneLights[i]->lightName;
 }
 
 void Lights::UpdateCbufs()
@@ -140,6 +177,25 @@ void Lights::UpdateCbufs()
 	for (int i = 0; i < sceneLights.size(); ++i)
 	{
 		cbufs[i] = sceneLights[i]->getCbuf();
+	}
+}
+
+void Lights::spawnWnds()
+{
+	for (auto& l : sceneLights)
+	{
+		l->SpawnControlWindow();
+	}
+}
+
+void Lights::drawSpheres(Graphics& gfx)
+{
+	for (auto& l : sceneLights)
+	{
+		if (l->DrawSphere())
+		{
+			l->Draw(gfx);
+		}
 	}
 }
 

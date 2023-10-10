@@ -155,7 +155,7 @@ ImGuiID Graphics::ShowDocksape() noexcept
 			ImGui::DockBuilderSetNodeSize(dockspace_id, viewport->Size);
 			ImGuiID dock_id_down = ImGui::DockBuilderSplitNode(dockspace_id, ImGuiDir_Down, 0.1f, nullptr, &dockspace_id);
 			ImGuiID dock_id_left = ImGui::DockBuilderSplitNode(dockspace_id, ImGuiDir_Left, 0.08f, nullptr, &dockspace_id);
-			ImGuiID dock_id_right = ImGui::DockBuilderSplitNode(dockspace_id, ImGuiDir_Right, 0.2f, nullptr, &dockspace_id);
+			ImGuiID dock_id_right = ImGui::DockBuilderSplitNode(dockspace_id, ImGuiDir_Right, 0.22f, nullptr, &dockspace_id);
 			ImGui::DockBuilderDockWindow("Scene", dock_id_right);
 			ImGui::DockBuilderDockWindow("ToolBar", dock_id_left);
 			ImGui::DockBuilderFinish(dockspace_id);

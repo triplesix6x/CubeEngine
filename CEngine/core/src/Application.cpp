@@ -16,9 +16,13 @@
 
 namespace Cube
 {
-	Application::Application(int width, int height, WindowType type) : m_Window(width, height, type), light(m_Window.Gfx()), skybox(std::make_unique<SkyBox>(m_Window.Gfx(), L"textures\\skyboxmain.dds"))
+	Application::Application(int width, int height, WindowType type) 
+		: 
+		m_Window(width, height, type),
+		light(m_Window.Gfx()), 
+		skybox(std::make_unique<SkyBox>(m_Window.Gfx(), L"textures\\skyboxmain.dds"))
 	{
-		models.push_back(std::make_unique<Model>(m_Window.Gfx(), "models\\cube.obj", id, false, "Cube"));
+		models.push_back(std::make_unique<Model>(m_Window.Gfx(), "models\\cube.obj", id, "Cube"));
 		++id;
 
 		m_Window.Gfx().SetTexture(&pCubeIco, L"icons\\cubeico2.png");
@@ -66,6 +70,17 @@ namespace Cube
 					cam.Rotate((float)d->x, (float)d->y);
 				}
 			}
+			while (const auto b = m_Window.mouse.Read())
+			{
+				if (b->GetType() == Mouse::Event::Type::WheelUp)
+				{
+					cam.Translate({ 0.0f, 0.0f, dt * 10});
+				}
+				if (b->GetType() == Mouse::Event::Type::WheelDown)
+				{
+					cam.Translate({ 0.0f, 0.0f, -dt * 10});
+				}
+			}
 		}
 	}
 
@@ -104,33 +119,29 @@ namespace Cube
 		}
 
 		light.Bind(m_Window.Gfx(), cam.GetMatrix());
-
-		for (auto& l : light.sceneLights)
-		{
-			l->Bind(m_Window.Gfx(), cam.GetMatrix());
-		}
 	
 
 		for (auto& m : models) 
 		{
 			m->Draw(m_Window.Gfx());
 		}
+
+
+
+		light.drawSpheres(m_Window.Gfx());
 		
-		
-		for (auto& l : light.sceneLights)
-		{
-			if (l->DrawSphere())
-			{
-				l->Draw(m_Window.Gfx());
-			}
-		}
+
+
 		if (drawGrid)
 		{
 			m_Window.Gfx().DrawGrid(cam.pos);
 		}
 
+
 		ShowSceneWindow();
 		ShowToolBar();
+		showLightHelp();
+
 		m_Window.Gfx().EndFrame();							//Замена буфера свап чейна
 
 	}
@@ -163,13 +174,13 @@ namespace Cube
 		ImGui::Begin("Objects");
 		if (ImGui::BeginPopupContextWindow())
 		{
-			if (ImGui::MenuItem("Add textured object from file..."))
+			if (ImGui::MenuItem("Add object from file..."))
 			{
-				AddObj(true);
+				AddObj();
 			}
-			if (ImGui::MenuItem("Add non-textured object from file..."))
+			if (ImGui::MenuItem("Add Light"))
 			{
-				AddObj(false);
+				light.AddLight(m_Window.Gfx());
 			}
 			if (models.size() != 0)
 			{
@@ -182,27 +193,18 @@ namespace Cube
 					}
 				}
 			}
-			if (light.sceneLights.size() < 32)
+			for (int i = 0; i < light.getLighstCount(); ++i)
 			{
-				if (ImGui::MenuItem("Add Light"))
+				std::string name = "Delete " + light.getName(i);
+				if (ImGui::MenuItem(name.c_str()))
 				{
-					light.AddLight(m_Window.Gfx());
-				}
-			}
-			if (light.sceneLights.size() > 1)
-			{
-				for (int i = 0; i < light.sceneLights.size(); ++i)
-				{
-					std::string name = "Delete Light " + std::to_string(light.sceneLights[i]->id);
-					if (ImGui::MenuItem(name.c_str()))
-					{
-						light.DeleteLight(i);
-					}
+					light.DeleteLight(i);
 				}
 			}
 			if (ImGui::MenuItem("Clear Scene"))
 			{
 				models.clear();
+				light.clearLights();
 			}
 			ImGui::EndPopup();
 		}
@@ -216,7 +218,7 @@ namespace Cube
 			}
 			if (expanded)
 			{
-				models[i]->ShowWindow(pSelectedModel);
+				models[i]->ShowWindow(m_Window.Gfx(), pSelectedModel);
 				ImGui::TreePop();
 				ImGui::Spacing();
 			}
@@ -226,10 +228,7 @@ namespace Cube
 			}
 		}
 		
-		for (auto& l : light.sceneLights)
-		{
-			l->SpawnControlWindow();
-		}
+		light.spawnWnds();
 
 		cam.SpawnControlWindow();
 
@@ -332,13 +331,13 @@ namespace Cube
 				ImGui::EndMenu();
 			}
 			if (ImGui::BeginMenu("Scene")) {
-				if (ImGui::MenuItem("Add textured object from file..."))
+				if (ImGui::MenuItem("Add object from file..."))
 				{
-					AddObj(true);
+					AddObj();
 				}
-				if (ImGui::MenuItem("Add non-textured object from file..."))
+				if (ImGui::MenuItem("Add Light"))
 				{
-					AddObj(false);
+					light.AddLight(m_Window.Gfx());
 				}
 				if (models.size() != 0)
 				{
@@ -351,27 +350,18 @@ namespace Cube
 						}
 					}
 				}
-				if (light.sceneLights.size() < 32)
+				for (int i = 0; i < light.getLighstCount(); ++i)
 				{
-					if (ImGui::MenuItem("Add Light"))
+					std::string name = "Delete " + light.getName(i);
+					if (ImGui::MenuItem(name.c_str()))
 					{
-						light.AddLight(m_Window.Gfx());
-					}
-				}
-				if (light.sceneLights.size() > 1)
-				{
-					for (int i = 0; i < light.sceneLights.size(); ++i)
-					{
-						std::string name = "Delete Light " + std::to_string(light.sceneLights[i]->id);
-						if (ImGui::MenuItem(name.c_str()))
-						{
-							light.DeleteLight(i);
-						}
+						light.DeleteLight(i);
 					}
 				}
 				if (ImGui::MenuItem("Clear Scene"))
 				{
 					models.clear();
+					light.clearLights();
 				}
 				ImGui::EndMenu();
 			}
@@ -448,7 +438,79 @@ namespace Cube
 				}
 				ImGui::EndMenu();
 			}
+			if (ImGui::BeginMenu("Help"))
+			{
+				if (ImGui::MenuItem("Light Help"))
+				{
+					lopen = true;
+				}
+				ImGui::EndMenu();
+			}
 			ImGui::EndMainMenuBar();
+		}
+	}
+
+	void Application::showLightHelp()
+	{
+		if (lopen)
+		{
+			ImGuiIO& io = ImGui::GetIO();
+			ImGui::SetNextWindowSize(ImVec2{ 400, 700 }, ImGuiCond_Appearing);
+			ImGui::SetNextWindowPos(ImVec2(io.DisplaySize.x * 0.5f, io.DisplaySize.y * 0.5f), ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+			ImGui::Begin("Light Help", &lopen, ImGuiWindowFlags_NoCollapse);
+			ImGui::SeparatorText("POINT LIGHT VALUES:");
+			ImGui::Columns(1);
+			ImGui::TextWrapped("Cube Engine uses one type of shading - Phong shading. So here are presented the recommended values for Point light sources, depending on them ranges from objects:");
+
+			ImGui::Columns(4);
+			ImGui::BulletText("Range ->");
+			ImGui::BulletText("0.7 ->");
+			ImGui::BulletText("2 ->");
+			ImGui::BulletText("5 ->");
+			ImGui::BulletText("10 ->");
+			ImGui::BulletText("16 ->");
+			ImGui::BulletText("20 ->");
+			ImGui::BulletText("32.5 ->");
+			ImGui::BulletText("60 ->");
+			ImGui::BulletText("325 ->");
+
+			ImGui::NextColumn();
+			ImGui::Text("Constant");
+			ImGui::Text("1.0");
+			ImGui::Text("1.0");
+			ImGui::Text("1.0");
+			ImGui::Text("1.0");
+			ImGui::Text("1.0");
+			ImGui::Text("1.0");
+			ImGui::Text("1.0");
+			ImGui::Text("1.0");
+			ImGui::Text("1.0");
+
+			ImGui::NextColumn();
+			ImGui::Text("Linear");
+			ImGui::Text("0.7");
+			ImGui::Text("0.22");
+			ImGui::Text("0.09");
+			ImGui::Text("0.045");
+			ImGui::Text("0.027");
+			ImGui::Text("0.022");
+			ImGui::Text("0.014");
+			ImGui::Text("0.007");
+			ImGui::Text("0.0014");
+
+			ImGui::NextColumn();
+			ImGui::Text("Quadratic");
+			ImGui::Text("1.8");
+			ImGui::Text("0.20");
+			ImGui::Text("0.032");
+			ImGui::Text("0.0075");
+			ImGui::Text("0.0028");
+			ImGui::Text("0.0019");
+			ImGui::Text("0.0007");
+			ImGui::Text("0.0002");
+			ImGui::Text("0.000007");
+			ImGui::Columns(1);
+			ImGui::End();
 		}
 	}
 
@@ -463,7 +525,7 @@ namespace Cube
 		ImGui::End();
 	}
 
-	void Application::AddObj(bool istextured)
+	void Application::AddObj()
 	{
 		char cname[260];
 		OPENFILENAMEA ofn;
@@ -486,16 +548,8 @@ namespace Cube
 			x = strtok(NULL, ".");
 			if (strcmp(x, "obj") == 0 or strcmp(x, "gltf") == 0)
 			{
-				if (istextured)
-				{
-					models.push_back(std::make_unique<Model>(m_Window.Gfx(), nname, id, true));
+					models.push_back(std::make_unique<Model>(m_Window.Gfx(), nname, id));
 					++id;
-				}
-				else
-				{
-					models.push_back(std::make_unique<Model>(m_Window.Gfx(), nname, id, false));
-					++id;
-				}
 			}
 			else
 			{
@@ -511,7 +565,7 @@ namespace Cube
 		ImGui::SameLine();
 		if (ImGui::Button("Add Cube"))
 		{
-			models.push_back(std::make_unique<Model>(m_Window.Gfx(), "models\\cube.obj", id, false, "Cube"));
+			models.push_back(std::make_unique<Model>(m_Window.Gfx(), "models\\cube.obj", id, "Cube"));
 			++id;
 		}
 	}

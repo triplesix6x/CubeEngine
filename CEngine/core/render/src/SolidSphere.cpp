@@ -29,7 +29,7 @@ SolidSphere::SolidSphere(Graphics& gfx, float radius)
 			dx::XMFLOAT3 color = { 1.0f,1.0f,1.0f };
 			float padding;
 		} colorConst;
-		AddBind(std::make_unique<PixelConstantBuffer<PSColorConstant>>(gfx, colorConst));
+		AddBind(std::make_unique<PixelConstantBuffer<PSColorConstant>>(gfx, colorConst, 1u));
 
 		const std::vector<D3D11_INPUT_ELEMENT_DESC> ied =
 		{
