@@ -104,6 +104,11 @@ namespace Cube
 		}
 
 		light.Bind(m_Window.Gfx(), cam.GetMatrix());
+
+		for (auto& l : light.sceneLights)
+		{
+			l->Bind(m_Window.Gfx(), cam.GetMatrix());
+		}
 	
 
 		for (auto& m : models) 
@@ -111,8 +116,14 @@ namespace Cube
 			m->Draw(m_Window.Gfx());
 		}
 		
-		light.Draw(m_Window.Gfx());
-
+		
+		for (auto& l : light.sceneLights)
+		{
+			if (l->DrawSphere())
+			{
+				l->Draw(m_Window.Gfx());
+			}
+		}
 		if (drawGrid)
 		{
 			m_Window.Gfx().DrawGrid(cam.pos);
@@ -171,6 +182,24 @@ namespace Cube
 					}
 				}
 			}
+			if (light.sceneLights.size() < 32)
+			{
+				if (ImGui::MenuItem("Add Light"))
+				{
+					light.AddLight(m_Window.Gfx());
+				}
+			}
+			if (light.sceneLights.size() > 1)
+			{
+				for (int i = 0; i < light.sceneLights.size(); ++i)
+				{
+					std::string name = "Delete Light " + std::to_string(light.sceneLights[i]->id);
+					if (ImGui::MenuItem(name.c_str()))
+					{
+						light.DeleteLight(i);
+					}
+				}
+			}
 			if (ImGui::MenuItem("Clear Scene"))
 			{
 				models.clear();
@@ -197,8 +226,10 @@ namespace Cube
 			}
 		}
 		
-
-		light.SpawnControlWindow();
+		for (auto& l : light.sceneLights)
+		{
+			l->SpawnControlWindow();
+		}
 
 		cam.SpawnControlWindow();
 
@@ -268,7 +299,7 @@ namespace Cube
 				ImGui::PopStyleVar(2);
 				ImGui::PopStyleColor();
 
-				std::string min_text = "_";
+				std::string min_text = "-";
 				ImGui::SetCursorPosX(tw - ImGui::CalcTextSize(min_text.c_str()).x - 57.5f);
 				ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 0.0f);
 				ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 0.0f);
@@ -317,6 +348,24 @@ namespace Cube
 						if (ImGui::MenuItem(name.c_str()))
 						{
 							models.erase(models.begin() + i);
+						}
+					}
+				}
+				if (light.sceneLights.size() < 32)
+				{
+					if (ImGui::MenuItem("Add Light"))
+					{
+						light.AddLight(m_Window.Gfx());
+					}
+				}
+				if (light.sceneLights.size() > 1)
+				{
+					for (int i = 0; i < light.sceneLights.size(); ++i)
+					{
+						std::string name = "Delete Light " + std::to_string(light.sceneLights[i]->id);
+						if (ImGui::MenuItem(name.c_str()))
+						{
+							light.DeleteLight(i);
 						}
 					}
 				}

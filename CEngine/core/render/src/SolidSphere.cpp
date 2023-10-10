@@ -11,36 +11,33 @@ SolidSphere::SolidSphere(Graphics& gfx, float radius)
 			dx::XMFLOAT3 pos;
 		};
 
-		if (!IsStaticInitialized())
+		AddBind(std::make_unique<Rasterizer>(gfx, false));
+		AddBind(std::make_unique<DepthStencil>(gfx, false));
+		auto model = Sphere::Make<Vertex>();
+		model.Transform(dx::XMMatrixScaling(radius, radius, radius));
+		AddBind(std::make_unique<VertexBuffer>(gfx, model.vertices));
+		AddIndexBuffer(std::make_unique<IndexBuffer>(gfx, model.indices));
+
+		auto pvs = std::make_unique<VertexShader>(gfx, L"shaders\\SolidVS.cso");
+		auto pvsbc = pvs->GetBytecode();
+		AddBind(std::move(pvs));
+
+		AddBind(std::make_unique<PixelShader>(gfx, L"shaders\\SolidPS.cso"));
+
+		struct PSColorConstant
 		{
-			AddStaticBind(std::make_unique<Rasterizer>(gfx, false));
-			AddStaticBind(std::make_unique<DepthStencil>(gfx, false));
-			auto model = Sphere::Make<Vertex>();
-			model.Transform(dx::XMMatrixScaling(radius, radius, radius));
-			AddStaticBind(std::make_unique<VertexBuffer>(gfx, model.vertices));
-			AddStaticIndexBuffer(std::make_unique<IndexBuffer>(gfx, model.indices));
+			dx::XMFLOAT3 color = { 1.0f,1.0f,1.0f };
+			float padding;
+		} colorConst;
+		AddBind(std::make_unique<PixelConstantBuffer<PSColorConstant>>(gfx, colorConst));
 
-			auto pvs = std::make_unique<VertexShader>(gfx, L"shaders\\SolidVS.cso");
-			auto pvsbc = pvs->GetBytecode();
-			AddStaticBind(std::move(pvs));
+		const std::vector<D3D11_INPUT_ELEMENT_DESC> ied =
+		{
+			{ "Position",0,DXGI_FORMAT_R32G32B32_FLOAT,0,0,D3D11_INPUT_PER_VERTEX_DATA,0 },
+		};
+		AddBind(std::make_unique<InputLayout>(gfx, ied, pvsbc));
 
-			AddStaticBind(std::make_unique<PixelShader>(gfx, L"shaders\\SolidPS.cso"));
-
-			struct PSColorConstant
-			{
-				dx::XMFLOAT3 color = { 1.0f,1.0f,1.0f };
-				float padding;
-			} colorConst;
-			AddStaticBind(std::make_unique<PixelConstantBuffer<PSColorConstant>>(gfx, colorConst));
-
-			const std::vector<D3D11_INPUT_ELEMENT_DESC> ied =
-			{
-				{ "Position",0,DXGI_FORMAT_R32G32B32_FLOAT,0,0,D3D11_INPUT_PER_VERTEX_DATA,0 },
-			};
-			AddStaticBind(std::make_unique<InputLayout>(gfx, ied, pvsbc));
-
-			AddStaticBind(std::make_unique<Topology>(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
-		}
+		AddBind(std::make_unique<Topology>(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
 		AddBind(std::make_unique<TransformCbuf>(gfx, *this));
 }
 

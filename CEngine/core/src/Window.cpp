@@ -514,6 +514,18 @@ namespace Cube
 				{
 					return DefWindowProc(handle(), message, wParam, lParam);
 				}
+				if (m_CloseButton || m_MaxButton || m_MinButton)
+				{
+					return 0;
+				}
+			return DefWindowProc(handle(), message, wParam, lParam);
+			}
+			case WM_NCLBUTTONUP:
+			{
+				if (type != CUSTOM)
+				{
+					return DefWindowProc(handle(), message, wParam, lParam);
+				}
 				if (m_CloseButton)
 				{
 					PostMessage(handle(), WM_CLOSE, 0, 0);

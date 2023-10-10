@@ -1,17 +1,15 @@
 #include "../includes/PointLight.h"
 #include "../../imgui/imgui.h"
 
-PointLight::PointLight(Graphics& gfx, float radius)
-	:
-	mesh(gfx, radius),
-	cbuf(gfx)
+Lights::PointLight::PointLight(Graphics& gfx, int id, float radius) : id(id), mesh(gfx, radius)
 {
 	Reset();
 }
 
-void PointLight::SpawnControlWindow() noexcept
+void Lights::PointLight::SpawnControlWindow() noexcept
 {
-	if (ImGui::TreeNode("Light"))
+	std::string name = "Light " + std::to_string(id);
+	if (ImGui::TreeNode(name.c_str()))
 	{
 		ImGui::Columns(2);
 		ImGui::SetColumnWidth(0, 100);
@@ -71,6 +69,7 @@ void PointLight::SpawnControlWindow() noexcept
 		ImGui::SliderFloat("Constant", &cbData.attConst, 0.05f, 10.0f, "%.2f");
 		ImGui::SliderFloat("Linear", &cbData.attLin, 0.0001f, 4.0f, "%.4f");
 		ImGui::SliderFloat("Quadratic", &cbData.attQuad, 0.0000001f, 2.0f, "%.7f");
+		ImGui::Checkbox("Draw Light Sphere", &drawSphere);
 		if (ImGui::Button("Reset"))
 		{
 			Reset();
@@ -79,7 +78,13 @@ void PointLight::SpawnControlWindow() noexcept
 	}
 }
 
-void PointLight::Reset() noexcept
+bool Lights::PointLight::DrawSphere()
+{
+	return drawSphere;
+}
+
+
+void Lights::PointLight::Reset() noexcept
 {
 	cbData = {
 		{-3.0f, 4.0f, -3.0f},
@@ -92,17 +97,61 @@ void PointLight::Reset() noexcept
 	};
 }
 
-void PointLight::Draw(Graphics& gfx) const noexcept
+PointLightCBuf Lights::PointLight::getCbuf() const
+{
+	return cbData;
+}
+
+void Lights::PointLight::Bind(Graphics& gfx, DirectX::FXMMATRIX view) const noexcept
+{
+	auto dataCopy = cbData;
+	const auto pos = DirectX::XMLoadFloat3(&cbData.pos);
+	DirectX::XMStoreFloat3(&dataCopy.pos, DirectX::XMVector3Transform(pos, view));
+}
+
+void Lights::PointLight::Draw(Graphics& gfx) const noexcept
 {
 	mesh.SetPos(cbData.pos);
 	mesh.Draw(gfx);
 }
 
-void PointLight::Bind(Graphics& gfx, DirectX::FXMMATRIX view) const noexcept
+Lights::Lights(Graphics& gfx, float radius) : cbuf(gfx, 0u, 32u)
 {
-	auto dataCopy = cbData;
-	const auto pos = DirectX::XMLoadFloat3(&cbData.pos);
-	DirectX::XMStoreFloat3(&dataCopy.pos, DirectX::XMVector3Transform(pos, view));
-	cbuf.Update(gfx, dataCopy );
+	sceneLights.push_back(std::make_unique<PointLight>(gfx, id));
+	++id;
+	UpdateCbufs();
+}
+
+void Lights::AddLight(Graphics& gfx)
+{
+	sceneLights.push_back(std::make_unique<PointLight>(gfx, id));
+	++id;
+	UpdateCbufs();
+}
+
+void Lights::DeleteLight(int i)
+{
+	sceneLights.erase(sceneLights.begin() + i);
+	UpdateCbufs();
+}
+
+void Lights::UpdateCbufs()
+{
+	for (int i = 0; i < sceneLights.size(); ++i)
+	{
+		cbufs[i] = sceneLights[i]->getCbuf();
+	}
+}
+
+void Lights::Bind(Graphics& gfx, DirectX::FXMMATRIX view) noexcept
+{
+	UpdateCbufs();
+    auto dataCopy = cbufs;
+	for (int i = 0; i < sizeof(cbufs) / sizeof(cbufs[0]); ++i)
+	{
+		const auto pos = DirectX::XMLoadFloat3(&cbufs[i].pos);
+		DirectX::XMStoreFloat3(&dataCopy[i].pos, DirectX::XMVector3Transform(pos, view));
+	}
+	cbuf.Update(gfx, dataCopy[0], sizeof(cbufs) / sizeof(cbufs[0]));
 	cbuf.Bind(gfx);
 }

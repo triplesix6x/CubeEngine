@@ -31,7 +31,7 @@ namespace Cube
 		Window m_Window;
 		Timer timer;
 		Camera cam;
-		PointLight light;
+		Lights light;
 		std::vector<std::unique_ptr<Model>> models;
 		ID3D11ShaderResourceView* pCubeIco = nullptr;
 		std::unique_ptr<SkyBox> skybox;

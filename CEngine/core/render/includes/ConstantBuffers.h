@@ -5,7 +5,7 @@ template<typename C>
 class ConstantBuffer : public Bindable
 {
 public:
-	void Update(Graphics& gfx, const C& consts)
+	void Update(Graphics& gfx, const C& consts, UINT num = 1u)
 	{
 
 		D3D11_MAPPED_SUBRESOURCE msr;
@@ -14,7 +14,7 @@ public:
 			D3D11_MAP_WRITE_DISCARD, 0u,
 			&msr
 		);
-		memcpy(msr.pData, &consts, sizeof(consts));
+		memcpy(msr.pData, &consts, sizeof(consts) * num);
 		GetContext(gfx)->Unmap(pConstantBuffer.Get(), 0u);
 	}
 	ConstantBuffer(Graphics& gfx, const C& consts, UINT slot = 0u) : slot(slot)
@@ -32,7 +32,7 @@ public:
 		csd.pSysMem = &consts;
 		GetDevice(gfx)->CreateBuffer(&cbd, &csd, &pConstantBuffer);
 	}
-	ConstantBuffer(Graphics& gfx, UINT slot = 0u) : slot(slot)
+	ConstantBuffer(Graphics& gfx, UINT slot = 0u, UINT num = 1u) : slot(slot)
 	{
 
 		D3D11_BUFFER_DESC cbd;
@@ -40,7 +40,7 @@ public:
 		cbd.Usage = D3D11_USAGE_DYNAMIC;
 		cbd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 		cbd.MiscFlags = 0u;
-		cbd.ByteWidth = sizeof(C);
+		cbd.ByteWidth = sizeof(C) * num;
 		cbd.StructureByteStride = 0u;
 		GetDevice(gfx)->CreateBuffer(&cbd, nullptr, &pConstantBuffer);
 	}

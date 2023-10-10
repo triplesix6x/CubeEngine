@@ -3,27 +3,45 @@
 #include "SolidSphere.h"
 #include "ConstantBuffers.h"
 
-class PointLight
+
+struct PointLightCBuf
+{
+	alignas(16) DirectX::XMFLOAT3 pos;
+	alignas(16) DirectX::XMFLOAT3 ambient;
+	alignas(16) DirectX::XMFLOAT3 diffuseColor;
+	float diffuseIntensity;
+    float attConst;
+	float attLin;
+	float attQuad;
+};
+
+class Lights
 {
 public:
-	PointLight(Graphics& gfx, float radius = 0.5f);
-	void SpawnControlWindow() noexcept;
-	void Reset() noexcept;
-	void Draw(Graphics& gfx) const noexcept;
-	void Bind(Graphics& gfx, DirectX::FXMMATRIX view) const noexcept;
-private:
-	struct PointLightCBuf
+	class PointLight
 	{
-		alignas(16) DirectX::XMFLOAT3 pos;
-		alignas(16) DirectX::XMFLOAT3 ambient;
-		alignas(16) DirectX::XMFLOAT3 diffuseColor;
-		float diffuseIntensity;
-		float attConst;
-		float attLin;
-		float attQuad;
+	public:
+		PointLight(Graphics& gfx, int id, float radius = 0.5f);
+		void SpawnControlWindow() noexcept;
+		void Reset() noexcept;
+		void Draw(Graphics& gfx) const noexcept;
+		bool DrawSphere(); 
+		void Bind(Graphics& gfx, DirectX::FXMMATRIX view) const noexcept;
+		PointLightCBuf getCbuf() const;
+		int id;
+	private:
+		bool drawSphere = true;
+		PointLightCBuf cbData;
+		mutable SolidSphere mesh;
 	};
+	Lights(Graphics& gfx, float radius = 0.5f);
+	void AddLight(Graphics& gfx);
+	void DeleteLight(int i);
+	void UpdateCbufs();
+	void Bind(Graphics& gfx, DirectX::FXMMATRIX view) noexcept;
+	PointLightCBuf cbufs[32];
+	std::vector<std::unique_ptr<PointLight>> sceneLights;
 private:
-	PointLightCBuf cbData;
-	mutable SolidSphere mesh;
+	int id = 0;
 	mutable PixelConstantBuffer<PointLightCBuf> cbuf;
 };
