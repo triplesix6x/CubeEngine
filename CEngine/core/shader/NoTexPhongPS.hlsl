@@ -26,6 +26,7 @@ cbuffer ObjectCBuf
 
 float3 CalcPointLight(LightCBuf light, float3 viewPos, float3 n)
 {
+    n = normalize(n);
     const float3 vToL = light.lightPos - viewPos;
     const float distToL = length(vToL);
     const float3 dirToL = vToL / distToL;

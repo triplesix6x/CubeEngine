@@ -200,6 +200,8 @@ void Model::ShowWindow(Graphics& gfx, Model* pSelectedModel) noexcept
 			}
 
 			auto& pos = poses[pSelectedNode->GetId()];
+			auto& scale = scales[pSelectedNode->GetId()];
+
 			ImGui::Columns(2);
 			ImGui::SetColumnWidth(0, 100);
 			ImGui::Text("Position");
@@ -252,7 +254,6 @@ void Model::ShowWindow(Graphics& gfx, Model* pSelectedModel) noexcept
 			ImGui::PopStyleVar();
 			ImGui::PopID();
 
-			auto& scale = scales[pSelectedNode->GetId()];
 			ImGui::Columns(2);
 			ImGui::SetColumnWidth(0, 100);
 			ImGui::Text("Scale");
@@ -647,7 +648,7 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh, const 
 
 			bindablePtrs.push_back(std::make_unique<InputLayout>(gfx, vbuf.GetLayout().GetD3DLayout(), pvsbc));
 
-			Node::PSMaterialConstantNotex pmc;
+			Node::PSMaterialConstantNotex pmc = {};
 			pmc.color = diffuseColor;
 			pmc.specularIntensity = (specularColor.x + specularColor.y + specularColor.z) / 3.0f;
 			bindablePtrs.push_back(std::make_unique<PixelConstantBuffer<Node::PSMaterialConstantNotex>>(gfx, pmc, 1u));

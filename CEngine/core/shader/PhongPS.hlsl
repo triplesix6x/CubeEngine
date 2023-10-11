@@ -27,6 +27,7 @@ SamplerState splr;
 
 float3 CalcPointLight(LightCBuf light, float3 viewPos, float3 n, float2 texc)
 {
+    n = normalize(n);
     const float3 vToL = light.lightPos - viewPos;
     const float distToL = length(vToL);
     const float3 dirToL = vToL / distToL;

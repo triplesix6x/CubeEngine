@@ -43,7 +43,10 @@ float3 CalcPointLight(LightCBuf light, float3 viewPos, float3 n, float3 tan, flo
         n = normalSample * 2.0f - 1.0f;
         n = mul(n, tanToView);
     }
-    
+    else
+    {
+        n = normalize(n);
+    }
     const float3 vToL = light.lightPos - viewPos;
     const float distToL = length(vToL);
     const float3 dirToL = vToL / distToL;
