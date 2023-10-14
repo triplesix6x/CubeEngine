@@ -41,7 +41,7 @@ float3 CalcPointLight(LightCBuf light, float3 viewPos, float3 n, float3 tan, flo
         const float3 normalSample = nmap.Sample(splr, texc).xyz;
         n = normalSample * 2.0f - 1.0f;
         n.y = -n.y;
-        n = mul(n, tanToView);
+        n = normalize(mul(n, tanToView));
     }
     else
     {

@@ -6,17 +6,8 @@
 
 std::string operator-(std::string source, const std::string& target)
 {
-	for
-		(
-			size_t pos, size{ target.size() };
-			(pos = source.find(target)) != std::string::npos;
-			)
-		source.erase
-		(
-			source.cbegin() + pos,
-			source.cbegin() + (pos + size)
-		);
-
+	for(size_t pos, size{target.size() }; (pos = source.find(target)) != std::string::npos;)
+		source.erase(source.cbegin() + pos,source.cbegin() + (pos + size));
 	return source;
 }
 
@@ -114,10 +105,6 @@ void Node::RenderTree(Node*& pSelectedNode) const noexcept
 			}
 			ImGui::TreePop();
 		}
-		if (!expanded)
-		{
-			pSelectedNode = nullptr;
-		}
 }
 
 
@@ -143,11 +130,11 @@ std::string Node::GetName() const noexcept
 
 
 
-Model::Model(Graphics& gfx, const std::string fileName, int id, const char* modelName) :
+Model::Model(Graphics& gfx, const std::string& fileName, int id, const char* modelName) :
 	modelName(modelName), id(id)
 {
 	Assimp::Importer imp;
-	const auto pScene = imp.ReadFile(fileName.c_str(), 
+	const auto pScene = imp.ReadFile(fileName.c_str(),
 		aiProcess_Triangulate | 
 		aiProcess_JoinIdenticalVertices |
 		aiProcess_ConvertToLeftHanded | 
@@ -161,7 +148,7 @@ Model::Model(Graphics& gfx, const std::string fileName, int id, const char* mode
 
 	for (size_t i = 0; i < pScene->mNumMeshes; i++)
 	{
-		meshPtrs.push_back(ParseMesh(gfx, *pScene->mMeshes[i], pScene->mMaterials, fileName, pScene->mRootNode->mName.C_Str()));
+		meshPtrs.push_back(ParseMesh(gfx, *pScene->mMeshes[i], pScene->mMaterials, fileName));
 	}
 	int nextId = 0;
 	pRoot = ParseNode(nextId, *pScene->mRootNode);
@@ -399,11 +386,11 @@ Node* Model::GetSelectedNode() const noexcept
 
 
 
-std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh, const aiMaterial *const *pMaterials, std::string fileName, std::string modelName)
+std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh, const aiMaterial *const *pMaterials, const std::filesystem::path& filePath)
 {
 	namespace dx = DirectX;
 	using CubeR::VertexLayout;
-	std::string dir = fileName - modelName;
+	std::string dir = filePath.parent_path().string() + "\\";
 
 	std::vector<std::unique_ptr<Bindable>> bindablePtrs;
 	using namespace std::string_literals;
@@ -498,6 +485,52 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh, const 
 			bindablePtrs.push_back(std::make_unique<PixelConstantBuffer<Node::PSMaterialConstantFullmonte>>(gfx, pmc, 1u));
 		}
 
+		else if (hasDiffuseMap && !hasNormalMap && hasSpecMap)
+		{
+			CubeR::VertexBuffer vbuf(std::move(
+				VertexLayout{}
+				.Append(VertexLayout::Position3D)
+				.Append(VertexLayout::Normal)
+				.Append(VertexLayout::Texture2D)
+			));
+			for (unsigned int i = 0; i < mesh.mNumVertices; i++)
+			{
+				vbuf.EmplaceBack(
+					dx::XMFLOAT3(mesh.mVertices[i].x * scale, mesh.mVertices[i].y * scale, mesh.mVertices[i].z * scale), 
+					*reinterpret_cast<dx::XMFLOAT3*>(&mesh.mNormals[i]),
+					*reinterpret_cast<dx::XMFLOAT2*>(&mesh.mTextureCoords[0][i]) 
+				);
+			}
+			std::vector<unsigned short> indices;
+			indices.reserve(mesh.mNumFaces * 3);
+			for (unsigned int i = 0; i < mesh.mNumFaces; i++)
+			{
+				const auto& face = mesh.mFaces[i];
+				assert(face.mNumIndices == 3);
+				indices.push_back(face.mIndices[0]);
+				indices.push_back(face.mIndices[1]);
+				indices.push_back(face.mIndices[2]);
+			}
+			bindablePtrs.push_back(std::make_unique<VertexBuffer>(gfx, vbuf));
+
+			bindablePtrs.push_back(std::make_unique<IndexBuffer>(gfx, indices));
+
+			auto pvs = std::make_unique<VertexShader>(gfx, L"shaders\\PhongVS.cso");
+
+			auto pvsbc = pvs->GetBytecode();
+			bindablePtrs.push_back(std::move(pvs));
+			bindablePtrs.push_back(std::make_unique<PixelShader>(gfx, L"shaders\\PhongSpecPS.cso"));
+
+			bindablePtrs.push_back(std::make_unique<InputLayout>(gfx, vbuf.GetLayout().GetD3DLayout(), pvsbc));
+			struct PSMaterialConstantDissSpec {
+				float specularMapWeight;
+				float specularConstPow;
+				float padding[2];
+			} pmc;
+			pmc.specularConstPow = shine;
+			pmc.specularMapWeight = 1.0f;
+			bindablePtrs.push_back(std::make_unique<PixelConstantBuffer<PSMaterialConstantDissSpec>>(gfx, pmc, 1u));
+		}
 
 		else if (hasDiffuseMap && hasNormalMap)
 		{

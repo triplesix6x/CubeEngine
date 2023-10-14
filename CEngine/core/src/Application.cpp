@@ -535,7 +535,7 @@ namespace Cube
 		ofn.lpstrFile = cname;
 		ofn.lpstrFile[0] = '\0';
 		ofn.nMaxFile = sizeof(cname);
-		ofn.lpstrFilter = "OBJ files(*.obj)\0*.obj\0GLTF files(*.gltf)\0*.gltf\0\0";
+		ofn.lpstrFilter = "OBJ files(*.obj)\0*.obj\0GLTF files(*.gltf)\0*.gltf\0MD5MESH files(*.md5mesh)\0*.md5mesh\0\0";
 		ofn.lpstrFileTitle = NULL;
 		ofn.nFilterIndex = 1;
 		ofn.nMaxFileTitle = 0;
@@ -546,7 +546,7 @@ namespace Cube
 			std::string nname(cname);
 			auto x = strtok(cname, ".");
 			x = strtok(NULL, ".");
-			if (strcmp(x, "obj") == 0 or strcmp(x, "gltf") == 0)
+			if (strcmp(x, "obj") == 0 or strcmp(x, "gltf")or strcmp(x, "md5mesh") == 0)
 			{
 					models.push_back(std::make_unique<Model>(m_Window.Gfx(), nname, id));
 					++id;

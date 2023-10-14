@@ -327,6 +327,7 @@
     <FxCompile Include="core\shader\PhongNormalMapPS.hlsl" />
     <FxCompile Include="core\shader\PhongNormalMapVS.hlsl" />
     <FxCompile Include="core\shader\PhongNormalMapObjectPS.hlsl" />
+    <FxCompile Include="core\shader\PhongSpecPS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

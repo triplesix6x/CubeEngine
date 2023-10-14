@@ -5,6 +5,7 @@
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <optional>
+#include <filesystem>
 #include <assimp/postprocess.h>
 #include <type_traits>
 #include "../imgui/imgui.h"
@@ -125,7 +126,7 @@ private:
 class Model
 {
 public:
-	Model(Graphics& gfx, const std::string fileName, int id=0, const char* modelName = "Unnamed Object");
+	Model(Graphics& gfx, const std::string& fileName, int id=0, const char* modelName = "Unnamed Object");
 	void Draw(Graphics& gfx) const;
 	void ShowWindow(Graphics& gfx, Model* pSelectedModel) noexcept;
 	void SetRootTransfotm(DirectX::FXMMATRIX tf);
@@ -135,7 +136,7 @@ public:
 private:
 	DirectX::XMMATRIX GetTransform() const noexcept;
 	Node* GetSelectedNode() const noexcept;
-	static std::unique_ptr<Mesh> ParseMesh(Graphics& gfx, const aiMesh& mesh, const aiMaterial *const *pMaterials, std::string fileName, std::string modelName);
+	static std::unique_ptr<Mesh> ParseMesh(Graphics& gfx, const aiMesh& mesh, const aiMaterial *const *pMaterials,const std::filesystem::path& filePath);
 	std::unique_ptr<Node> ParseNode(int& nextId, const aiNode& node);
 	std::unique_ptr<Node> pRoot;
 	std::vector<std::unique_ptr<Mesh>> meshPtrs;
