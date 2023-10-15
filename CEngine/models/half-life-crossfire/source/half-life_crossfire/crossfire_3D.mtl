@@ -1,0 +1,534 @@
+# babtech_ceil01
+newmtl material_0
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_0.tga
+
+# c2a4e_w1
+newmtl material_1
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_1.tga
+
+# out_pave2
+newmtl material_2
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_2.tga
+
+# c3a1_w5a
+newmtl material_3
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_3.tga
+
+# out_w6b
+newmtl material_4
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_4.tga
+
+# out_wall7f
+newmtl material_5
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_5.tga
+
+# fifties_dr5d
+newmtl material_6
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_6.tga
+
+# out_pav3
+newmtl material_7
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_7.tga
+
+# out_grnd2
+newmtl material_8
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_8.tga
+
+# out_wlk
+newmtl material_9
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_9.tga
+
+# tnnl_flr8
+newmtl material_10
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_10.tga
+
+# silo2_brd1b
+newmtl material_11
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_11.tga
+
+# c1a4tnnl1
+newmtl material_12
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_12.tga
+
+# c2a1_w1
+newmtl material_13
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_13.tga
+
+# -0fifties_w12
+newmtl material_14
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_14.tga
+
+# crete3_flr04
+newmtl material_15
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_15.tga
+
+# silo2_wetdr
+newmtl material_16
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_16.tga
+
+# -0crete2_flr04
+newmtl material_17
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_17.tga
+
+# ~light3b
+newmtl material_18
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_18.tga
+
+# c3a1_w3c
+newmtl material_19
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_19.tga
+
+# lab1_trim4
+newmtl material_20
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_20.tga
+
+# out_wall2c
+newmtl material_21
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_21.tga
+
+# ~light5a
+newmtl material_22
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_22.tga
+
+# crete4_stp01
+newmtl material_23
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_23.tga
+
+# crete4_flr01
+newmtl material_24
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_24.tga
+
+# +0~fifts_lght5
+newmtl material_25
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_25.tga
+
+# stripes2
+newmtl material_26
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_26.tga
+
+# -0out_grnd3
+newmtl material_27
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_27.tga
+
+# out_wall3a
+newmtl material_28
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_28.tga
+
+# out_wall3b
+newmtl material_29
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_29.tga
+
+# crete2_flr03c
+newmtl material_30
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_30.tga
+
+# out_wall4b
+newmtl material_31
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_31.tga
+
+# c1a4i_w1c
+newmtl material_32
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_32.tga
+
+# -0babtech_c5
+newmtl material_33
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_33.tga
+
+# +0~generic85
+newmtl material_34
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_34.tga
+
+# xcrate10d
+newmtl material_35
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_35.tga
+
+# xcrate10c
+newmtl material_36
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_36.tga
+
+# xcrate10b
+newmtl material_37
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_37.tga
+
+# xcrate10a
+newmtl material_38
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_38.tga
+
+# c1a1_flr1
+newmtl material_39
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_39.tga
+
+# -0out_w3
+newmtl material_40
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_40.tga
+
+# c3a1_w5d
+newmtl material_41
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_41.tga
+
+# lab1_helpad
+newmtl material_42
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_42.tga
+
+# baseflr01
+newmtl material_43
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_43.tga
+
+# out_roof2a
+newmtl material_44
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_44.tga
+
+# brdly_btile1
+newmtl material_45
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_45.tga
+
+# +0~c2a4_cmp1
+newmtl material_46
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_46.tga
+
+# c1a4i_w1b
+newmtl material_47
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_47.tga
+
+# crete3_ceil02a
+newmtl material_48
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_48.tga
+
+# generic015h
+newmtl material_49
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_49.tga
+
+# +a~fifts_lght3
+newmtl material_50
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_50.tga
+
+# crete2_flr01
+newmtl material_51
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_51.tga
+
+# +0~light4a
+newmtl material_52
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_52.tga
+
+# c1a4_silo2b
+newmtl material_53
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_53.tga
+
+# +0~generic86r
+newmtl material_54
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_54.tga
+
+# sign53a
+newmtl material_55
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_55.tga
+
+# sign87
+newmtl material_56
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_56.tga
+
+# lab1_glu1
+newmtl material_57
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_57.tga
+
+# c1a0_labflre
+newmtl material_58
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_58.tga
+
+# lab1_comp3a
+newmtl material_59
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_59.tga
+
+# c1a1w1c
+newmtl material_60
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_60.tga
+
+# lab1_comp10f
+newmtl material_61
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_61.tga
+
+# +0lab1_comp10e
+newmtl material_62
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_62.tga
+
+# lab1_comp10d
+newmtl material_63
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_63.tga
+
+# ~light3c
+newmtl material_64
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_64.tga
+
+# c1a4b_w1
+newmtl material_65
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_65.tga
+
+# black
+newmtl material_66
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_66.tga
+
+# c3a2a_tnk1b
+newmtl material_67
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_67.tga
+
+# c2a4x_glu
+newmtl material_68
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_68.tga
+
+# lab1_comp3e
+newmtl material_69
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_69.tga
+
+# c1a0_c1
+newmtl material_70
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_70.tga
+
+# medkitedge1
+newmtl material_71
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_71.tga
+
+# +0medkit
+newmtl material_72
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_72.tga
+
+# introdr1b
+newmtl material_73
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_73.tga
+
+# {ladder3a
+newmtl material_74
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_74.tga
+
+# {fence3
+newmtl material_75
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_75.tga
+
+# {blue
+newmtl material_76
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_76.tga
+
+# {rail1
+newmtl material_77
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_77.tga
+
+# {fence2
+newmtl material_78
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_78.tga
+
+# crete2_flr03a
+newmtl material_79
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_79.tga
+
+# generic031b
+newmtl material_80
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_80.tga
+
+# +abutton1
+newmtl material_81
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_81.tga
+
+# {grate2a
+newmtl material_82
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_82.tga
+
+# rechargeedge1
+newmtl material_83
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_83.tga
+
+# +0recharge
+newmtl material_84
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_84.tga
+
+# c3a2_telepad
+newmtl material_85
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_85.tga
+
+# lab1_comp3b
+newmtl material_86
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_86.tga
+
+# lab1_comp2
+newmtl material_87
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_87.tga
+
+# +abutton2
+newmtl material_88
+Kd 1.0000 1.0000 1.0000
+illum 0
+map_Kd crossfire_3D_material_88.tga
+

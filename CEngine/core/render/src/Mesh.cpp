@@ -135,10 +135,10 @@ Model::Model(Graphics& gfx, const std::string& fileName, int id, const char* mod
 {
 	Assimp::Importer imp;
 	const auto pScene = imp.ReadFile(fileName.c_str(),
-		aiProcess_Triangulate | 
+		aiProcess_Triangulate |
 		aiProcess_JoinIdenticalVertices |
-		aiProcess_ConvertToLeftHanded | 
-		aiProcess_GenNormals | 
+		aiProcess_ConvertToLeftHanded |
+		aiProcess_GenNormals |
 		aiProcess_CalcTangentSpace);
 
 	if (pScene == NULL)
@@ -398,6 +398,7 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh, const 
 		bool hasSpecMap = false;
 		bool hasNormalMap = false;
 		bool hasDiffuseMap = false;
+		bool hasAlphaGloss = false;
 		float shine = 2.0f;
 		dx::XMFLOAT4 specularColor = { 0.18f, 0.18f, 0.18f, 1.0f };
 		dx::XMFLOAT3 diffuseColor = { 0.45f, 0.45f, 0.85f };
@@ -408,7 +409,7 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh, const 
 			aiString texFileName;
 			if (material.GetTexture(aiTextureType_DIFFUSE, 0, &texFileName) == aiReturn_SUCCESS)
 			{
-				bindablePtrs.push_back(std::make_unique<Texture>(gfx, dir + texFileName.C_Str(), 0u));
+				bindablePtrs.push_back(std::make_unique<Texture>(gfx, dir + texFileName.C_Str()));
 				hasDiffuseMap = true;
 			}
 			else
@@ -419,17 +420,24 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh, const 
 
 			if (material.GetTexture(aiTextureType_SPECULAR, 0, &texFileName) == aiReturn_SUCCESS)
 			{
-				bindablePtrs.push_back(std::make_unique<Texture>(gfx, dir + texFileName.C_Str(), 1u));
+				auto tex = std::make_unique<Texture>(gfx, dir + texFileName.C_Str(), 1);
+				hasAlphaGloss = tex->HasAlpha();
+				bindablePtrs.push_back(std::move(tex));
 				hasSpecMap = true;
 			}
 			else
 			{
 				material.Get(AI_MATKEY_COLOR_SPECULAR, reinterpret_cast<aiColor3D&>(specularColor));
+			}
+			if (!hasAlphaGloss)
+			{
 				material.Get(AI_MATKEY_SHININESS, shine);
 			}
 			if (material.GetTexture(aiTextureType_NORMALS, 0, &texFileName) == aiReturn_SUCCESS)
 			{
-				bindablePtrs.push_back(std::make_unique<Texture>(gfx, dir + texFileName.C_Str(), 2u));
+				auto tex = std::make_unique<Texture>(gfx, dir + texFileName.C_Str(), 2);
+				hasAlphaGloss = tex->HasAlpha(); 
+				bindablePtrs.push_back(std::move(tex)); 
 				hasNormalMap = true;
 			}
 			if (hasDiffuseMap || hasNormalMap || hasSpecMap)
@@ -482,6 +490,8 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh, const 
 
 			bindablePtrs.push_back(std::make_unique<InputLayout>(gfx, vbuf.GetLayout().GetD3DLayout(), pvsbc));
 			Node::PSMaterialConstantFullmonte pmc = {};
+			pmc.specularPower = shine;
+			pmc.hasGlossMap = hasAlphaGloss ? TRUE : FALSE;
 			bindablePtrs.push_back(std::make_unique<PixelConstantBuffer<Node::PSMaterialConstantFullmonte>>(gfx, pmc, 1u));
 		}
 
@@ -524,11 +534,13 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh, const 
 			bindablePtrs.push_back(std::make_unique<InputLayout>(gfx, vbuf.GetLayout().GetD3DLayout(), pvsbc));
 			struct PSMaterialConstantDissSpec {
 				float specularMapWeight;
+				BOOL hasGloss; 
 				float specularConstPow;
-				float padding[2];
+				float padding;
 			} pmc;
 			pmc.specularConstPow = shine;
-			pmc.specularMapWeight = 1.0f;
+			pmc.hasGloss = hasAlphaGloss ? TRUE : FALSE;  
+			pmc.specularMapWeight = 1.0f; 
 			bindablePtrs.push_back(std::make_unique<PixelConstantBuffer<PSMaterialConstantDissSpec>>(gfx, pmc, 1u));
 		}
 
@@ -577,11 +589,10 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh, const 
 			struct PSMaterialConstantDiffnorm
 			{
 				float specularIntensity = 0.18f;
-				float specularPower;
+				float specularPower = 2.0f;
 				BOOL  normalMapEnabled = TRUE;
 				float padding[1];
 			} pmc;
-			pmc.specularPower = shine;
 			bindablePtrs.push_back(std::make_unique<PixelConstantBuffer<PSMaterialConstantDiffnorm>>(gfx, pmc, 1u));
 		}
 
@@ -628,12 +639,10 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh, const 
 
 			struct PSMaterialConstantDiffuse
 			{
-				float specularIntensity;
-				float specularPower;
+				float specularIntensity = 0.18f;
+				float specularPower = 2.0f;
 				float padding[2];
 			} pmc;
-			pmc.specularPower = shine;
-			pmc.specularIntensity = (specularColor.x + specularColor.y + specularColor.z) / 3.0f;
 			bindablePtrs.push_back(std::make_unique<PixelConstantBuffer<PSMaterialConstantDiffuse>>(gfx, pmc, 1u));
 		}
 

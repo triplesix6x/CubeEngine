@@ -18,8 +18,8 @@ cbuffer PLightCbuf
 cbuffer ObjectCBuf
 {
     float specularMapWeight;
+    bool hasGloss;
     float specularPowerConst;
-    float padding[2];
 };
 
 Texture2D tex;
@@ -41,7 +41,16 @@ float3 CalcPointLight(LightCBuf light, float3 viewPos, float3 n, float2 texc)
     const float3 r = w * 2.0f - vToL;
     const float4 specularSample = spec.Sample(splr, texc);
     const float3 specularReflectionColor = specularSample.rgb * specularMapWeight;
-    const float3 specularPower = pow(2.0f, specularSample.a * 13.0f);
+    float3 specularPower = 0;
+    if (hasGloss)
+    {
+        specularPower = pow(2.0f, specularSample.a * 13.0f);
+    }
+    else
+    {
+        specularPower = specularPowerConst;
+    }
+
     const float3 specular = att * (light.diffuseColor * light.diffuseIntensity) * pow(max(0.0f, dot(normalize(-r), normalize(viewPos))), specularPower);
     
     return float3(saturate((diffuse + light.ambient) * tex.Sample(splr, texc).rgb + specular * specularReflectionColor));

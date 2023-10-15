@@ -39,10 +39,8 @@ float3 CalcPointLight(LightCBuf light, float3 viewPos, float3 n, float2 texc)
     if (normalMapEnabled)
     {
         const float3 normalSample = nmap.Sample(splr, texc).xyz;
-        n.x = normalSample.x * 2.0f - 1.0f;
-        n.y = -normalSample.y * 2.0f + 1.0f;
-        n.z = -normalSample.z * 2.0f + 1.0f;
-        n = mul(n, (float3x3) modelView);
+        const float3 objectNormal = normalSample * 2.0f - 1.0f;
+        n = normalize(mul(objectNormal, (float3x3) modelView));
     }
     
     const float3 vToL = light.lightPos - viewPos;

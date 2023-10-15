@@ -19,10 +19,10 @@ cbuffer ObjectCBuf
 {
     bool normalMapEnabled;
     bool specularMapEnabled;
+    bool hasGloss;
     float specularPowerConst;
     float3 specularColor;
     float specularMapWeight;
-    float padding;
 };
 
 Texture2D tex;
@@ -32,6 +32,7 @@ SamplerState splr;
 
 float3 CalcPointLight(LightCBuf light, float3 viewPos, float3 n, float3 tan, float3 bitan, float2 texc)
 {
+    n = normalize(n);
     if (normalMapEnabled)
     {
         const float3x3 tanToView = float3x3(
@@ -40,12 +41,8 @@ float3 CalcPointLight(LightCBuf light, float3 viewPos, float3 n, float3 tan, flo
             normalize(n)
         );
         const float3 normalSample = nmap.Sample(splr, texc).xyz;
-        n = normalSample * 2.0f - 1.0f;
-        n = normalize(mul(n, tanToView));
-    }
-    else
-    {
-        n = normalize(n);
+        float3 tanNormal = normalSample * 2.0f - 1.0f;
+        n = normalize(mul(tanNormal, tanToView));
     }
     const float3 vToL = light.lightPos - viewPos;
     const float distToL = length(vToL);
@@ -56,14 +53,17 @@ float3 CalcPointLight(LightCBuf light, float3 viewPos, float3 n, float3 tan, flo
     const float3 diffuse = light.diffuseColor * light.diffuseIntensity * att * max(0.0f, dot(dirToL, n));
     
     const float3 w = n * dot(vToL, n);
-    const float3 r = w * 2.0f - vToL;
+    const float3 r = normalize(w * 2.0f - vToL);
     float3 specularReflectionColor;
     float specularPower = specularPowerConst;
     if (specularMapEnabled)
     {
         const float4 specularSample = spec.Sample(splr, texc);
         specularReflectionColor = specularSample.rgb * specularMapWeight;
-        specularPower = pow(2.0f, specularSample.a * 13.0f);
+        if (hasGloss)
+        {
+            specularPower = pow(2.0f, specularSample.a * 13.0f);
+        }
     }
     else
     {

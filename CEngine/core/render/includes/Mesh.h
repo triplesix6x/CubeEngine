@@ -29,10 +29,10 @@ public:
 	{
 		BOOL  normalMapEnabled = TRUE;
 		BOOL specularMapEnabled = TRUE;
+		BOOL  hasGlossMap = FALSE;
 		float specularPower = 3.1f;
 		DirectX::XMFLOAT3 specularColor = { 0.75f,0.75f,0.75f };
 		float specularMapWeight = 0.671f;
-		float padding;
 	};
 	struct PSMaterialConstantNotex
 	{
@@ -69,9 +69,13 @@ public:
 				ImGui::Checkbox("Spec Map", &specularMapEnabled);
 				c.specularMapEnabled = specularMapEnabled ? TRUE : FALSE;
 
+				bool hasGlossMap = (bool)c.hasGlossMap; 
+				ImGui::Checkbox("Gloss Alpha", &hasGlossMap); 
+				c.hasGlossMap = hasGlossMap ? TRUE : FALSE; 
+
 				ImGui::SliderFloat("Spec Weight", &c.specularMapWeight, 0.0f, 2.0f);
 
-				ImGui::SliderFloat("Spec Pow", &c.specularPower, 0.0f, 1000.0f, "%f");
+				ImGui::SliderFloat("Spec Pow", &c.specularPower, 0.0f, 20.0f, "%f");
 
 				ImGui::ColorPicker3("Spec Color", reinterpret_cast<float*>(&c.specularColor));
 				if (ImGui::Button("Reset Material"))
@@ -79,6 +83,7 @@ public:
 					c.specularPower = 3.1f;
 					c.normalMapEnabled = TRUE;
 					c.specularMapEnabled = TRUE;
+					c.hasGlossMap = FALSE;
 					c.specularColor = { 0.75f,0.75f,0.75f };
 					c.specularMapWeight = 0.671f;
 				}
@@ -94,7 +99,7 @@ public:
 
 				ImGui::SliderFloat("Spec Inten.", &c.specularIntensity, 0.0f, 1.0f);
 
-				ImGui::SliderFloat("Spec Pow", &c.specularPower, 0.0f, 1000.0f, "%f");
+				ImGui::SliderFloat("Spec Pow", &c.specularPower, 0.0f, 20.0f, "%f");
 
 				ImGui::ColorPicker3("Diff Color", reinterpret_cast<float*>(&c.color));
 

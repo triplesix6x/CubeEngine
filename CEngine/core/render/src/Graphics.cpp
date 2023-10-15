@@ -229,11 +229,11 @@ void Graphics::DrawGrid(DirectX::XMFLOAT3 camPos) noexcept
 	pContext->IASetInputLayout(m_inputLayout.Get());
 	m_batch->Begin();
 
-	DirectX::SimpleMath::Vector3 xaxis(150.f, 0.f, 0.f);
-	DirectX::SimpleMath::Vector3 zaxis(0.f, 0.f, 150.f);
+	DirectX::SimpleMath::Vector3 xaxis(300.f, 0.f, 0.f);
+	DirectX::SimpleMath::Vector3 zaxis(0.f, 0.f, 300.f);
 	DirectX::SimpleMath::Vector3 origin = DirectX::SimpleMath::Vector3(round(camPos.x - 5.0f), 0.f, round(camPos.z + 10.0f));
 
-	constexpr size_t divisions = 300;
+	constexpr size_t divisions = 600;
 
 	for (size_t i = 0; i <= divisions; ++i)
 	{

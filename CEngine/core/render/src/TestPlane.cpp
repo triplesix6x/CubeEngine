@@ -16,7 +16,7 @@ TestPlane::TestPlane(Graphics& gfx, float size)
 	AddIndexBuffer(std::make_unique <IndexBuffer>(gfx, model.indices));
 
 	AddBind(std::make_unique<Texture>(gfx, "models\\brick\\brickwall.jpg"));
-	AddBind(std::make_unique<Texture>(gfx, "models\\brick\\brickwall_normal.jpg", 1u));
+	AddBind(std::make_unique<Texture>(gfx, "models\\brick\\brickwall_normal_obj.png", 2u));
 
 	auto pvs = std::make_unique<VertexShader>(gfx, L"shaders\\PhongVS.cso");
 	auto pvsbc = pvs->GetBytecode();

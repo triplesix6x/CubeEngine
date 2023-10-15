@@ -14,6 +14,7 @@
 #include <chrono>
 
 
+
 namespace Cube
 {
 	Application::Application(int width, int height, WindowType type) 
@@ -109,7 +110,7 @@ namespace Cube
 		ImGuiID did = m_Window.Gfx().ShowDocksape();
 		ImGuiDockNode* node = ImGui::DockBuilderGetCentralNode(did);
 		m_Window.Gfx().CreateViewport(node->Size.x, node->Size.y, node->Pos.x, node->Pos.y);
-		m_Window.Gfx().SetProjection(DirectX::XMMatrixPerspectiveFovLH(to_rad(75.0f), node->Size.x / node->Size.y, 0.01f, 150.0f));
+		m_Window.Gfx().SetProjection(DirectX::XMMatrixPerspectiveFovLH(to_rad(75.0f), node->Size.x / node->Size.y, 0.01f, 300.0f));
 
 		ShowMenuBar();
 
@@ -125,7 +126,6 @@ namespace Cube
 		{
 			m->Draw(m_Window.Gfx());
 		}
-
 
 
 		light.drawSpheres(m_Window.Gfx());

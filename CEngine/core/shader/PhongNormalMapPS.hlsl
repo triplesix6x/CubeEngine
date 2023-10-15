@@ -31,6 +31,7 @@ SamplerState splr;
 
 float3 CalcPointLight(LightCBuf light, float3 viewPos, float3 n, float3 tan, float3 bitan, float2 texc)
 {
+    n = normalize(n);
     if(normalMapEnabled)
     {
         const float3x3 tanToView = float3x3(
@@ -39,15 +40,9 @@ float3 CalcPointLight(LightCBuf light, float3 viewPos, float3 n, float3 tan, flo
             normalize(n)
         );
         const float3 normalSample = nmap.Sample(splr, texc).xyz;
-        n = normalSample * 2.0f - 1.0f;
-        n.y = -n.y;
-        n = normalize(mul(n, tanToView));
+        float3 tanNormal = normalSample * 2.0f - 1.0f;
+        n = normalize(mul(tanNormal, tanToView));
     }
-    else
-    {
-        n = normalize(n);
-    }
-    
     const float3 vToL = light.lightPos - viewPos;
     const float distToL = length(vToL);
     const float3 dirToL = vToL / distToL;

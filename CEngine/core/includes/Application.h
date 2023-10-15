@@ -5,6 +5,7 @@
 #include "../render/includes/Camera.h"
 #include "../render/includes/PointLight.h"
 #include "../render/includes/Mesh.h"
+#include "../render/includes/TestPlane.h"
 #include "../render/includes/SkyBox.h"
 #include <set>
 
