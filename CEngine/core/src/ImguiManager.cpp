@@ -12,6 +12,7 @@ ImguiManager::ImguiManager()
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 	io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
+	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 	io.ConfigWindowsResizeFromEdges = true;
 
 	ImVec4* colors = ImGui::GetStyle().Colors;

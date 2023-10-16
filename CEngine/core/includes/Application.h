@@ -28,8 +28,12 @@ namespace Cube
 		void HadleInput(float dt);
 
 		void showLightHelp();
+
+		void showSettingsWindow();
+
 	private:
-		bool lopen = false;
+		bool lHelpWindowOpen = false;
+		bool projSettWindowOpen = false;
 		void doFrame();					//функция отрисовки одного кадра
 		ImguiManager imgui;
 		Window m_Window;
@@ -41,6 +45,8 @@ namespace Cube
 		std::unique_ptr<SkyBox> skybox;
 		Model* pSelectedModel;
 		bool drawGrid = true;
+		std::chrono::milliseconds maxfps = std::chrono::milliseconds(15);
+		bool nofpslimit = true;
 		int id = 0;
 	};
 }

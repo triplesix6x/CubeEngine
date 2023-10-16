@@ -62,6 +62,13 @@ public:
 	void Resize(UINT width, UINT height) noexcept;
 	bool IsImguiEnabled() const noexcept;
 
+	bool isVSYCNenabled() const noexcept;
+	void enableVSYNC() noexcept;
+	void disableVSYNC() noexcept;
+
+	int getMonitorFrequency() const noexcept;
+
+	bool VSYNCenabled = true;
 private:
 	bool imguiEnabled = true;
 	DirectX::XMMATRIX projection;

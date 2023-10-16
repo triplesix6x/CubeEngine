@@ -12,7 +12,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <chrono>
-
+#include <thread>
+#include <math.h>
 
 
 namespace Cube
@@ -94,15 +95,18 @@ namespace Cube
 				return ecode->wParam;
 			}
 			auto dt = timer.Mark();
-			
 			HadleInput(dt);
 			doFrame();
+			if (!nofpslimit && !m_Window.Gfx().isVSYCNenabled())
+			{
+				std::chrono::milliseconds frameTimeMin(maxfps);
+				std::this_thread::sleep_for(frameTimeMin - timer.MarkDuration());
+			}
 		}
 	}
 
 	void Application::doFrame()
 	{
-
 
 		m_Window.Gfx().ClearBuffer(0.07f, 0.07f, 0.07f);		//Очистка текущего буфера свап чейна
 		m_Window.Gfx().SetCamera(cam.GetMatrix());
@@ -141,9 +145,9 @@ namespace Cube
 		ShowSceneWindow();
 		ShowToolBar();
 		showLightHelp();
+		showSettingsWindow();
 
 		m_Window.Gfx().EndFrame();							//Замена буфера свап чейна
-
 	}
 
 
@@ -212,7 +216,7 @@ namespace Cube
 		{
 			const int selectedId = (pSelectedModel == nullptr) ? -1 : pSelectedModel->GetId();
 			bool expanded = ImGui::TreeNodeEx((void*)(intptr_t)models[i]->GetId(), 0, models[i]->modelName.c_str());
-			if (ImGui::IsItemClicked())
+			if (ImGui::IsItemClicked() || ImGui::IsItemActivated())
 			{
 				pSelectedModel = models[i].get();
 			}
@@ -231,11 +235,6 @@ namespace Cube
 		light.spawnWnds();
 
 		cam.SpawnControlWindow();
-
-		auto th = ImGui::GetWindowHeight();
-		std::string text = "Application average %.3f ms/frame (%.1f FPS)";
-		ImGui::SetCursorPosY(th - ImGui::CalcTextSize(text.c_str()).y - 10.0f);
-		ImGui::Text(text.c_str(), 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 
 		ImGui::End();
 
@@ -316,17 +315,22 @@ namespace Cube
 				ImGui::PopStyleColor();
 			}
 			ImGui::SetCursorPosX(10.0f);
-			if (ImGui::BeginMenu("File")) {
-				if (ImGui::MenuItem("Create"))
+			if (ImGui::BeginMenu("Project")) {
+				if (ImGui::MenuItem("Create new project"))
 				{
 				}
-				if (ImGui::MenuItem("Open"))
+				if (ImGui::MenuItem("Open project"))
 				{
 				}
-				if (ImGui::MenuItem("Save"))
+				if (ImGui::MenuItem("Save project"))
 				{
 				}
-				if (ImGui::MenuItem("Save as..")) {
+				if (ImGui::MenuItem("Save project as..")) 
+				{
+				}
+				if (ImGui::MenuItem("Project Settings"))
+				{
+					projSettWindowOpen = true;
 				}
 				ImGui::EndMenu();
 			}
@@ -442,7 +446,7 @@ namespace Cube
 			{
 				if (ImGui::MenuItem("Light Help"))
 				{
-					lopen = true;
+					lHelpWindowOpen = true;
 				}
 				ImGui::EndMenu();
 			}
@@ -452,12 +456,12 @@ namespace Cube
 
 	void Application::showLightHelp()
 	{
-		if (lopen)
+		if (lHelpWindowOpen)
 		{
 			ImGuiIO& io = ImGui::GetIO();
 			ImGui::SetNextWindowSize(ImVec2{ 400, 700 }, ImGuiCond_Appearing);
 			ImGui::SetNextWindowPos(ImVec2(io.DisplaySize.x * 0.5f, io.DisplaySize.y * 0.5f), ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
-			ImGui::Begin("Light Help", &lopen, ImGuiWindowFlags_NoCollapse);
+			ImGui::Begin("Light Help", &lHelpWindowOpen, ImGuiWindowFlags_NoCollapse);
 			ImGui::SeparatorText("POINT LIGHT VALUES:");
 			ImGui::Columns(1);
 			ImGui::TextWrapped("Cube Engine uses one type of shading - Phong shading. So here are presented the recommended values for Point light sources, depending on them ranges from objects:");
@@ -514,6 +518,67 @@ namespace Cube
 		}
 	}
 
+	void Application::showSettingsWindow()
+	{
+		if(projSettWindowOpen)
+		{
+			ImGuiIO& io = ImGui::GetIO();
+			ImGui::SetNextWindowSize(ImVec2{ 700, 550 }, ImGuiCond_Appearing);
+			ImGui::SetNextWindowPos(ImVec2(io.DisplaySize.x * 0.5f, io.DisplaySize.y * 0.5f), ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+			ImGui::Begin("Project Settings", &projSettWindowOpen, ImGuiWindowFlags_NoCollapse);
+
+
+			ImGui::BeginChild("left pane", ImVec2(150, 0), true);
+
+			ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 0.0f);
+			ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 0.0f);
+
+
+			static int selected = 0;
+
+			ImGui::Selectable("General Settings", selected == 1, ImGuiSelectableFlags_SelectOnNav);
+			if (ImGui::IsItemFocused())
+			{
+				selected = 1;
+			}
+
+			ImGui::Selectable("Graphics Settings", selected == 2, ImGuiSelectableFlags_SelectOnNav);
+			if (ImGui::IsItemFocused())
+			{
+				selected = 2;
+			}
+
+			ImGui::PopStyleVar(2);
+			ImGui::EndChild();
+
+			ImGui::SameLine(); 
+			ImGui::BeginChild("item view", ImVec2(0, -ImGui::GetFrameHeightWithSpacing())); 
+			if (selected == 2)
+			{
+				ImGui::SeparatorText("Graphics");
+				ImGui::Checkbox("VSync", &m_Window.Gfx().VSYNCenabled);
+
+				ImGui::BeginDisabled(m_Window.Gfx().isVSYCNenabled());
+				ImGui::BulletText("Set Max Framerate");
+
+				ImGui::BeginDisabled(nofpslimit);
+				if (ImGui::Button("30"))
+					maxfps = std::chrono::milliseconds(27);
+				ImGui::SameLine();
+				if (ImGui::Button("60"))
+					maxfps = std::chrono::milliseconds(15);
+				ImGui::SameLine();
+				ImGui::EndDisabled();
+				ImGui::Checkbox("No limit", &nofpslimit);
+
+				ImGui::EndDisabled();
+			}
+			ImGui::EndChild(); 
+
+			ImGui::End();
+		}
+	}
+
 	void Application::ShowToolBar()
 	{
 		const auto io = ImGui::GetIO();
@@ -522,6 +587,12 @@ namespace Cube
 
 		AddCube();
 		ImGui::Checkbox("Draw Grid", &drawGrid);
+
+		auto th = ImGui::GetWindowHeight();
+		std::string text = "%.1f FPS";
+		ImGui::SetCursorPosY(th - ImGui::CalcTextSize(text.c_str()).y - 10.0f); 
+		ImGui::Text(text.c_str(), ImGui::GetIO().Framerate); 
+
 		ImGui::End();
 	}
 

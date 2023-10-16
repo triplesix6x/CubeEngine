@@ -6,7 +6,7 @@
 
 namespace wrl = Microsoft::WRL;
 
-Texture::Texture(Graphics& gfx, const std::string name, unsigned int slot) : slot(slot)
+Texture::Texture(Graphics & gfx, const std::string name, unsigned int slot) : slot(slot)
 {
 	std::wstring wname = std::wstring(name.begin(), name.end());
 	std::string cname(name);
@@ -59,17 +59,16 @@ Texture::Texture(Graphics& gfx, const std::string name, unsigned int slot) : slo
 	}
 	else
 	{
-
 		DirectX::TexMetadata metadata;
 		DirectX::ScratchImage image;
 		DirectX::ScratchImage fimage;
 		DirectX::LoadFromWICFile(wname.c_str(), DirectX::WIC_FLAGS_NONE, &metadata, image);
 		hasAlpha = image.IsAlphaAllOpaque();
 
-		if (image.GetImage(0, 0, 0)->format != DXGI_FORMAT_B8G8R8A8_UNORM) 
+		if (image.GetImage(0, 0, 0)->format != DXGI_FORMAT_B8G8R8A8_UNORM)
 		{
-			DirectX::ScratchImage converted; 
-			DirectX::Convert(*image.GetImage(0, 0, 0), DXGI_FORMAT_B8G8R8A8_UNORM, DirectX::TEX_FILTER_DEFAULT, DirectX::TEX_THRESHOLD_DEFAULT, converted); 
+			DirectX::ScratchImage converted;
+			DirectX::Convert(*image.GetImage(0, 0, 0), DXGI_FORMAT_B8G8R8A8_UNORM, DirectX::TEX_FILTER_DEFAULT, DirectX::TEX_THRESHOLD_DEFAULT, converted);
 			fimage = std::move(converted);
 		}
 		else

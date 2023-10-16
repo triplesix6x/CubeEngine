@@ -112,7 +112,15 @@ void Graphics::EndFrame()
 	}
 	//Замена буфера свап чейна
 	HRESULT hResult;
-	if (FAILED(hResult = pSwap->Present(1u, 0u)))
+	if (VSYNCenabled)
+	{
+		hResult = pSwap->Present(1u, 0u);
+	}
+	else
+	{
+		hResult = pSwap->Present(0u, 0u);
+	}
+	if (FAILED(hResult))
 	{
 		if (hResult == DXGI_ERROR_DEVICE_REMOVED)
 		{
@@ -286,6 +294,29 @@ bool Graphics::IsImguiEnabled() const noexcept
 {
 	return imguiEnabled;
 }
+
+bool Graphics::isVSYCNenabled() const noexcept
+{
+	return VSYNCenabled;
+}
+
+void Graphics::enableVSYNC() noexcept
+{
+	VSYNCenabled = true;
+}
+
+void Graphics::disableVSYNC() noexcept
+{
+	VSYNCenabled = false;
+}
+
+int Graphics::getMonitorFrequency() const noexcept
+{
+	DEVMODE dm;
+	EnumDisplaySettings(NULL, 0, &dm);
+	return dm.dmDisplayFrequency;
+}
+
 
 DirectX::XMMATRIX Graphics::GetCamera() const noexcept
 {
