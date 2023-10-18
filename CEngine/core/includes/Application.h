@@ -45,7 +45,7 @@ namespace Cube
 		std::unique_ptr<SkyBox> skybox;
 		Model* pSelectedModel;
 		bool drawGrid = true;
-		std::chrono::milliseconds maxfps = std::chrono::milliseconds(15);
+		std::chrono::milliseconds maxfps = std::chrono::milliseconds(14);
 		bool nofpslimit = true;
 		int id = 0;
 	};

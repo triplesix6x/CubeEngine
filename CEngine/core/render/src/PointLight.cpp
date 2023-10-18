@@ -75,7 +75,7 @@ void Lights::PointLight::SpawnControlWindow() noexcept
 		ImGui::Text("Falloff");
 		ImGui::SliderFloat("Constant", &cbData.attConst, 0.05f, 10.0f, "%.2f");
 		ImGui::SliderFloat("Linear", &cbData.attLin, 0.0001f, 4.0f, "%.4f");
-		ImGui::SliderFloat("Quadratic", &cbData.attQuad, 0.0000001f, 2.0f, "%.7f");
+		ImGui::SliderFloat("Quadratic", &cbData.attQuad, 0.0000001f, 0.03f, "%.7f");
 		ImGui::Checkbox("Draw Light Sphere", &drawSphere);
 		if (ImGui::Button("Reset"))
 		{
@@ -147,14 +147,14 @@ int Lights::getId(int i)
 
 void Lights::DeleteLight(int i)
 {
-	if (sceneLights.size() > 1)
+	if (sceneLights.size() > 0)
 	{
 		sceneLights.erase(sceneLights.begin() + i);
 		UpdateCbufs();
 	}
 	else
 	{
-		MessageBoxA(nullptr, "There must be at least 1 light source.", "Light error", MB_OK | MB_ICONEXCLAMATION);
+		MessageBoxA(nullptr, "There cannot be less than 0 light sources.", "Light error", MB_OK | MB_ICONEXCLAMATION);
 	}
 }
 

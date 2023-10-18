@@ -13,3 +13,4 @@
 #include "Rasterizer.h"
 #include "Texture.h"
 #include "Sampler.h"
+#include "Blender.h"

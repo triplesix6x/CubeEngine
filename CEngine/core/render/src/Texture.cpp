@@ -63,7 +63,7 @@ Texture::Texture(Graphics & gfx, const std::string name, unsigned int slot) : sl
 		DirectX::ScratchImage image;
 		DirectX::ScratchImage fimage;
 		DirectX::LoadFromWICFile(wname.c_str(), DirectX::WIC_FLAGS_NONE, &metadata, image);
-		hasAlpha = image.IsAlphaAllOpaque();
+		hasAlpha = !image.IsAlphaAllOpaque();
 
 		if (image.GetImage(0, 0, 0)->format != DXGI_FORMAT_B8G8R8A8_UNORM)
 		{
