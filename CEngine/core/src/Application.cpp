@@ -116,7 +116,7 @@ namespace Cube
 		m_Window.Gfx().CreateViewport(node->Size.x, node->Size.y, node->Pos.x, node->Pos.y);
 		m_Window.Gfx().SetProjection(DirectX::XMMatrixPerspectiveFovLH(to_rad(75.0f), node->Size.x / node->Size.y, 0.01f, 300.0f));
 
-		ShowMenuBar();
+	
 
 		if (skybox)
 		{
@@ -141,7 +141,7 @@ namespace Cube
 			m_Window.Gfx().DrawGrid(cam.pos);
 		}
 
-
+		ShowMenuBar();
 		ShowSceneWindow();
 		ShowToolBar();
 		showLightHelp();
@@ -566,7 +566,7 @@ namespace Cube
 					maxfps = std::chrono::milliseconds(27);
 				ImGui::SameLine();
 				if (ImGui::Button("60"))
-					maxfps = std::chrono::milliseconds(15);
+					maxfps = std::chrono::milliseconds(14);
 				ImGui::SameLine();
 				ImGui::EndDisabled();
 				ImGui::Checkbox("No limit", &nofpslimit);

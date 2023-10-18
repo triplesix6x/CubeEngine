@@ -147,6 +147,9 @@
     <ClCompile Include="core\render\src\TestCube.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="core\render\src\Blender.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core\includes\Application.h">
@@ -300,6 +303,9 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="core\render\includes\TestCube.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="core\render\includes\Blender.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

@@ -147,6 +147,7 @@
     <ClCompile Include="core\render\includes\DXTKIncludes.h" />
     <ClCompile Include="core\render\includes\NewIndexedTriangleList.h" />
     <ClCompile Include="core\render\src\Bindable.cpp" />
+    <ClCompile Include="core\render\src\Blender.cpp" />
     <ClCompile Include="core\render\src\Camera.cpp" />
     <ClCompile Include="core\render\src\DepthStencil.cpp" />
     <ClCompile Include="core\render\src\Drawable.cpp" />
@@ -199,6 +200,7 @@
     <ClInclude Include="core\includes\Window.h" />
     <ClInclude Include="core\render\includes\Bindable.h" />
     <ClInclude Include="core\render\includes\BindableBase.h" />
+    <ClInclude Include="core\render\includes\Blender.h" />
     <ClInclude Include="core\render\includes\Camera.h" />
     <ClInclude Include="core\render\includes\ConstantBuffers.h" />
     <ClInclude Include="core\render\includes\Cube.h" />
