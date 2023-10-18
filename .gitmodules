@@ -1,12 +1,6 @@
 [submodule "CEngine/vendor/spdlog"]
 	path = CEngine/vendor/spdlog
 	url = https://github.com/gabime/spdlog
-[submodule "imgui"]
-	path = imgui
-	url = https://github.com/ocornut/imgui
-[submodule "CEngine/imgui"]
-	path = CEngine/imgui
-	url = https://github.com/ocornut/imgui
-[submodule "CEngine/vendor/imgui"]
-	path = CEngine/vendor/imgui
-	url = https://github.com/ocornut/imgui
+[submodule "CEngine/vendor/yaml-c[["]
+	path = CEngine/vendor/yaml-c[[
+	url = https://github.com/jbeder/yaml-cpp
