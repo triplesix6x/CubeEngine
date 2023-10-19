@@ -1,6 +1,6 @@
 [submodule "CEngine/vendor/spdlog"]
 	path = CEngine/vendor/spdlog
 	url = https://github.com/gabime/spdlog
-[submodule "CEngine/vendor/yaml-c[["]
-	path = CEngine/vendor/yaml-c[[
+[submodule "CEngine/yaml-cpp"]
+	path = CEngine/yaml-cpp
 	url = https://github.com/jbeder/yaml-cpp

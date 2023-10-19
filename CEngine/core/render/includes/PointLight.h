@@ -21,7 +21,7 @@ public:
 	class PointLight
 	{
 	public:
-		PointLight(Graphics& gfx, int id, float radius = 0.5f, std::string lightName = "Unnamed Light");
+		PointLight(Graphics& gfx, int id, float radius, std::string lightName);
 		void SpawnControlWindow() noexcept;
 		void Reset() noexcept;
 		void Draw(Graphics& gfx) const noexcept;
@@ -35,7 +35,7 @@ public:
 		mutable SolidSphere mesh;
 	};
 	Lights(Graphics& gfx, float radius = 0.5f);
-	void AddLight(Graphics& gfx);
+	void AddLight(Graphics& gfx,std::string lightName = "Unnamed Light");
 	int getLighstCount();
 	void clearLights();
 	int getId(int i);
@@ -45,10 +45,9 @@ public:
 	void spawnWnds();
 	void drawSpheres(Graphics& gfx);
 	void Bind(Graphics& gfx, DirectX::FXMMATRIX view) noexcept;
-
+	std::vector<std::unique_ptr<PointLight>> sceneLights;
 private:
 	int id = 0;
 	PointLightCBuf cbufs[32];
-	std::vector<std::unique_ptr<PointLight>> sceneLights;
 	mutable PixelConstantBuffer<PointLightCBuf> cbuf;
 };

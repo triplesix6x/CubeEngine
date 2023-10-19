@@ -74,7 +74,7 @@ void Lights::PointLight::SpawnControlWindow() noexcept
 
 		ImGui::Text("Falloff");
 		ImGui::SliderFloat("Constant", &cbData.attConst, 0.05f, 10.0f, "%.2f");
-		ImGui::SliderFloat("Linear", &cbData.attLin, 0.0001f, 4.0f, "%.4f");
+		ImGui::SliderFloat("Linear", &cbData.attLin, 0.0001f, 0.7f, "%.4f");
 		ImGui::SliderFloat("Quadratic", &cbData.attQuad, 0.0000001f, 0.03f, "%.7f");
 		ImGui::Checkbox("Draw Light Sphere", &drawSphere);
 		if (ImGui::Button("Reset"))
@@ -121,11 +121,11 @@ Lights::Lights(Graphics& gfx, float radius) : cbuf(gfx, 0u, 32u)
 	UpdateCbufs();
 }
 
-void Lights::AddLight(Graphics& gfx)
+void Lights::AddLight(Graphics& gfx, std::string lightName)
 {
 	if (sceneLights.size() < 32)
 	{
-		sceneLights.push_back(std::make_unique<PointLight>(gfx, id));
+		sceneLights.push_back(std::make_unique<PointLight>(gfx, id, 0.5f, lightName));
 		++id;
 		UpdateCbufs();
 	}

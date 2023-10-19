@@ -7,6 +7,7 @@
 #include "../../imgui/imgui_internal.h"
 #include "../includes/CMath.h"
 #include "../includes/ImguiThemes.h"
+#include "../includes/SceneSerializer.h"
 #include <Commdlg.h>
 #include <memory>
 #include <stdio.h>
@@ -26,12 +27,16 @@ namespace Cube
 	{
 		models.push_back(std::make_unique<Model>(m_Window.Gfx(), "models\\cube.obj", id, "Cube"));
 		++id;
-
+		models[0]->SetRootTransfotm(DirectX::XMMatrixTranslation(5.0f, 0.0f, 0.0f) *
+									DirectX::XMMatrixScaling(0.5f, 0.5f, 0.5f));
 		m_Window.Gfx().SetTexture(&pCubeIco, L"icons\\cubeico2.png");
+
 	}
 
 	Application::~Application()
 	{
+		SceneSerializer serializer(*this);
+		serializer.Serialize("projects/Example.cubeproj");
 		pCubeIco->Release();
 		models.clear();
 	}
@@ -94,8 +99,6 @@ namespace Cube
 			{
 				return ecode->wParam;
 			}
-			auto dt = timer.Mark();
-			HadleInput(dt);
 			doFrame();
 			if (!nofpslimit && !m_Window.Gfx().isVSYCNenabled())
 			{
@@ -108,6 +111,8 @@ namespace Cube
 	void Application::doFrame()
 	{
 
+		auto dt = timer.Mark();
+		HadleInput(dt);
 		m_Window.Gfx().ClearBuffer(0.07f, 0.07f, 0.07f);		//Очистка текущего буфера свап чейна
 		m_Window.Gfx().SetCamera(cam.GetMatrix());
 
@@ -606,7 +611,7 @@ namespace Cube
 		ofn.lpstrFile = cname;
 		ofn.lpstrFile[0] = '\0';
 		ofn.nMaxFile = sizeof(cname);
-		ofn.lpstrFilter = "OBJ files(*.obj)\0*.obj\0GLTF files(*.gltf)\0*.gltf\0MD5MESH files(*.md5mesh)\0*.md5mesh\0\0";
+		ofn.lpstrFilter = "OBJ files(*.obj)\0*.obj\0GLTF files(*.gltf)\0*.gltf\0MD5MESH files(*.md5mesh)\0*.md5mesh\0ALL files(*.*)\0*.*\0\0";
 		ofn.lpstrFileTitle = NULL;
 		ofn.nFilterIndex = 1;
 		ofn.nMaxFileTitle = 0;
@@ -615,17 +620,17 @@ namespace Cube
 		if (GetOpenFileNameA(&ofn))
 		{
 			std::string nname(cname);
-			auto x = strtok(cname, ".");
+			/*auto x = strtok(cname, ".");
 			x = strtok(NULL, ".");
-			if (strcmp(x, "obj") == 0 or strcmp(x, "gltf")or strcmp(x, "md5mesh") == 0)
-			{
+			if (strcmp(x, "obj") == 0 or strcmp(x, "gltf") == 0 or strcmp(x, "md5mesh") == 0)
+			{*/
 					models.push_back(std::make_unique<Model>(m_Window.Gfx(), nname, id));
 					++id;
-			}
+			/*}
 			else
 			{
 				MessageBox(nullptr, L"You can only load .obj and .gltf files", L"Loading error", MB_OK | MB_ICONEXCLAMATION);
-			}
+			}*/
 		}
 	}
 

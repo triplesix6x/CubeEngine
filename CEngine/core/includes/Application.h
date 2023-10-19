@@ -14,6 +14,7 @@ namespace Cube
 
 	class Application
 	{
+		friend class SceneSerializer;
 	public:
 		Application(int width, int height, WindowType type);
 		virtual ~Application();

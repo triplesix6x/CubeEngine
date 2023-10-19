@@ -6,6 +6,7 @@
 #include <assimp/scene.h>
 #include <optional>
 #include <filesystem>
+#include <memory>
 #include <assimp/postprocess.h>
 #include <type_traits>
 #include "../imgui/imgui.h"
@@ -36,87 +37,21 @@ public:
 	};
 	struct PSMaterialConstantNotex
 	{
-		DirectX::XMFLOAT3 color = { 0.447970f,0.327254f,0.176283f};
+		DirectX::XMFLOAT3 color;
 		float specularIntensity = 0.65f;
 		float specularPower = 2.0f;
 		float padding[3];
 	};
 	Node(int id, const std::string& name,std::vector<Mesh*> meshPtrs, const DirectX::XMMATRIX& transform) ;
+	Node(const Node&) = delete;
+	Node& operator=(const Node&) = delete;
 	void Draw(Graphics& gfx, DirectX::FXMMATRIX accumulatedTransform) const;
 	void SetAppliedTransform(DirectX::FXMMATRIX transform) noexcept;
+	const DirectX::XMFLOAT4X4& GetAppliedTransform() const noexcept;
 	int GetId() const noexcept;
 	std::string GetName() const noexcept;
+	const std::vector<std::unique_ptr<Node>>& getchildPtrs() const noexcept;
 	void RenderTree(Node*& pSelectedNode) const noexcept;
-	template<class T>
-	bool specWndContorl(Graphics& gfx, T& c)
-	{
-		if (meshPtrs.empty())
-		{
-			return false;
-		}
-
-		if constexpr (std::is_same<T, PSMaterialConstantFullmonte>::value)
-		{
-			if (auto pcb = meshPtrs.front()->QueryBindable<PixelConstantBuffer<T>>())
-			{
-				ImGui::SeparatorText("MATERIAL");
-
-				bool normalMapEnabled = (bool)c.normalMapEnabled;
-				ImGui::Checkbox("Norm Map", &normalMapEnabled);
-				c.normalMapEnabled = normalMapEnabled ? TRUE : FALSE;
-
-				bool specularMapEnabled = (bool)c.specularMapEnabled;
-				ImGui::Checkbox("Spec Map", &specularMapEnabled);
-				c.specularMapEnabled = specularMapEnabled ? TRUE : FALSE;
-
-				bool hasGlossMap = (bool)c.hasGlossMap; 
-				ImGui::Checkbox("Gloss Alpha", &hasGlossMap); 
-				c.hasGlossMap = hasGlossMap ? TRUE : FALSE; 
-
-				ImGui::SliderFloat("Spec Weight", &c.specularMapWeight, 0.0f, 2.0f);
-
-				ImGui::SliderFloat("Spec Pow", &c.specularPower, 0.0f, 20.0f, "%f");
-
-				ImGui::ColorPicker3("Spec Color", reinterpret_cast<float*>(&c.specularColor));
-				if (ImGui::Button("Reset Material"))
-				{
-					c.specularPower = 3.1f;
-					c.normalMapEnabled = TRUE;
-					c.specularMapEnabled = TRUE;
-					c.hasGlossMap = FALSE;
-					c.specularColor = { 0.75f,0.75f,0.75f };
-					c.specularMapWeight = 0.671f;
-				}
-				pcb->Update(gfx, c);
-				return true;
-			}
-		}
-		else if constexpr (std::is_same<T, PSMaterialConstantNotex>::value)
-		{
-			if (auto pcb = meshPtrs.front()->QueryBindable<PixelConstantBuffer<T>>())
-			{
-				ImGui::SeparatorText("MATERIAL");
-
-				ImGui::SliderFloat("Spec Inten.", &c.specularIntensity, 0.0f, 1.0f);
-
-				ImGui::SliderFloat("Spec Pow", &c.specularPower, 0.0f, 20.0f, "%f");
-
-				ImGui::ColorPicker3("Diff Color", reinterpret_cast<float*>(&c.color));
-
-				if (ImGui::Button("Reset Material"))
-				{
-					c.color = { 0.447970f,0.327254f,0.176283f };
-					c.specularIntensity = 0.65f;
-					c.specularPower = 2.0f;
-				}
-
-				pcb->Update(gfx, c);
-				return true;
-			}
-		}
-		return false;
-	}
-
 private:
 	void AddChild(std::unique_ptr<Node> pChild) ;
 private:
@@ -137,6 +72,7 @@ public:
 	void SetRootTransfotm(DirectX::FXMMATRIX tf);
 	~Model() noexcept;
 	int GetId() const noexcept;
+	Node& getpRoot();
 	std::string modelName;
 private:
 	DirectX::XMMATRIX GetTransform() const noexcept;
@@ -145,6 +81,7 @@ private:
 	std::unique_ptr<Node> ParseNode(int& nextId, const aiNode& node);
 	std::unique_ptr<Node> pRoot;
 	std::vector<std::unique_ptr<Mesh>> meshPtrs;
+	std::string rootPath;
 	Node* pSelectedNode;
 	int id;
 	struct TransformParameters
@@ -156,8 +93,6 @@ private:
 		float y = 0.0f;
 		float z = 0.0f;
 	};
-	Node::PSMaterialConstantFullmonte mc;
-	Node::PSMaterialConstantNotex ntx;
 	std::unordered_map<int, TransformParameters> poses;
 	struct ScaleParameters
 	{

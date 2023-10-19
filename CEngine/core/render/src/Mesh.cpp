@@ -1,6 +1,8 @@
 #include "../includes/Mesh.h"
 #include "../../imgui/imgui.h"
+#include "../../includes/CXM.h"
 #include <unordered_map>
+#include <memory>
 #include <libloaderapi.h>
 
 
@@ -106,6 +108,11 @@ void Node::RenderTree(Node*& pSelectedNode) const noexcept
 		}
 }
 
+const std::vector<std::unique_ptr<Node>>& Node::getchildPtrs() const noexcept
+{
+	return childPtrs;
+}
+
 
 
 void Node::SetAppliedTransform(DirectX::FXMMATRIX transform) noexcept
@@ -129,8 +136,9 @@ std::string Node::GetName() const noexcept
 
 
 
+
 Model::Model(Graphics& gfx, const std::string& fileName, int id, const char* modelName) :
-	modelName(modelName), id(id)
+	modelName(modelName), id(id), rootPath(fileName)
 {
 	Assimp::Importer imp;
 	const auto pScene = imp.ReadFile(fileName.c_str(),
@@ -139,18 +147,21 @@ Model::Model(Graphics& gfx, const std::string& fileName, int id, const char* mod
 		aiProcess_ConvertToLeftHanded |
 		aiProcess_GenNormals |
 		aiProcess_CalcTangentSpace);
-
 	if (pScene == NULL)
 	{
 		MessageBoxA(nullptr, imp.GetErrorString(), "Standart Exception", MB_OK | MB_ICONEXCLAMATION);
 	}
-
 	for (size_t i = 0; i < pScene->mNumMeshes; i++)
 	{
 		meshPtrs.push_back(ParseMesh(gfx, *pScene->mMeshes[i], pScene->mMaterials, fileName));
 	}
 	int nextId = 0;
 	pRoot = ParseNode(nextId, *pScene->mRootNode);
+}
+
+Node& Model::getpRoot()
+{
+	return *pRoot;
 }
 
 
@@ -185,8 +196,37 @@ void Model::ShowWindow(Graphics& gfx, Model* pSelectedModel) noexcept
 				modelName = std::string(buffer);
 			}
 
-			auto& pos = poses[pSelectedNode->GetId()];
-			auto& scale = scales[pSelectedNode->GetId()];
+			const auto id = pSelectedNode->GetId();
+			auto i = poses.find(id);
+			auto j = scales.find(id);
+			if (i == poses.end())
+			{
+				const auto& applied = pSelectedNode->GetAppliedTransform();
+				const auto angles = ExtractEulerAngles(applied);
+				const auto translation = ExtractTranslation(applied);
+				const auto nodescales = ExtractScaling(applied);
+				TransformParameters tp;
+				tp.roll = angles.z;
+				tp.pitch = angles.x;
+				tp.yaw = angles.y;
+				tp.x = translation.x / nodescales.x;
+				tp.y = translation.y / nodescales.y;
+				tp.z = translation.z / nodescales.z;
+				std::tie(i, std::ignore) = poses.insert({ id,tp });
+			}
+			auto& pos = i->second;
+
+			if (j == scales.end())
+			{
+				const auto& applied = pSelectedNode->GetAppliedTransform(); 
+				const auto nodescales = ExtractScaling(applied);
+				ScaleParameters sc; 
+				sc.xscale = nodescales.x; 
+				sc.yscale = nodescales.y; 
+				sc.zscale = nodescales.z; 
+				std::tie(j, std::ignore) = scales.insert({ id, sc }); 
+			}
+			auto& scale = j->second;
 
 			ImGui::Columns(2);
 			ImGui::SetColumnWidth(0, 100);
@@ -350,11 +390,6 @@ void Model::ShowWindow(Graphics& gfx, Model* pSelectedModel) noexcept
 				scale.yscale = 1.0f;
 				scale.zscale = 1.0f;
 			}
-
-			if (!pSelectedNode->specWndContorl(gfx, mc))
-			{
-				pSelectedNode->specWndContorl(gfx, ntx);
-			}
 			ImGui::End();
 		}
 	}
@@ -362,7 +397,12 @@ void Model::ShowWindow(Graphics& gfx, Model* pSelectedModel) noexcept
 
 void Model::SetRootTransfotm(DirectX::FXMMATRIX tf)
 {
-	pRoot->SetAppliedTransform(tf);
+	pRoot->childPtrs[0]->SetAppliedTransform(tf);
+}
+
+const DirectX::XMFLOAT4X4& Node::GetAppliedTransform() const noexcept
+{
+	return appliedTransform;
 }
 
 
@@ -406,6 +446,7 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh, const 
 		{
 
 			auto& material = *pMaterials[mesh.mMaterialIndex];
+			auto texeee = mesh.mTextureCoordsNames;
 			aiString texFileName;
 			if (material.GetTexture(aiTextureType_DIFFUSE, 0, &texFileName) == aiReturn_SUCCESS)
 			{

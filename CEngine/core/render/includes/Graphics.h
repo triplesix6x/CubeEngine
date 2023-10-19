@@ -17,7 +17,7 @@ class Graphics
 {
 	friend class Bindable;
 	friend class Texture;
-	friend class SkyBoxTex;
+	friend class DDSTex;
 public:
 	class GraphicsException : public CubeException
 	{
