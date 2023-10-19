@@ -48,6 +48,7 @@ namespace Cube
 		bool drawGrid = true;
 		std::chrono::milliseconds maxfps = std::chrono::milliseconds(14);
 		bool nofpslimit = true;
+		std::filesystem::path scenePath = "Unnamed Scene";
 		int id = 0;
 	};
 }

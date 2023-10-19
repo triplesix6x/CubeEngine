@@ -181,6 +181,7 @@
     <ClCompile Include="core\src\Mouse.cpp" />
     <ClCompile Include="core\src\SceneSerializer.cpp" />
     <ClCompile Include="core\src\Window.cpp" />
+    <ClCompile Include="core\src\WindowsUtils.cpp" />
     <ClCompile Include="exception\src\CubeException.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
     <ClCompile Include="imgui\imgui_demo.cpp" />
@@ -233,6 +234,7 @@
     <ClInclude Include="core\includes\Mouse.h" />
     <ClInclude Include="core\includes\SceneSerializer.h" />
     <ClInclude Include="core\includes\Window.h" />
+    <ClInclude Include="core\includes\WindowsUtils.h" />
     <ClInclude Include="core\render\includes\Bindable.h" />
     <ClInclude Include="core\render\includes\BindableBase.h" />
     <ClInclude Include="core\render\includes\Blender.h" />

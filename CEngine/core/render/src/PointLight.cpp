@@ -108,6 +108,12 @@ PointLightCBuf Lights::PointLight::getCbuf() const
 	return cbData;
 }
 
+
+void Lights::PointLight::setCbuf(PointLightCBuf Cbuf)
+{
+	cbData = Cbuf;
+}
+
 void Lights::PointLight::Draw(Graphics& gfx) const noexcept
 {
 	mesh.SetPos(cbData.pos);
@@ -160,10 +166,7 @@ void Lights::DeleteLight(int i)
 
 void Lights::clearLights()
 {
-	if (sceneLights.size() > 1)
-	{
-		sceneLights.erase(sceneLights.begin() + 1, sceneLights.end());
-	}
+	sceneLights.clear();
 }
 
 

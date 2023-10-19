@@ -27,10 +27,11 @@ public:
 		void Draw(Graphics& gfx) const noexcept;
 		bool DrawSphere(); 
 		PointLightCBuf getCbuf() const;
+		void setCbuf(PointLightCBuf Cbuf);
 		const int id;
 		std::string lightName;
-	private:
 		bool drawSphere = true;
+	private:
 		PointLightCBuf cbData;
 		mutable SolidSphere mesh;
 	};

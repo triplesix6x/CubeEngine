@@ -8,6 +8,7 @@
 #include "../includes/CMath.h"
 #include "../includes/ImguiThemes.h"
 #include "../includes/SceneSerializer.h"
+#include "../includes/WindowsUtils.h"
 #include <Commdlg.h>
 #include <memory>
 #include <stdio.h>
@@ -27,16 +28,17 @@ namespace Cube
 	{
 		models.push_back(std::make_unique<Model>(m_Window.Gfx(), "models\\cube.obj", id, "Cube"));
 		++id;
-		models[0]->SetRootTransfotm(DirectX::XMMatrixTranslation(5.0f, 0.0f, 0.0f) *
-									DirectX::XMMatrixScaling(0.5f, 0.5f, 0.5f));
 		m_Window.Gfx().SetTexture(&pCubeIco, L"icons\\cubeico2.png");
 
 	}
 
 	Application::~Application()
 	{
-		SceneSerializer serializer(*this);
-		serializer.Serialize("projects/Example.cubeproj");
+		if (scenePath != "Unnamed Scene")
+		{
+			SceneSerializer serializer(*this);
+			serializer.Serialize(scenePath);
+		}
 		pCubeIco->Release();
 		models.clear();
 	}
@@ -86,6 +88,58 @@ namespace Cube
 				if (b->GetType() == Mouse::Event::Type::WheelDown)
 				{
 					cam.Translate({ 0.0f, 0.0f, -dt * 10});
+				}
+			}
+		}
+		else
+		{
+			bool control = io.KeyCtrl;
+			bool shift = io.KeyShift;
+			if (io.KeysDown[ImGuiKey_S])
+			{
+				if (control || shift)
+				{
+					std::filesystem::path filepath = FileDialogs::Savefile("Cube Scene (*.cubeproj)\0*.cubeproj\0\0");
+					if (!filepath.empty())
+					{
+						SceneSerializer serializer(*this);
+						serializer.Serialize(filepath);
+						scenePath = filepath.string();
+					}
+				}
+				else if (control)
+				{
+					if (scenePath != "Unnamed Scene")
+					{
+						SceneSerializer serializer(*this);
+						serializer.Serialize(scenePath);
+					}
+				}
+			}
+			else if (io.KeysDown[ImGuiKey_O])
+			{
+				if (control)
+				{
+					std::filesystem::path filepath = FileDialogs::OpenfileA("Cube Scene (*.cubeproj)\0*.cubeproj\0\0");
+					if (!filepath.empty())
+					{
+						SceneSerializer serializer(*this);
+						serializer.Deserialize(filepath);
+						scenePath = filepath.string();
+					}
+				}
+			}
+			else if (io.KeysDown[ImGuiKey_N])
+			{
+				if (control)
+				{
+					skybox.release();
+					skybox = std::make_unique<SkyBox>(m_Window.Gfx(), L"textures\\skyboxmain.dds");
+					models.clear();
+					light.clearLights();
+					scenePath = "Unnamed Scene";
+					cam.Reset();
+					drawGrid = true;
 				}
 			}
 		}
@@ -267,6 +321,10 @@ namespace Cube
 				ImGui::SetCursorPosX((tw - ImGui::CalcTextSize(text.c_str()).x) / 2);
 				ImGui::Text(text.c_str());
 
+				ImGui::PushStyleColor(ImGuiCol_Text, ImGui::GetStyle().Colors[ImGuiCol_TextDisabled]);
+				ImGui::Text(scenePath.filename().string().c_str());
+				ImGui::PopStyleColor();
+
 				std::string close_text = "X";
 				ImGui::SetCursorPosX((tw - ImGui::CalcTextSize(close_text.c_str()).x) - 10.0f);
 				ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 0.0f);
@@ -321,17 +379,44 @@ namespace Cube
 			}
 			ImGui::SetCursorPosX(10.0f);
 			if (ImGui::BeginMenu("Project")) {
-				if (ImGui::MenuItem("Create new project"))
+				if (ImGui::MenuItem("Create new project", "Ctrl+N"))
 				{
+					skybox.release(); 
+					skybox = std::make_unique<SkyBox>(m_Window.Gfx(), L"textures\\skyboxmain.dds"); 
+					models.clear();
+					light.clearLights();
+					scenePath = "Unnamed Scene";
+					cam.Reset();
+					drawGrid = true;
 				}
-				if (ImGui::MenuItem("Open project"))
+				if (ImGui::MenuItem("Open project...", "Ctrl+O"))
 				{
+					std::filesystem::path filepath = FileDialogs::OpenfileA("Cube Scene (*.cubeproj)\0*.cubeproj\0\0");
+					if (!filepath.empty())
+					{
+						SceneSerializer serializer(*this);
+						serializer.Deserialize(filepath);
+						scenePath = filepath.string();
+					}
+
 				}
-				if (ImGui::MenuItem("Save project"))
+				if (ImGui::MenuItem("Save project", "Ctrl+S"))
 				{
+					if (scenePath != "Unnamed Scene")
+					{
+						SceneSerializer serializer(*this);
+						serializer.Serialize(scenePath);
+					}
 				}
-				if (ImGui::MenuItem("Save project as..")) 
+				if (ImGui::MenuItem("Save project as..", "Ctrl+Shift+S"))
 				{
+					std::filesystem::path filepath = FileDialogs::Savefile("Cube Scene (*.cubeproj)\0*.cubeproj\0\0");
+					if (!filepath.empty())
+					{
+						SceneSerializer serializer(*this);
+						serializer.Serialize(filepath);
+						scenePath = filepath.string();
+					}
 				}
 				if (ImGui::MenuItem("Project Settings"))
 				{
@@ -415,34 +500,11 @@ namespace Cube
 				}
 				if (ImGui::MenuItem("Load Skybox from file..."))
 				{
-					wchar_t fname[260];
-					OPENFILENAME ofn;
-					ZeroMemory(&ofn, sizeof(ofn));
-					ofn.lStructSize = sizeof(ofn);
-					ofn.hwndOwner = NULL;
-					ofn.lpstrFile = fname;
-					ofn.lpstrFile[0] = '\0';
-					ofn.nMaxFile = sizeof(fname);
-					ofn.lpstrFilter = L"DDS files(*.dds)\0*.dds\0\0";
-					ofn.lpstrFileTitle = NULL;
-					ofn.nFilterIndex = 1;
-					ofn.nMaxFileTitle = 0;
-					ofn.lpstrInitialDir = L"";
-					ofn.Flags = OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST | OFN_EXPLORER | OFN_NOCHANGEDIR;
-					if (GetOpenFileName(&ofn))
+					std::filesystem::path filepath = FileDialogs::OpenfileW(L"DDS files(*.dds)\0*.dds\0\0");
+					if (!filepath.empty())
 					{
-						std::wstring name(fname);
-						auto x = wcstok(fname, L".");
-						x = wcstok(NULL, L".");
-						if (wcscmp(x, L"dds") == 0)
-						{
-							skybox.release();
-							skybox = std::make_unique<SkyBox>(m_Window.Gfx(), name.c_str());
-						}
-						else
-						{
-							MessageBox(nullptr, L"You can only load .dds and files for skybox", L"Loading error", MB_OK | MB_ICONEXCLAMATION);
-						}
+						skybox.release();
+						skybox = std::make_unique<SkyBox>(m_Window.Gfx(), filepath.c_str());
 					}
 				}
 				ImGui::EndMenu();
@@ -603,34 +665,12 @@ namespace Cube
 
 	void Application::AddObj()
 	{
-		char cname[260];
-		OPENFILENAMEA ofn;
-		ZeroMemory(&ofn, sizeof(ofn));
-		ofn.lStructSize = sizeof(ofn);
-		ofn.hwndOwner = NULL;
-		ofn.lpstrFile = cname;
-		ofn.lpstrFile[0] = '\0';
-		ofn.nMaxFile = sizeof(cname);
-		ofn.lpstrFilter = "OBJ files(*.obj)\0*.obj\0GLTF files(*.gltf)\0*.gltf\0MD5MESH files(*.md5mesh)\0*.md5mesh\0ALL files(*.*)\0*.*\0\0";
-		ofn.lpstrFileTitle = NULL;
-		ofn.nFilterIndex = 1;
-		ofn.nMaxFileTitle = 0;
-		ofn.lpstrInitialDir = "";
-		ofn.Flags = OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST | OFN_EXPLORER | OFN_NOCHANGEDIR;
-		if (GetOpenFileNameA(&ofn))
+
+		std::filesystem::path filepath = FileDialogs::OpenfileA("OBJ files(*.obj)\0*.obj\0GLTF files(*.gltf)\0*.gltf\0FBX files(*.fbx)\0*.fbx\0\0");
+		if (!filepath.empty())
 		{
-			std::string nname(cname);
-			/*auto x = strtok(cname, ".");
-			x = strtok(NULL, ".");
-			if (strcmp(x, "obj") == 0 or strcmp(x, "gltf") == 0 or strcmp(x, "md5mesh") == 0)
-			{*/
-					models.push_back(std::make_unique<Model>(m_Window.Gfx(), nname, id));
-					++id;
-			/*}
-			else
-			{
-				MessageBox(nullptr, L"You can only load .obj and .gltf files", L"Loading error", MB_OK | MB_ICONEXCLAMATION);
-			}*/
+			models.push_back(std::make_unique<Model>(m_Window.Gfx(), filepath.string(), id));
+			++id;
 		}
 	}
 

@@ -47,7 +47,9 @@ public:
 	Node& operator=(const Node&) = delete;
 	void Draw(Graphics& gfx, DirectX::FXMMATRIX accumulatedTransform) const;
 	void SetAppliedTransform(DirectX::FXMMATRIX transform) noexcept;
+	void SetAppliedScale(DirectX::FXMMATRIX scale) noexcept;
 	const DirectX::XMFLOAT4X4& GetAppliedTransform() const noexcept;
+	const DirectX::XMFLOAT4X4& GetAppliedScale() const noexcept;
 	int GetId() const noexcept;
 	std::string GetName() const noexcept;
 	const std::vector<std::unique_ptr<Node>>& getchildPtrs() const noexcept;
@@ -61,29 +63,32 @@ private:
 	std::vector<Mesh*> meshPtrs;
 	DirectX::XMFLOAT4X4 baseTransform;
 	DirectX::XMFLOAT4X4 appliedTransform;
+	DirectX::XMFLOAT4X4 appliedScale;
 };
 
 class Model
 {
 public:
-	Model(Graphics& gfx, const std::string& fileName, int id=0, const char* modelName = "Unnamed Object");
+	Model(Graphics& gfx, const std::string& fileName, int id=0, std::string modelName = "Unnamed Object");
 	void Draw(Graphics& gfx) const;
 	void ShowWindow(Graphics& gfx, Model* pSelectedModel) noexcept;
 	void SetRootTransfotm(DirectX::FXMMATRIX tf);
+	void SetRootScaling(DirectX::FXMMATRIX sf);
 	~Model() noexcept;
 	int GetId() const noexcept;
 	Node& getpRoot();
 	std::string modelName;
+	std::string rootPath;
+	int id;
 private:
 	DirectX::XMMATRIX GetTransform() const noexcept;
+	DirectX::XMMATRIX GetScale() const noexcept;
 	Node* GetSelectedNode() const noexcept;
 	static std::unique_ptr<Mesh> ParseMesh(Graphics& gfx, const aiMesh& mesh, const aiMaterial *const *pMaterials,const std::filesystem::path& filePath);
 	std::unique_ptr<Node> ParseNode(int& nextId, const aiNode& node);
 	std::unique_ptr<Node> pRoot;
 	std::vector<std::unique_ptr<Mesh>> meshPtrs;
-	std::string rootPath;
 	Node* pSelectedNode;
-	int id;
 	struct TransformParameters
 	{
 		float roll = 0.0f;

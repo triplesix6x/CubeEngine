@@ -12,9 +12,7 @@ namespace Cube
 		~SceneSerializer() = default;
 
 		void Serialize(const std::filesystem::path& filepath);
-		void SerializeRuntime(const std::filesystem::path& filepath);
-		void Deserialize(const std::filesystem::path& filepath);
-		void DeserializeRuntime(const std::filesystem::path& filepath);
+		bool Deserialize(const std::filesystem::path& filepath);
 	private:
 		Application* pApp;
 	};

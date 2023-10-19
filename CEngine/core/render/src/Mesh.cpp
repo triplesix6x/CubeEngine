@@ -59,6 +59,7 @@ id(id), meshPtrs(std::move(meshPtrs)) , name(name)
 {
 	DirectX::XMStoreFloat4x4(&baseTransform, transform);
 	DirectX::XMStoreFloat4x4(&appliedTransform, DirectX::XMMatrixIdentity());
+	DirectX::XMStoreFloat4x4(&appliedScale, DirectX::XMMatrixIdentity());
 }
 
 
@@ -66,6 +67,7 @@ void Node::Draw(Graphics& gfx, DirectX::FXMMATRIX accumulatedTransform) const
 {
 	const auto built =
 		DirectX::XMLoadFloat4x4(&appliedTransform) *
+		DirectX::XMLoadFloat4x4(&appliedScale) *
 		DirectX::XMLoadFloat4x4(&baseTransform) *
 		accumulatedTransform;
 	for (const auto pm : meshPtrs)
@@ -120,6 +122,11 @@ void Node::SetAppliedTransform(DirectX::FXMMATRIX transform) noexcept
 	DirectX::XMStoreFloat4x4(&appliedTransform, transform);
 }
 
+void Node::SetAppliedScale(DirectX::FXMMATRIX scale) noexcept
+{
+	DirectX::XMStoreFloat4x4(&appliedScale, scale);
+}
+
 
 
 int Node::GetId() const noexcept
@@ -137,7 +144,7 @@ std::string Node::GetName() const noexcept
 
 
 
-Model::Model(Graphics& gfx, const std::string& fileName, int id, const char* modelName) :
+Model::Model(Graphics& gfx, const std::string& fileName, int id, std::string modelName) :
 	modelName(modelName), id(id), rootPath(fileName)
 {
 	Assimp::Importer imp;
@@ -170,6 +177,7 @@ void Model::Draw(Graphics& gfx) const
 	if (auto node = GetSelectedNode())
 	{
 		node->SetAppliedTransform(GetTransform());
+		node->SetAppliedScale(GetScale());
 	}
 	pRoot->Draw(gfx, DirectX::XMMatrixIdentity());
 }
@@ -202,24 +210,24 @@ void Model::ShowWindow(Graphics& gfx, Model* pSelectedModel) noexcept
 			if (i == poses.end())
 			{
 				const auto& applied = pSelectedNode->GetAppliedTransform();
+				const auto& appliedScale = pSelectedNode->GetAppliedScale();
 				const auto angles = ExtractEulerAngles(applied);
 				const auto translation = ExtractTranslation(applied);
-				const auto nodescales = ExtractScaling(applied);
 				TransformParameters tp;
-				tp.roll = angles.z;
-				tp.pitch = angles.x;
-				tp.yaw = angles.y;
-				tp.x = translation.x / nodescales.x;
-				tp.y = translation.y / nodescales.y;
-				tp.z = translation.z / nodescales.z;
+				tp.roll = angles.x;
+				tp.pitch = angles.y;
+				tp.yaw = angles.z;
+				tp.x = translation.x;
+				tp.y = translation.y;
+				tp.z = translation.z;
 				std::tie(i, std::ignore) = poses.insert({ id,tp });
 			}
 			auto& pos = i->second;
 
 			if (j == scales.end())
 			{
-				const auto& applied = pSelectedNode->GetAppliedTransform(); 
-				const auto nodescales = ExtractScaling(applied);
+				const auto& appliedScale = pSelectedNode->GetAppliedScale();
+				const auto nodescales = ExtractScaling(appliedScale);
 				ScaleParameters sc; 
 				sc.xscale = nodescales.x; 
 				sc.yscale = nodescales.y; 
@@ -397,12 +405,22 @@ void Model::ShowWindow(Graphics& gfx, Model* pSelectedModel) noexcept
 
 void Model::SetRootTransfotm(DirectX::FXMMATRIX tf)
 {
-	pRoot->childPtrs[0]->SetAppliedTransform(tf);
+	pRoot->SetAppliedTransform(tf);
+}
+
+void Model::SetRootScaling(DirectX::FXMMATRIX sf)
+{
+	pRoot->SetAppliedScale(sf);
 }
 
 const DirectX::XMFLOAT4X4& Node::GetAppliedTransform() const noexcept
 {
 	return appliedTransform;
+}
+
+const DirectX::XMFLOAT4X4& Node::GetAppliedScale() const noexcept
+{
+	return appliedScale;
 }
 
 
@@ -413,9 +431,17 @@ DirectX::XMMATRIX Model::GetTransform() const noexcept
 	const auto& scale = scales.at(pSelectedNode->GetId());
 	return
 		DirectX::XMMatrixRotationRollPitchYaw(transform.roll, transform.pitch, transform.yaw) *
-		DirectX::XMMatrixTranslation(transform.x, transform.y, transform.z) *
+		DirectX::XMMatrixTranslation(transform.x, transform.y, transform.z);
+}
+
+DirectX::XMMATRIX Model::GetScale() const noexcept
+{
+	assert(pSelectedNode != nullptr);
+	const auto& scale = scales.at(pSelectedNode->GetId());
+	return
 		DirectX::XMMatrixScaling(scale.xscale, scale.yscale, scale.zscale);
 }
+
 
 
 Node* Model::GetSelectedNode() const noexcept
