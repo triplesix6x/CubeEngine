@@ -24,7 +24,7 @@ namespace Cube
 		: 
 		m_Window(width, height, type),
 		light(m_Window.Gfx()), 
-		skybox(std::make_unique<SkyBox>(m_Window.Gfx(), L"textures\\skyboxmain.dds"))
+		skybox(std::make_unique<SkyBox>(m_Window.Gfx(), "textures\\skyboxmain.dds"))
 	{
 		models.push_back(std::make_unique<Model>(m_Window.Gfx(), "models\\cube.obj", id, "Cube"));
 		++id;
@@ -134,7 +134,7 @@ namespace Cube
 			if (m_Window.kbd.KeyIsPressed(VK_CONTROL))
 			{
 				skybox.release();
-				skybox = std::make_unique<SkyBox>(m_Window.Gfx(), L"textures\\skyboxmain.dds");
+				skybox = std::make_unique<SkyBox>(m_Window.Gfx(), "textures\\skyboxmain.dds");
 				models.clear();
 				light.clearLights();
 				scenePath = "Unnamed Scene";
@@ -383,7 +383,7 @@ namespace Cube
 				if (ImGui::MenuItem("Create new project", "Ctrl+N"))
 				{
 					skybox.release(); 
-					skybox = std::make_unique<SkyBox>(m_Window.Gfx(), L"textures\\skyboxmain.dds"); 
+					skybox = std::make_unique<SkyBox>(m_Window.Gfx(), "textures\\skyboxmain.dds"); 
 					models.clear();
 					light.clearLights();
 					scenePath = "Unnamed Scene";
@@ -483,17 +483,17 @@ namespace Cube
 				if (ImGui::MenuItem("Set Skybox 1"))
 				{
 					skybox.release();
-					skybox = std::make_unique<SkyBox>(m_Window.Gfx(), L"textures\\skyboxmain.dds");
+					skybox = std::make_unique<SkyBox>(m_Window.Gfx(), "textures\\skyboxmain.dds");
 				}
 				if (ImGui::MenuItem("Set Skybox 2"))
 				{
 					skybox.release();
-					skybox = std::make_unique<SkyBox>(m_Window.Gfx(), L"textures\\skybox2.dds");
+					skybox = std::make_unique<SkyBox>(m_Window.Gfx(), "textures\\skybox2.dds");
 				}
 				if (ImGui::MenuItem("Set Skybox 3"))
 				{
 					skybox.release();
-					skybox = std::make_unique<SkyBox>(m_Window.Gfx(), L"textures\\earth.dds");
+					skybox = std::make_unique<SkyBox>(m_Window.Gfx(), "textures\\earth.dds");
 				}
 				if (ImGui::MenuItem("Delete Skybox"))
 				{
@@ -501,11 +501,11 @@ namespace Cube
 				}
 				if (ImGui::MenuItem("Load Skybox from file..."))
 				{
-					std::filesystem::path filepath = FileDialogs::OpenfileW(L"DDS files(*.dds)\0*.dds\0\0");
+					std::filesystem::path filepath = FileDialogs::OpenfileA("DDS files(*.dds)\0*.dds\0\0");
 					if (!filepath.empty())
 					{
 						skybox.release();
-						skybox = std::make_unique<SkyBox>(m_Window.Gfx(), filepath.c_str());
+						skybox = std::make_unique<SkyBox>(m_Window.Gfx(), filepath.string());
 					}
 				}
 				ImGui::EndMenu();

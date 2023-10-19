@@ -4,7 +4,7 @@
 class DDSTex: public Bindable
 {
 public:
-	DDSTex(Graphics& gfx, const wchar_t* name);
+	DDSTex(Graphics& gfx, std::string path);
 	void Bind(Graphics& gfx) noexcept;
 protected:
 	ID3D11Texture2D* cubeTexture = NULL;

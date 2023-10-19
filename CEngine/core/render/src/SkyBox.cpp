@@ -6,7 +6,7 @@
 #include "../includes/Sampler.h"
 
 
-SkyBox::SkyBox(Graphics& gfx, const wchar_t* name)
+SkyBox::SkyBox(Graphics& gfx, std::string name) : path(name)
 {
 	namespace dx = DirectX;
 	struct Vertex

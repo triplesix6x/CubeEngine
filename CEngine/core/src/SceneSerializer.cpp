@@ -55,7 +55,7 @@ namespace Cube
 		YAML::Emitter out;
 		out << YAML::BeginMap;
 		out << YAML::Key << "Scene" << YAML::Value << filepath.string();
-		
+		out << YAML::Key << "Skybox" << YAML::Value << pApp->skybox->path;
 		out << YAML::Key << "Draw Grid" << YAML::Value << pApp->drawGrid;
 
 		out << YAML::Key << "Models" << YAML::Value << YAML::BeginSeq;
@@ -65,6 +65,8 @@ namespace Cube
 			{
 				out << YAML::BeginMap;
 				out << YAML::Key << "Model" << YAML::Value << i;
+
+				
 
 				out << YAML::Key << "Name" << YAML::Value << pApp->models[i]->modelName;
 				out << YAML::Key << "Path" << YAML::Value << pApp->models[i]->rootPath;
@@ -151,14 +153,22 @@ namespace Cube
 		pApp->scenePath = sName;
 		pApp->drawGrid = data["Draw Grid"].as<bool>();
 		auto models = data["Models"];
+
+		auto skyrelative = std::filesystem::relative(data["Skybox"].as<std::string>(), filepath.parent_path());
+		auto skynewabsolute = filepath.parent_path().string() + '\\' + skyrelative.string();
+		pApp->skybox.release();
+		pApp->skybox = std::make_unique<SkyBox>(pApp->m_Window.Gfx(), skynewabsolute);
+
 		if (models)
 		{
 			pApp->models.clear();
 			for (auto model : models)
 			{
-				if (std::filesystem::exists(model["Path"].as<std::string>()))
+				auto relative = std::filesystem::relative(model["Path"].as<std::string>(), filepath.parent_path());
+				auto newabsolute = filepath.parent_path().string() + '\\' + relative.string();
+				if (std::filesystem::exists(newabsolute))
 				{
-					pApp->models.push_back(std::make_unique<Model>(pApp->m_Window.Gfx(), model["Path"].as<std::string>(),
+					pApp->models.push_back(std::make_unique<Model>(pApp->m_Window.Gfx(), newabsolute,
 						model["Model"].as<int>(),
 						model["Name"].as<std::string>()));
 					pApp->id++;

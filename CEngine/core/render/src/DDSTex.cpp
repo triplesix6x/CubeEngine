@@ -6,10 +6,11 @@
 
 namespace wrl = Microsoft::WRL;
 
-DDSTex::DDSTex(Graphics& gfx, const wchar_t* name)
+DDSTex::DDSTex(Graphics& gfx, std::string path)
 {
 	HRESULT hResult;
-	/*GFX_THROW_FAILED(*/DirectX::CreateDDSTextureFromFileEx(gfx.pDevice.Get(), gfx.pContext.Get(), name,0, D3D11_USAGE_DEFAULT, D3D11_BIND_SHADER_RESOURCE, 0, D3D11_RESOURCE_MISC_TEXTURECUBE, DirectX::DX11::DDS_LOADER_DEFAULT, nullptr, pTextureView.GetAddressOf())/*)*/;
+	std::wstring name = std::wstring(path.begin(), path.end());
+	/*GFX_THROW_FAILED(*/DirectX::CreateDDSTextureFromFileEx(gfx.pDevice.Get(), gfx.pContext.Get(), name.c_str(), 0, D3D11_USAGE_DEFAULT, D3D11_BIND_SHADER_RESOURCE, 0, D3D11_RESOURCE_MISC_TEXTURECUBE, DirectX::DX11::DDS_LOADER_DEFAULT, nullptr, pTextureView.GetAddressOf())/*)*/;
 }
 
 void DDSTex::Bind(Graphics& gfx) noexcept
