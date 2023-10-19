@@ -46,7 +46,7 @@ namespace Cube
 	void Application::HadleInput(float dt)
 	{
 		const auto io = ImGui::GetIO();
-		if (!io.WantCaptureMouse)
+		if (!io.WantCaptureMouse && !io.WantCaptureKeyboard)
 		{
 			if (m_Window.kbd.KeyIsPressed('W'))
 			{
@@ -91,57 +91,58 @@ namespace Cube
 				}
 			}
 		}
-		else
+		switch (m_Window.kbd.ReadKey().GetCode())
 		{
-			bool control = io.KeyCtrl;
-			bool shift = io.KeyShift;
-			if (io.KeysDown[ImGuiKey_S])
+		case 'S':
+		{
+			if (m_Window.kbd.KeyIsPressed(VK_CONTROL) && m_Window.kbd.KeyIsPressed(VK_SHIFT))
 			{
-				if (control || shift)
+				std::filesystem::path filepath = FileDialogs::Savefile("Cube Scene (*.cubeproj)\0*.cubeproj\0\0");
+				if (!filepath.empty())
 				{
-					std::filesystem::path filepath = FileDialogs::Savefile("Cube Scene (*.cubeproj)\0*.cubeproj\0\0");
-					if (!filepath.empty())
-					{
-						SceneSerializer serializer(*this);
-						serializer.Serialize(filepath);
-						scenePath = filepath.string();
-					}
-				}
-				else if (control)
-				{
-					if (scenePath != "Unnamed Scene")
-					{
-						SceneSerializer serializer(*this);
-						serializer.Serialize(scenePath);
-					}
+					SceneSerializer serializer(*this);
+					serializer.Serialize(filepath);
+					scenePath = filepath.string();
 				}
 			}
-			else if (io.KeysDown[ImGuiKey_O])
+			else if (m_Window.kbd.KeyIsPressed(VK_CONTROL))
 			{
-				if (control)
+				if (scenePath != "Unnamed Scene")
 				{
-					std::filesystem::path filepath = FileDialogs::OpenfileA("Cube Scene (*.cubeproj)\0*.cubeproj\0\0");
-					if (!filepath.empty())
-					{
-						SceneSerializer serializer(*this);
-						serializer.Deserialize(filepath);
-						scenePath = filepath.string();
-					}
+					SceneSerializer serializer(*this);
+					serializer.Serialize(scenePath);
 				}
 			}
-			else if (io.KeysDown[ImGuiKey_N])
+			break;
+		}
+		case 'O':
+		{
+			if (m_Window.kbd.KeyIsPressed(VK_CONTROL))
 			{
-				if (control)
+				std::filesystem::path filepath = FileDialogs::OpenfileA("Cube Scene (*.cubeproj)\0*.cubeproj\0\0");
+				if (!filepath.empty())
 				{
-					skybox.release();
-					skybox = std::make_unique<SkyBox>(m_Window.Gfx(), L"textures\\skyboxmain.dds");
-					models.clear();
-					light.clearLights();
-					scenePath = "Unnamed Scene";
-					cam.Reset();
-					drawGrid = true;
+					SceneSerializer serializer(*this);
+					serializer.Deserialize(filepath);
+					scenePath = filepath.string();;
 				}
 			}
+			break;
+		}
+		case 'N':
+		{
+			if (m_Window.kbd.KeyIsPressed(VK_CONTROL))
+			{
+				skybox.release();
+				skybox = std::make_unique<SkyBox>(m_Window.Gfx(), L"textures\\skyboxmain.dds");
+				models.clear();
+				light.clearLights();
+				scenePath = "Unnamed Scene";
+				cam.Reset();
+				drawGrid = true;
+			}
+			break;
+		}
 		}
 	}
 

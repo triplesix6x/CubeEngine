@@ -378,10 +378,6 @@ namespace Cube
 		case WM_KEYDOWN:
 		case WM_SYSKEYDOWN:
 		{
-			if (imguiio.WantCaptureKeyboard)
-			{
-				break;
-			}
 			if (!(lParam & 0x40000000) || kbd.AutorepeatIsEnabled())
 			{
 				kbd.OnKeyPressed(static_cast<unsigned char>(wParam));
@@ -391,18 +387,10 @@ namespace Cube
 		case WM_KEYUP:
 		case WM_SYSKEYUP:
 		{
-			if (imguiio.WantCaptureKeyboard)
-			{
-				break;
-			}
 			kbd.OnKeyReleased(static_cast<unsigned char>(wParam));
 			break;
 		}
 		case WM_CHAR:
-			if (imguiio.WantCaptureKeyboard)
-			{
-				break;
-			}
 			kbd.OnChar(static_cast<unsigned char>(wParam));
 			break;
 		case WM_KILLFOCUS:
