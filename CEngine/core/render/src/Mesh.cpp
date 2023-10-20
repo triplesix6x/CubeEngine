@@ -464,7 +464,6 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh, const 
 		bool hasNormalMap = false;
 		bool hasDiffuseMap = false;
 		bool hasAlphaGloss = false;
-		bool hasAlphaDiffuse = false;
 		float shine = 2.0f;
 		dx::XMFLOAT4 specularColor = { 0.18f, 0.18f, 0.18f, 1.0f };
 		dx::XMFLOAT3 diffuseColor = { 0.45f, 0.45f, 0.85f };
@@ -477,7 +476,6 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh, const 
 			if (material.GetTexture(aiTextureType_DIFFUSE, 0, &texFileName) == aiReturn_SUCCESS)
 			{
 				auto tex = std::make_unique<Texture>(gfx, dir + texFileName.C_Str());
-				hasAlphaDiffuse = tex->HasAlpha(); 
 				bindablePtrs.push_back(std::move(tex)); 
 				hasDiffuseMap = true; 
 			}
@@ -766,7 +764,6 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh, const 
 			{
 				throw std::runtime_error("terrible combination of textures in material smh");
 			}	
-		//bindablePtrs.push_back(std::make_unique<Blender>(gfx, hasAlphaDiffuse)); 
 		bindablePtrs.push_back(std::make_unique<DepthStencil>(gfx, false));
 		return std::make_unique<Mesh>(gfx, std::move(bindablePtrs));
 }

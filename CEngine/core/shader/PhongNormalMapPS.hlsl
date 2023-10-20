@@ -29,8 +29,14 @@ Texture2D nmap : register(t2);
 
 SamplerState splr;
 
-float3 CalcPointLight(LightCBuf light, float3 viewPos, float3 n, float3 tan, float3 bitan, float2 texc)
+float4 CalcPointLight(LightCBuf light, float3 viewPos, float3 n, float3 tan, float3 bitan, float2 texc)
 {
+    float4 dtex = tex.Sample(splr, texc);
+    clip(dtex.a < 0.1f ? -1 : 1);
+    if (dot(n, viewPos) >= 0.0f)
+    {
+        n = -n;
+    }
     n = normalize(n);
     if(normalMapEnabled)
     {
@@ -55,12 +61,12 @@ float3 CalcPointLight(LightCBuf light, float3 viewPos, float3 n, float3 tan, flo
     const float3 r = w * 2.0f - vToL;
     const float3 specular = att * (light.diffuseColor * light.diffuseIntensity) * specularIntensity * pow(max(0.0f, dot(normalize(-r), normalize(viewPos))), specularPower);
     
-    return float3(saturate((diffuse + light.ambient) * tex.Sample(splr, texc).rgb + specular));
+    return float4(saturate((diffuse + light.ambient) * dtex.rgb + specular), dtex.a);
 }
 
 float4 main(float3 viewPos : Position, float3 n : Normal, float3 tan : Tangent, float3 bitan : Bitangent, float2 texc : TexCoord) : SV_Target
 {
-    float3 result = 0;
+    float4 result = 0;
     for (int i = 0; i < NR_POINT_LIGHTS; ++i)
     {
         if (pLights[i].diffuseIntensity != 0.0f || (pLights[i].ambient.r != 0.0f || pLights[i].ambient.g != 0.0f || pLights[i].ambient.b != 0.0f))
@@ -69,5 +75,5 @@ float4 main(float3 viewPos : Position, float3 n : Normal, float3 tan : Tangent, 
         }
     }
     
-    return float4(result, 1.0f);
+    return result;
 }
