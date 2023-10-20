@@ -2,6 +2,7 @@
 #include "DirectXTex.h"
 #include <WICTextureLoader.h>
 #include <DDSTextureLoader.h>
+#include <filesystem>
 
 
 namespace wrl = Microsoft::WRL;
@@ -9,11 +10,10 @@ namespace wrl = Microsoft::WRL;
 Texture::Texture(Graphics & gfx, const std::string name, unsigned int slot) : slot(slot)
 {
 	std::wstring wname = std::wstring(name.begin(), name.end());
-	std::string cname(name);
 
-	auto x = strtok((char*)name.c_str(), ".");
-	x = strtok(NULL, ".");
-	if (strcmp(x, "tga") == 0)
+	std::filesystem::path x(name);
+
+	if (x.extension().string() == ".tga")
 	{
 		DirectX::TexMetadata metadata;
 		DirectX::ScratchImage image;
@@ -64,7 +64,7 @@ Texture::Texture(Graphics & gfx, const std::string name, unsigned int slot) : sl
 			CUBE_ERROR(std::string("Failed to load a texture ") + name);
 		}
 	}
-	else if (strcmp(x, "dds") == 0)
+	else if (x.extension().string() == ".dds")
 	{
 
 		if (SUCCEEDED(DirectX::CreateDDSTextureFromFileEx(gfx.pDevice.Get(), gfx.pContext.Get(), wname.c_str(), 0, D3D11_USAGE_DEFAULT, D3D11_BIND_SHADER_RESOURCE, 0, 0, DirectX::DX11::DDS_LOADER_DEFAULT, nullptr, pTextureView.GetAddressOf())))

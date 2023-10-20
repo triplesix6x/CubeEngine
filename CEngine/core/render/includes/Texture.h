@@ -2,7 +2,6 @@
 #include "Bindable.h"
 #include "../../includes/Log.h"
 
-class Surface;
 
 class Texture : public Bindable
 {

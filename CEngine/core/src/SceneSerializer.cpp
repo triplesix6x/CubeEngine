@@ -32,7 +32,6 @@ namespace YAML
 		}
 	};
 }
-
 namespace Cube
 {
 
@@ -56,7 +55,7 @@ namespace Cube
 		YAML::Emitter out;
 		out << YAML::BeginMap;
 		out << YAML::Key << "Scene" << YAML::Value << filepath.string();
-		out << YAML::Key << "Skybox" << YAML::Value << pApp->skybox->path;
+		out << YAML::Key << "Skybox" << YAML::Value << std::filesystem::relative(pApp->skybox->path, filepath.parent_path()).string();
 		out << YAML::Key << "Draw Grid" << YAML::Value << pApp->drawGrid;
 
 		out << YAML::Key << "Models" << YAML::Value << YAML::BeginSeq;
@@ -70,7 +69,7 @@ namespace Cube
 				
 
 				out << YAML::Key << "Name" << YAML::Value << pApp->models[i]->modelName;
-				out << YAML::Key << "Path" << YAML::Value << pApp->models[i]->rootPath;
+				out << YAML::Key << "Path" << YAML::Value << std::filesystem::relative(pApp->models[i]->rootPath, filepath.parent_path()).string(); 
 				auto applied = &pApp->models[i]->getpRoot().GetAppliedTransform();
 				auto appliedScale = &pApp->models[i]->getpRoot().GetAppliedScale();
 				auto rtranslations = ExtractTranslation(*applied); 
@@ -157,8 +156,7 @@ namespace Cube
 		pApp->drawGrid = data["Draw Grid"].as<bool>();
 		auto models = data["Models"];
 
-		auto skyrelative = std::filesystem::relative(data["Skybox"].as<std::string>(), filepath.parent_path());
-		auto skynewabsolute = filepath.parent_path().string() + '\\' + skyrelative.string();
+		auto skynewabsolute = filepath.parent_path().string() + '\\' + data["Skybox"].as<std::string>(); 
 		if (std::filesystem::exists(skynewabsolute))
 		{
 			pApp->skybox.release();
@@ -175,8 +173,7 @@ namespace Cube
 			pApp->models.clear();
 			for (auto model : models)
 			{
-				auto relative = std::filesystem::relative(model["Path"].as<std::string>(), filepath.parent_path());
-				auto newabsolute = filepath.parent_path().string() + '\\' + relative.string();
+				auto newabsolute = filepath.parent_path().string() + '\\' + model["Path"].as<std::string>();
 				if (std::filesystem::exists(newabsolute))
 				{
 					pApp->models.push_back(std::make_unique<Model>(pApp->m_Window.Gfx(), newabsolute,

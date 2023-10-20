@@ -91,12 +91,12 @@ void Node::AddChild(std::unique_ptr<Node> pChild)
 void Node::RenderTree(Node*& pSelectedNode) const noexcept
 {
 	const int selectedId = (pSelectedNode == nullptr) ? -1 : pSelectedNode->GetId();
-	const auto node_flags = ImGuiTreeNodeFlags_OpenOnArrow
+	const auto node_flags = ImGuiTreeNodeFlags_NavLeftJumpsBackHere | ImGuiTreeNodeFlags_OpenOnArrow
 		| ((GetId() == selectedId) ? ImGuiTreeNodeFlags_Selected : 0)
 		| ((childPtrs.size() == 0) ? ImGuiTreeNodeFlags_Leaf : 0);
 	const auto expanded = ImGui::TreeNodeEx((void*)(intptr_t)GetId(), node_flags, name.c_str());
 	
-		if (ImGui::IsItemClicked())
+		if (ImGui::IsItemClicked() || ImGui::IsItemActivated() || ImGui::IsItemFocused())
 		{
 			pSelectedNode = const_cast<Node*>(this);
 		}

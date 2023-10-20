@@ -203,25 +203,6 @@ namespace Cube
 		ImGui::SetNextWindowSize(ImGui::GetContentRegionAvail(), ImGuiCond_FirstUseEver);
 
 		ImGui::Begin("Scene");
-
-		ImGuiID dockspace_id = ImGui::GetID("DockSpace");
-		ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), ImGuiDockNodeFlags_NoTabBar);
-		static bool first_time = true;
-		if (first_time) {
-			first_time = false;
-			ImGui::DockBuilderRemoveNode(dockspace_id);
-			ImGui::DockBuilderAddNode(dockspace_id);
-			ImGui::DockBuilderSetNodePos(dockspace_id, ImGui::GetWindowPos());
-			ImGui::DockBuilderSetNodeSize(dockspace_id, ImGui::GetWindowSize());
-
-			ImGuiID dock_id_up = ImGui::DockBuilderSplitNode(dockspace_id, ImGuiDir_Up, 0.8f, nullptr, &dockspace_id);
-			ImGuiID dock_id_down = ImGui::DockBuilderSplitNode(dockspace_id, ImGuiDir_Down, 0.2f, nullptr, &dockspace_id);
-			ImGui::DockBuilderDockWindow("Objects", dock_id_up);
-			ImGui::DockBuilderDockWindow("Proprieties", dock_id_down);
-
-			ImGui::DockBuilderFinish(dockspace_id);
-		}
-		ImGui::Begin("Objects");
 		if (ImGui::BeginPopupContextWindow())
 		{
 			if (ImGui::MenuItem("Add object from file..."))
@@ -282,6 +263,7 @@ namespace Cube
 
 		cam.SpawnControlWindow();
 
+		ImGui::Begin("Proprieties");
 		ImGui::End();
 
 		ImGui::End();
