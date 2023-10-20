@@ -76,7 +76,7 @@ namespace Cube
 		ImGui_ImplWin32_Init(hwnd);
 		CUBE_CORE_INFO("ImGui Win32 was initialized.");
 		pGfx = std::make_unique<Graphics>(hwnd, width, height);
-		CUBE_CORE_INFO("Window was created.");
+		CUBE_CORE_INFO("Graphics was created.");
 
 		RAWINPUTDEVICE rid;
 		rid.usUsagePage = 0x01;

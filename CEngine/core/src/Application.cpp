@@ -29,7 +29,8 @@ namespace Cube
 		models.push_back(std::make_unique<Model>(m_Window.Gfx(), "models\\cube.obj", id, "Cube"));
 		++id;
 		m_Window.Gfx().SetTexture(&pCubeIco, L"icons\\cubeico2.png");
-
+		
+		CUBE_INFO("Application has been set up");
 	}
 
 	Application::~Application()
@@ -667,7 +668,7 @@ namespace Cube
 	void Application::AddObj()
 	{
 
-		std::filesystem::path filepath = FileDialogs::OpenfileA("OBJ files(*.obj)\0*.obj\0GLTF files(*.gltf)\0*.gltf\0FBX files(*.fbx)\0*.fbx\0\0");
+		std::filesystem::path filepath = FileDialogs::OpenfileA("OBJ files(*.obj)\0*.obj\0GLTF files(*.gltf)\0*.gltf\0FBX files(*.fbx)\0*.fbx\0MD5MESH files(*.md5mesh)\0*.md5mesh\0\0");
 		if (!filepath.empty())
 		{
 			models.push_back(std::make_unique<Model>(m_Window.Gfx(), filepath.string(), id));

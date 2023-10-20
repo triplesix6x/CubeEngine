@@ -8,7 +8,7 @@ TestCube::TestCube(Graphics& gfx, float size)
 {
 	namespace dx = DirectX;
 
-	auto model = Cube::MakeIndependentTextured();
+	auto model = CCube::MakeIndependentTextured();
 	model.Transform(dx::XMMatrixScaling(size, size, size));
 	model.SetNormalsIndependentFlat();
 	AddBind(std::make_unique<DepthStencil>(gfx, false));

@@ -36,6 +36,8 @@ namespace Cube {
 #define CUBE_TRACE(...)		::Cube::Log::GetClientLogger()->trace(__VA_ARGS__)
 #define CUBE_FATAL(...)		::Cube::Log::GetClientLogger()->fatal(__VA_ARGS__)
 
+
+//Макросы для логирования в консоль
 #define CUBE_CORE_CON_ERROR(...)	::Cube::Log::GetCoreConLogger()->error(__VA_ARGS__)
 #define CUBE_CORE_CON_WARN(...)		::Cube::Log::GetCoreConLogger()->warn(__VA_ARGS__)
 #define CUBE_CORE_CON_INFO(...)		::Cube::Log::GetCoreConLogger()->info(__VA_ARGS__)

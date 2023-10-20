@@ -1,6 +1,7 @@
 #include "../includes/SceneSerializer.h"
 #include "../includes/CXM.h"
 #include "../includes/CMath.h"
+#include "../includes/Log.h"
 
 #include <fstream>
 
@@ -136,6 +137,7 @@ namespace Cube
 		out << YAML::EndMap;
 		std::ofstream fout(filepath);
 		fout << out.c_str();
+		CUBE_INFO("Scene has been successfully saved");
 	}
 
 	bool SceneSerializer::Deserialize(const std::filesystem::path& filepath)
@@ -156,8 +158,16 @@ namespace Cube
 
 		auto skyrelative = std::filesystem::relative(data["Skybox"].as<std::string>(), filepath.parent_path());
 		auto skynewabsolute = filepath.parent_path().string() + '\\' + skyrelative.string();
-		pApp->skybox.release();
-		pApp->skybox = std::make_unique<SkyBox>(pApp->m_Window.Gfx(), skynewabsolute);
+		if (std::filesystem::exists(skynewabsolute))
+		{
+			pApp->skybox.release();
+			pApp->skybox = std::make_unique<SkyBox>(pApp->m_Window.Gfx(), skynewabsolute);
+			CUBE_TRACE(std::string("Loaded skybox file  " + skynewabsolute).c_str());
+		}
+		else
+		{
+			CUBE_ERROR(std::string("File doesn't exist: " + skynewabsolute).c_str());
+		}
 
 		if (models)
 		{
@@ -189,10 +199,11 @@ namespace Cube
 							DirectX::XMMatrixTranslation(tc.x, tc.y, tc.z));
 						childptrs[child["Child"].as<int>()]->SetAppliedScale(DirectX::XMMatrixScaling(sc.x, sc.y, sc.z));
 					}
+					CUBE_TRACE(std::string("Loaded model file  " + newabsolute).c_str());
 				}
 				else
 				{
-					MessageBoxA(nullptr, std::string("Can't open file " + model["Path"].as<std::string>()).c_str(), "Loading Error", MB_OK | MB_ICONEXCLAMATION);
+					CUBE_ERROR(std::string("File doesn't exist: " + newabsolute).c_str());
 				}
 			}
 		}
@@ -227,5 +238,6 @@ namespace Cube
 			pApp->cam.pitch = camera["Pitch"].as<float>();
 			pApp->cam.rotationSpeed = camera["Rotation Speed"].as<float>();
 		}
+		CUBE_INFO("Scene has been successfully opened");
 	} 
 }

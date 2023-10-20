@@ -1,4 +1,5 @@
 #include "../includes/WindowsUtils.h"
+#include "../includes/Log.h"
 
 namespace Cube
 {
@@ -20,8 +21,10 @@ namespace Cube
 		ofn.Flags = OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST | OFN_NOCHANGEDIR;
 		if (GetOpenFileNameA(&ofn) == TRUE)
 		{
+			CUBE_INFO(std::string("Opened file  " + std::string(ofn.lpstrFile)).c_str());
 			return ofn.lpstrFile;
 		}
+		CUBE_ERROR(std::string("Failed to open file  " + std::string(ofn.lpstrFile)).c_str());
 		return std::string();
 	}
 
@@ -66,8 +69,10 @@ namespace Cube
 		ofn.Flags = OFN_FILEMUSTEXIST | OFN_PATHMUSTEXIST | OFN_NOCHANGEDIR;
 		if (GetSaveFileNameA(&ofn) == TRUE)
 		{
+			CUBE_INFO(std::string("Saved file  " + std::string(ofn.lpstrFile)).c_str());
 			return ofn.lpstrFile;
 		}
+		CUBE_ERROR(std::string("Failed to save file  " + std::string(ofn.lpstrFile)).c_str());
 		return std::string();
 	}
 }

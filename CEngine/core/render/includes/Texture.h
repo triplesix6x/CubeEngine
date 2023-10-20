@@ -1,5 +1,6 @@
 #pragma once
 #include "Bindable.h"
+#include "../../includes/Log.h"
 
 class Surface;
 

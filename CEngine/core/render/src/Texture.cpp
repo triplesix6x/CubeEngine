@@ -1,7 +1,6 @@
 #include "../includes/Texture.h"
 #include "DirectXTex.h"
 #include <WICTextureLoader.h>
-#define GFX_THROW_FAILED(hResultcall) if (FAILED(hResult=(hResultcall))) throw Graphics::GraphicsException(__LINE__, __FILE__, hResult)
 
 
 namespace wrl = Microsoft::WRL;
@@ -57,6 +56,11 @@ Texture::Texture(Graphics & gfx, const std::string name, unsigned int slot) : sl
 			srvDesc.Texture2D.MipLevels = -1;
 			GetDevice(gfx)->CreateShaderResourceView(pTexture.Get(), &srvDesc, &pTextureView);
 			GetContext(gfx)->GenerateMips(pTextureView.Get());
+			CUBE_TRACE(std::string("Successfully loaded texture ") + name);
+		}
+		else
+		{
+			CUBE_ERROR(std::string("Failed to load a texture ") + name);
 		}
 	}
 	else
@@ -102,6 +106,11 @@ Texture::Texture(Graphics & gfx, const std::string name, unsigned int slot) : sl
 			srvDesc.Texture2D.MipLevels = -1;
 			GetDevice(gfx)->CreateShaderResourceView(pTexture.Get(), &srvDesc, &pTextureView);
 			GetContext(gfx)->GenerateMips(pTextureView.Get());
+			CUBE_TRACE(std::string("Successfully loaded texture ") + name);
+		}
+		else
+		{
+			CUBE_ERROR(std::string("Failed to load a texture ") + name);
 		}
 	}
 }

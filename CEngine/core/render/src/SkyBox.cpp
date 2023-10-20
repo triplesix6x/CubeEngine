@@ -17,7 +17,7 @@ SkyBox::SkyBox(Graphics& gfx, std::string name) : path(name)
 
 		AddBind(std::make_unique<Rasterizer>(gfx, true));
 		AddBind(std::make_unique<DepthStencil>(gfx, true));
-		auto model = Cube::Make<Vertex>();
+		auto model = CCube::Make<Vertex>();
 		AddBind(std::make_unique<VertexBuffer>(gfx, model.vertices));
 		AddIndexBuffer(std::make_unique<IndexBuffer>(gfx, model.indices));
 

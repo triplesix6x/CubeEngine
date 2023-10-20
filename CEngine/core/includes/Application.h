@@ -2,6 +2,7 @@
 #include "Window.h"
 #include "Timer.h"
 #include "ImguiManager.h"
+#include "Log.h"
 #include "../render/includes/Camera.h"
 #include "../render/includes/PointLight.h"
 #include "../render/includes/Mesh.h"

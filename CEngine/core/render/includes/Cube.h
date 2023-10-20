@@ -7,7 +7,7 @@
 #include "../../includes/CMath.h"
 #include <array>
 
-class Cube
+class CCube
 {
 public:
 	static NewIndexedTriangleList MakeIndependent(CubeR::VertexLayout layout)
