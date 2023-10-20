@@ -2,7 +2,6 @@
 #include "../includes/BindableBase.h"
 #include "../includes/Sphere.h"
 #include "../includes/Cube.h"
-#include "../includes/DDSTex.h"
 #include "../includes/Sampler.h"
 
 
@@ -22,7 +21,7 @@ SkyBox::SkyBox(Graphics& gfx, std::string name) : path(name)
 		AddIndexBuffer(std::make_unique<IndexBuffer>(gfx, model.indices));
 
 
-		AddBind(std::make_unique<DDSTex>(gfx, name));
+		AddBind(std::make_unique<Texture>(gfx, name));
 		AddBind(std::make_unique<Sampler>(gfx));
 		
 

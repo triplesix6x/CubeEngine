@@ -98,20 +98,17 @@ namespace Cube
 		{
 			if (m_Window.kbd.KeyIsPressed(VK_CONTROL) && m_Window.kbd.KeyIsPressed(VK_SHIFT))
 			{
-				std::filesystem::path filepath = FileDialogs::Savefile("Cube Scene (*.cubeproj)\0*.cubeproj\0\0");
-				if (!filepath.empty())
-				{
-					SceneSerializer serializer(*this);
-					serializer.Serialize(filepath);
-					scenePath = filepath.string();
-				}
+				saveSceneAs();
 			}
 			else if (m_Window.kbd.KeyIsPressed(VK_CONTROL))
 			{
 				if (scenePath != "Unnamed Scene")
 				{
-					SceneSerializer serializer(*this);
-					serializer.Serialize(scenePath);
+					saveScene();
+				}
+				else
+				{
+					saveSceneAs();
 				}
 			}
 			break;
@@ -120,13 +117,7 @@ namespace Cube
 		{
 			if (m_Window.kbd.KeyIsPressed(VK_CONTROL))
 			{
-				std::filesystem::path filepath = FileDialogs::OpenfileA("Cube Scene (*.cubeproj)\0*.cubeproj\0\0");
-				if (!filepath.empty())
-				{
-					SceneSerializer serializer(*this);
-					serializer.Deserialize(filepath);
-					scenePath = filepath.string();;
-				}
+				openScene();
 			}
 			break;
 		}
@@ -134,13 +125,7 @@ namespace Cube
 		{
 			if (m_Window.kbd.KeyIsPressed(VK_CONTROL))
 			{
-				skybox.release();
-				skybox = std::make_unique<SkyBox>(m_Window.Gfx(), "textures\\skyboxmain.dds");
-				models.clear();
-				light.clearLights();
-				scenePath = "Unnamed Scene";
-				cam.Reset();
-				drawGrid = true;
+				newScene();
 			}
 			break;
 		}
@@ -383,42 +368,27 @@ namespace Cube
 			if (ImGui::BeginMenu("Project")) {
 				if (ImGui::MenuItem("Create new project", "Ctrl+N"))
 				{
-					skybox.release(); 
-					skybox = std::make_unique<SkyBox>(m_Window.Gfx(), "textures\\skyboxmain.dds"); 
-					models.clear();
-					light.clearLights();
-					scenePath = "Unnamed Scene";
-					cam.Reset();
-					drawGrid = true;
+					newScene();
 				}
 				if (ImGui::MenuItem("Open project...", "Ctrl+O"))
 				{
-					std::filesystem::path filepath = FileDialogs::OpenfileA("Cube Scene (*.cubeproj)\0*.cubeproj\0\0");
-					if (!filepath.empty())
-					{
-						SceneSerializer serializer(*this);
-						serializer.Deserialize(filepath);
-						scenePath = filepath.string();
-					}
+					openScene();
 
 				}
 				if (ImGui::MenuItem("Save project", "Ctrl+S"))
 				{
 					if (scenePath != "Unnamed Scene")
 					{
-						SceneSerializer serializer(*this);
-						serializer.Serialize(scenePath);
+						saveScene();
+					}
+					else
+					{
+						saveSceneAs();
 					}
 				}
 				if (ImGui::MenuItem("Save project as..", "Ctrl+Shift+S"))
 				{
-					std::filesystem::path filepath = FileDialogs::Savefile("Cube Scene (*.cubeproj)\0*.cubeproj\0\0");
-					if (!filepath.empty())
-					{
-						SceneSerializer serializer(*this);
-						serializer.Serialize(filepath);
-						scenePath = filepath.string();
-					}
+					saveSceneAs();
 				}
 				if (ImGui::MenuItem("Project Settings"))
 				{
@@ -477,37 +447,6 @@ namespace Cube
 				if (ImGui::MenuItem("Sailor moon"))
 				{
 					SetSMTheme();
-				}
-				ImGui::EndMenu();
-			}
-			if (ImGui::BeginMenu("Skybox")) {
-				if (ImGui::MenuItem("Set Skybox 1"))
-				{
-					skybox.release();
-					skybox = std::make_unique<SkyBox>(m_Window.Gfx(), "textures\\skyboxmain.dds");
-				}
-				if (ImGui::MenuItem("Set Skybox 2"))
-				{
-					skybox.release();
-					skybox = std::make_unique<SkyBox>(m_Window.Gfx(), "textures\\skybox2.dds");
-				}
-				if (ImGui::MenuItem("Set Skybox 3"))
-				{
-					skybox.release();
-					skybox = std::make_unique<SkyBox>(m_Window.Gfx(), "textures\\earth.dds");
-				}
-				if (ImGui::MenuItem("Delete Skybox"))
-				{
-					skybox.release();
-				}
-				if (ImGui::MenuItem("Load Skybox from file..."))
-				{
-					std::filesystem::path filepath = FileDialogs::OpenfileA("DDS files(*.dds)\0*.dds\0\0");
-					if (!filepath.empty())
-					{
-						skybox.release();
-						skybox = std::make_unique<SkyBox>(m_Window.Gfx(), filepath.string());
-					}
 				}
 				ImGui::EndMenu();
 			}
@@ -622,6 +561,45 @@ namespace Cube
 
 			ImGui::SameLine(); 
 			ImGui::BeginChild("item view", ImVec2(0, -ImGui::GetFrameHeightWithSpacing())); 
+			if (selected == 1)
+			{
+				ImGui::SeparatorText("General");
+				ImGui::Text("Skybox: ");
+				ImGui::SameLine();
+				ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 3.0f);
+				ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 1.0f);
+				if (ImGui::Button("1"))
+				{
+					skybox.release();
+					skybox = std::make_unique<SkyBox>(m_Window.Gfx(), "textures\\skyboxmain.dds");
+				}
+				ImGui::SameLine();
+				if (ImGui::Button("2"))
+				{
+					skybox.release();
+					skybox = std::make_unique<SkyBox>(m_Window.Gfx(), "textures\\skybox2.dds");
+				}
+				ImGui::SameLine();
+				if (ImGui::Button("3"))
+				{
+					skybox.release();
+					skybox = std::make_unique<SkyBox>(m_Window.Gfx(), "textures\\earth.dds");
+				}
+				if (ImGui::Button("Delete Skybox"))
+				{
+					skybox.release();
+				}
+				if (ImGui::Button("Load Skybox from file..."))
+				{
+					std::filesystem::path filepath = FileDialogs::OpenfileA("DDS files(*.dds)\0*.dds\0\0");
+					if (!filepath.empty())
+					{
+						skybox.release();
+						skybox = std::make_unique<SkyBox>(m_Window.Gfx(), filepath.string());
+					}
+				}
+				ImGui::PopStyleVar(2);
+			}
 			if (selected == 2)
 			{
 				ImGui::SeparatorText("Graphics");
@@ -687,4 +665,42 @@ namespace Cube
 			++id;
 		}
 	}
+
+
+	void Application::newScene()
+	{
+		skybox.release();
+		skybox = std::make_unique<SkyBox>(m_Window.Gfx(), "textures\\skyboxmain.dds");
+		models.clear();
+		light.clearLights();
+		scenePath = "Unnamed Scene";
+		cam.Reset();
+		drawGrid = true;
+	}
+	void Application::openScene()
+	{
+		std::filesystem::path filepath = FileDialogs::OpenfileA("Cube Scene (*.cubeproj)\0*.cubeproj\0\0");
+		if (!filepath.empty())
+		{
+			SceneSerializer serializer(*this);
+			serializer.Deserialize(filepath);
+			scenePath = filepath.string();
+		}
+	}
+	void Application::saveScene()
+	{
+		SceneSerializer serializer(*this);
+		serializer.Serialize(scenePath);
+	}
+	void Application::saveSceneAs()
+	{
+		std::filesystem::path filepath = FileDialogs::Savefile("Cube Scene (*.cubeproj)\0*.cubeproj\0\0");
+		if (!filepath.empty())
+		{
+			SceneSerializer serializer(*this);
+			serializer.Serialize(filepath);
+			scenePath = filepath.string();
+		}
+	}
+
 }

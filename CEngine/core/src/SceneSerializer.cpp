@@ -124,7 +124,7 @@ namespace Cube
 		out << YAML::Key << "Cameras" << YAML::Value << YAML::BeginSeq;
 		out << YAML::BeginMap;
 		
-		out << YAML::Key << "Camera" << YAML::Value << "main";
+		out << YAML::Key << "Camera" << YAML::Value << "Editor";
 		out << YAML::Key << "Translation" << YAML::Value << pApp->cam.pos;
 		out << YAML::Key << "Travel Speed" << YAML::Value << pApp->cam.travelSpeed;
 		out << YAML::Key << "Pitch" << YAML::Value << pApp->cam.pitch;
@@ -193,12 +193,19 @@ namespace Cube
 					auto childs = model["Child Nodes"];
 					for (auto child : childs)
 					{
-						DirectX::XMFLOAT3 tc = child["Translation"].as<DirectX::XMFLOAT3>();
-						DirectX::XMFLOAT3 sc = child["Scaling"].as<DirectX::XMFLOAT3>();
-						DirectX::XMFLOAT3 a = child["Angles"].as<DirectX::XMFLOAT3>();
-						childptrs[child["Child"].as<int>()]->SetAppliedTransform(DirectX::XMMatrixRotationRollPitchYaw(a.x, a.y, a.z) *
-							DirectX::XMMatrixTranslation(tc.x, tc.y, tc.z));
-						childptrs[child["Child"].as<int>()]->SetAppliedScale(DirectX::XMMatrixScaling(sc.x, sc.y, sc.z));
+						if (child)
+						{
+							DirectX::XMFLOAT3 tc = child["Translation"].as<DirectX::XMFLOAT3>();
+							DirectX::XMFLOAT3 sc = child["Scaling"].as<DirectX::XMFLOAT3>();
+							DirectX::XMFLOAT3 a = child["Angles"].as<DirectX::XMFLOAT3>();
+							childptrs[child["Child"].as<int>()]->SetAppliedTransform(DirectX::XMMatrixRotationRollPitchYaw(a.x, a.y, a.z) *
+								DirectX::XMMatrixTranslation(tc.x, tc.y, tc.z));
+							childptrs[child["Child"].as<int>()]->SetAppliedScale(DirectX::XMMatrixScaling(sc.x, sc.y, sc.z));
+						}
+						else
+						{
+							CUBE_ERROR(std::string("Unable to load child " + child["Child"].as<std::string>()));
+						}
 					}
 					CUBE_TRACE(std::string("Loaded model file  " + newabsolute).c_str());
 				}

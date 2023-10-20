@@ -33,6 +33,11 @@ namespace Cube
 
 		void showSettingsWindow();
 
+		void newScene();
+		void openScene();
+		void saveScene();
+		void saveSceneAs();
+
 	private:
 		bool lHelpWindowOpen = false;
 		bool projSettWindowOpen = false;

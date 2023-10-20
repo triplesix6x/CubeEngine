@@ -162,7 +162,6 @@
     <ClCompile Include="core\render\src\Rasterizer.cpp" />
     <ClCompile Include="core\render\src\Sampler.cpp" />
     <ClCompile Include="core\render\src\SkyBox.cpp" />
-    <ClCompile Include="core\render\src\DDSTex.cpp" />
     <ClCompile Include="core\render\src\SkyboxTransformCBuf.cpp" />
     <ClCompile Include="core\render\src\SolidSphere.cpp" />
     <ClCompile Include="core\render\src\TestCube.cpp" />
@@ -256,7 +255,6 @@
     <ClInclude Include="core\render\includes\Rasterizer.h" />
     <ClInclude Include="core\render\includes\Sampler.h" />
     <ClInclude Include="core\render\includes\SkyBox.h" />
-    <ClInclude Include="core\render\includes\DDSTex.h" />
     <ClInclude Include="core\render\includes\SkyboxTransformCBuf.h" />
     <ClInclude Include="core\render\includes\SolidSphere.h" />
     <ClInclude Include="core\render\includes\Sphere.h" />

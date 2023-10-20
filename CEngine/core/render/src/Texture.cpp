@@ -1,6 +1,7 @@
 #include "../includes/Texture.h"
 #include "DirectXTex.h"
 #include <WICTextureLoader.h>
+#include <DDSTextureLoader.h>
 
 
 namespace wrl = Microsoft::WRL;
@@ -56,6 +57,18 @@ Texture::Texture(Graphics & gfx, const std::string name, unsigned int slot) : sl
 			srvDesc.Texture2D.MipLevels = -1;
 			GetDevice(gfx)->CreateShaderResourceView(pTexture.Get(), &srvDesc, &pTextureView);
 			GetContext(gfx)->GenerateMips(pTextureView.Get());
+			CUBE_TRACE(std::string("Successfully loaded texture ") + name);
+		}
+		else
+		{
+			CUBE_ERROR(std::string("Failed to load a texture ") + name);
+		}
+	}
+	else if (strcmp(x, "dds") == 0)
+	{
+
+		if (SUCCEEDED(DirectX::CreateDDSTextureFromFileEx(gfx.pDevice.Get(), gfx.pContext.Get(), wname.c_str(), 0, D3D11_USAGE_DEFAULT, D3D11_BIND_SHADER_RESOURCE, 0, 0, DirectX::DX11::DDS_LOADER_DEFAULT, nullptr, pTextureView.GetAddressOf())))
+		{
 			CUBE_TRACE(std::string("Successfully loaded texture ") + name);
 		}
 		else
