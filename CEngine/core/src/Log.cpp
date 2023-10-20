@@ -13,11 +13,11 @@ namespace Cube
 	void Log::init()
 	{
 		std::fstream logfile;
-		logfile.open("../log.txt", std::ios::out);
+		logfile.open("log.txt", std::ios::out);
 		logfile << "";
 		logfile.close();
 		spdlog::set_pattern("%^[%T] %n: %v%$");					//Задаем паттерн логирования
-		auto sharedFileSink = std::make_shared<spdlog::sinks::basic_file_sink_mt>("../log.txt");
+		auto sharedFileSink = std::make_shared<spdlog::sinks::basic_file_sink_mt>("log.txt");
 		s_CoreLogger = std::make_shared<spdlog::logger>("CUBE_ENGINE", sharedFileSink);
 		s_CoreLogger->set_level(spdlog::level::trace);
 

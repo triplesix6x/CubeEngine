@@ -149,6 +149,7 @@ namespace Cube
 
 		if (!data["Scene"])
 		{
+			CUBE_ERROR("Bad scene file");
 			return false;
 		}
 		std::string sName = data["Scene"].as<std::string>();
