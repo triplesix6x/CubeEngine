@@ -33,10 +33,6 @@ float4 CalcPointLight(LightCBuf light, float3 viewPos, float3 n, float3 tan, flo
 {
     float4 dtex = tex.Sample(splr, texc);
     clip(dtex.a < 0.1f ? -1 : 1);
-    if (dot(n, viewPos) >= 0.0f)
-    {
-        n = -n;
-    }
     n = normalize(n);
     if(normalMapEnabled)
     {
