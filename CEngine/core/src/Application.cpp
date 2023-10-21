@@ -299,6 +299,7 @@ namespace Cube
 				ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 0.0f);
 				ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 0.0f);
 				ImGui::PushStyleColor(ImGuiCol_Button, ImGui::GetStyle().Colors[ImGuiCol_MenuBarBg]);
+				ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{ 0.7f, 0.1f, 0.25f, 1.0f });
 				ImGui::Button(close_text.c_str(), ImVec2{ 20.0f, 20.0f });
 				if (ImGui::IsItemHovered())
 				{
@@ -309,7 +310,7 @@ namespace Cube
 					m_Window.m_CloseButton = false;
 				}
 				ImGui::PopStyleVar(2);
-				ImGui::PopStyleColor();
+				ImGui::PopStyleColor(2);
 
 				char max_sym = '=';
 				std::string max_text{max_sym};
