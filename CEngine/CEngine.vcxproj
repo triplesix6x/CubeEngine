@@ -278,6 +278,7 @@
     <ClInclude Include="imgui\imstb_truetype.h" />
     <ClInclude Include="memory\includes\PoolAllocator.h" />
     <ClInclude Include="core\includes\Timer.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="yaml-cpp\src\collectionstack.h" />
     <ClInclude Include="yaml-cpp\src\contrib\graphbuilderadapter.h" />
     <ClInclude Include="yaml-cpp\src\directives.h" />
@@ -426,6 +427,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="CubeEngine.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
