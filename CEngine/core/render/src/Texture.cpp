@@ -48,7 +48,7 @@ Texture::Texture(Graphics & gfx, const std::string name, unsigned int slot) : sl
 			wrl::ComPtr<ID3D11Texture2D> pTexture;
 			GetDevice(gfx)->CreateTexture2D(&textureDesc, nullptr, &pTexture);
 
-			GetContext(gfx)->UpdateSubresource(pTexture.Get(), 0u, nullptr, fimage.GetPixels(), fimage.GetImages()->rowPitch, fimage.GetImages()->slicePitch);
+			GetContext(gfx)->UpdateSubresource(pTexture.Get(), 0u, nullptr, fimage.GetPixels(), fimage.GetImages()->rowPitch, 0u);
 
 			D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
 			srvDesc.Format = textureDesc.Format;
@@ -110,7 +110,7 @@ Texture::Texture(Graphics & gfx, const std::string name, unsigned int slot) : sl
 			wrl::ComPtr<ID3D11Texture2D> pTexture;
 			GetDevice(gfx)->CreateTexture2D(&textureDesc, nullptr, &pTexture);
 
-			GetContext(gfx)->UpdateSubresource(pTexture.Get(), 0u, nullptr, fimage.GetPixels(), fimage.GetImages()->rowPitch, fimage.GetImages()->slicePitch);
+			GetContext(gfx)->UpdateSubresource(pTexture.Get(), 0u, nullptr, fimage.GetPixels(), fimage.GetImages()->rowPitch, 0u);
 
 			D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
 			srvDesc.Format = textureDesc.Format;

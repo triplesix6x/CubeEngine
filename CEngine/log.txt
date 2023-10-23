@@ -1,9 +1,22 @@
-[2023-10-21 21:14:58.300] [CUBE_ENGINE] [info] Initialized Log.
-[2023-10-21 21:14:58.320] [CUBE_ENGINE] [info] Window was shown.
-[2023-10-21 21:14:58.325] [CUBE_ENGINE] [info] ImGui Win32 was initialized.
-[2023-10-21 21:14:58.361] [CUBE_ENGINE] [info] D3D was initialized.
-[2023-10-21 21:14:58.361] [CUBE_ENGINE] [info] ImGui DX11 was initialized.
-[2023-10-21 21:14:58.361] [CUBE_ENGINE] [info] Graphics was created.
-[2023-10-21 21:14:58.369] [APP] [trace] Successfully loaded texture textures\skyboxmain.dds
-[2023-10-21 21:14:58.382] [APP] [info] Application has been set up
-[2023-10-21 21:14:59.823] [CUBE_ENGINE] [info] Window was closed.
+[2023-10-23 20:52:03.793] [CUBE_ENGINE] [info] Initialized Log.
+[2023-10-23 20:52:03.817] [CUBE_ENGINE] [info] Window was shown.
+[2023-10-23 20:52:03.822] [CUBE_ENGINE] [info] ImGui Win32 was initialized.
+[2023-10-23 20:52:03.865] [CUBE_ENGINE] [info] D3D was initialized.
+[2023-10-23 20:52:03.865] [CUBE_ENGINE] [info] ImGui DX11 was initialized.
+[2023-10-23 20:52:03.865] [CUBE_ENGINE] [info] Graphics was created.
+[2023-10-23 20:52:03.873] [APP] [trace] Successfully loaded texture textures\skyboxmain.dds
+[2023-10-23 20:52:03.886] [APP] [info] Application has been set up
+[2023-10-23 20:52:12.648] [APP] [info] Opened file  C:\Users\user999\Desktop\MyCubeProject\models\nano\nanosuit.obj
+[2023-10-23 20:52:12.705] [APP] [trace] Successfully loaded texture C:\Users\user999\Desktop\MyCubeProject\models\nano\glass_dif.png
+[2023-10-23 20:52:12.730] [APP] [trace] Successfully loaded texture C:\Users\user999\Desktop\MyCubeProject\models\nano\leg_dif.png
+[2023-10-23 20:52:12.749] [APP] [trace] Successfully loaded texture C:\Users\user999\Desktop\MyCubeProject\models\nano\leg_showroom_spec.png
+[2023-10-23 20:52:12.774] [APP] [trace] Successfully loaded texture C:\Users\user999\Desktop\MyCubeProject\models\nano\hand_dif.png
+[2023-10-23 20:52:12.795] [APP] [trace] Successfully loaded texture C:\Users\user999\Desktop\MyCubeProject\models\nano\hand_showroom_spec.png
+[2023-10-23 20:52:12.796] [APP] [trace] Successfully loaded texture C:\Users\user999\Desktop\MyCubeProject\models\nano\glass_dif.png
+[2023-10-23 20:52:12.810] [APP] [trace] Successfully loaded texture C:\Users\user999\Desktop\MyCubeProject\models\nano\arm_dif.png
+[2023-10-23 20:52:12.832] [APP] [trace] Successfully loaded texture C:\Users\user999\Desktop\MyCubeProject\models\nano\arm_showroom_spec.png
+[2023-10-23 20:52:12.856] [APP] [trace] Successfully loaded texture C:\Users\user999\Desktop\MyCubeProject\models\nano\helmet_diff.png
+[2023-10-23 20:52:12.876] [APP] [trace] Successfully loaded texture C:\Users\user999\Desktop\MyCubeProject\models\nano\helmet_showroom_spec.png
+[2023-10-23 20:52:12.892] [APP] [trace] Successfully loaded texture C:\Users\user999\Desktop\MyCubeProject\models\nano\body_dif.png
+[2023-10-23 20:52:12.916] [APP] [trace] Successfully loaded texture C:\Users\user999\Desktop\MyCubeProject\models\nano\body_showroom_spec.png
+[2023-10-23 20:53:11.156] [CUBE_ENGINE] [info] Window was closed.
