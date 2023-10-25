@@ -67,7 +67,6 @@ void Node::Draw(Graphics& gfx, DirectX::FXMMATRIX accumulatedTransform) const
 {
 	const auto built =
 		DirectX::XMLoadFloat4x4(&appliedTransform) *
-		DirectX::XMLoadFloat4x4(&appliedScale) *
 		DirectX::XMLoadFloat4x4(&baseTransform) *
 		accumulatedTransform;
 	for (const auto pm : meshPtrs)
@@ -431,6 +430,7 @@ DirectX::XMMATRIX Model::GetTransform() const noexcept
 	const auto& scale = scales.at(pSelectedNode->GetId());
 	return
 		DirectX::XMMatrixRotationRollPitchYaw(transform.roll, transform.pitch, transform.yaw) *
+		DirectX::XMMatrixScaling(scale.xscale, scale.yscale, scale.zscale) *
 		DirectX::XMMatrixTranslation(transform.x, transform.y, transform.z);
 }
 
@@ -471,7 +471,6 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh, const 
 		{
 
 			auto& material = *pMaterials[mesh.mMaterialIndex];
-			auto texeee = mesh.mTextureCoordsNames;
 			aiString texFileName;
 			if (material.GetTexture(aiTextureType_DIFFUSE, 0, &texFileName) == aiReturn_SUCCESS)
 			{

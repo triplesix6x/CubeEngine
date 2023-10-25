@@ -184,6 +184,7 @@ namespace Cube
 					DirectX::XMFLOAT3 rsc = model["Root Node Scaling"].as<DirectX::XMFLOAT3>();
 					DirectX::XMFLOAT3 ra = model["Root Node Angles"].as<DirectX::XMFLOAT3>();
 					pApp->models[model["Model"].as<int>()]->SetRootTransfotm(DirectX::XMMatrixRotationRollPitchYaw(ra.x, ra.y, ra.z) *
+						DirectX::XMMatrixScaling(rsc.x, rsc.y, rsc.z) *
 						DirectX::XMMatrixTranslation(rtc.x, rtc.y, rtc.z));
 					pApp->models[model["Model"].as<int>()]->SetRootScaling(DirectX::XMMatrixScaling(rsc.x, rsc.y, rsc.z));
 					auto& childptrs = pApp->models[model["Model"].as<int>()]->getpRoot().getchildPtrs();
@@ -196,6 +197,7 @@ namespace Cube
 							DirectX::XMFLOAT3 sc = child["Scaling"].as<DirectX::XMFLOAT3>();
 							DirectX::XMFLOAT3 a = child["Angles"].as<DirectX::XMFLOAT3>();
 							childptrs[child["Child"].as<int>()]->SetAppliedTransform(DirectX::XMMatrixRotationRollPitchYaw(a.x, a.y, a.z) *
+								DirectX::XMMatrixScaling(sc.x, sc.y, sc.z) *
 								DirectX::XMMatrixTranslation(tc.x, tc.y, tc.z));
 							childptrs[child["Child"].as<int>()]->SetAppliedScale(DirectX::XMMatrixScaling(sc.x, sc.y, sc.z));
 						}
