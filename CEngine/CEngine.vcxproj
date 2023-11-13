@@ -72,10 +72,10 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LibraryPath>C:\Users\user999\source\repos\CubeEngine\CEngine\lib\x64;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)CEngine\lib\x64\$(Configuration);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <LibraryPath>C:\Users\user999\source\repos\CubeEngine\CEngine\lib\x64;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)CEngine\lib\x64\$(Configuration);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -114,14 +114,14 @@
       <PreprocessorDefinitions>IMGUI_DISABLE_OBSOLETE_FUNCTIONS;YAML_CPP_STATIC_DEFINE;CUBE_BUILD_DLL;CUBE_PLATFORM_WINDOWS;_DEBUG;_CONSOLE;NOMINMAX;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS;_CRT_NON_CONFORMING_WCSTOK</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
-      <AdditionalIncludeDirectories>C:\Users\user999\source\repos\CubeEngine\CEngine\includes; $(SolutionDir)CEngine\vendor\spdlog\include;$(SolutionDir)CEngine\assimp\include\assimp;$(SolutionDir)CEngine\assimp\include;$(SolutionDir)CEngine\yaml-cpp\include\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\user999\source\repos\CubeEngine\CEngine\includes; $(SolutionDir)CEngine\vendor\spdlog\include;$(SolutionDir)CEngine\assimp\include\assimp;$(SolutionDir)CEngine\assimp\include;$(SolutionDir)CEngine\yaml-cpp\include\;$(SolutionDir)CEngine\vendor\mono\include\</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>assimp-vc143-mt.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libmono-static-sgen.lib;assimp-vc143-mt.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -132,7 +132,7 @@
       <PreprocessorDefinitions>IMGUI_DISABLE_OBSOLETE_FUNCTIONS;YAML_CPP_STATIC_DEFINE;CUBE_BUILD_DLL;CUBE_PLATFORM_WINDOWS;_CONSOLE;NOMINMAX;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS;_CRT_NON_CONFORMING_WCSTOK</PreprocessorDefinitions>
       <ConformanceMode>Default</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
-      <AdditionalIncludeDirectories>C:\Users\user999\source\repos\CubeEngine\CEngine\includes; $(SolutionDir)CEngine\vendor\spdlog\include;$(SolutionDir)CEngine\assimp\include\assimp;$(SolutionDir)CEngine\assimp\include;$(SolutionDir)CEngine\yaml-cpp\include\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\user999\source\repos\CubeEngine\CEngine\includes; $(SolutionDir)CEngine\vendor\spdlog\include;$(SolutionDir)CEngine\assimp\include\assimp;$(SolutionDir)CEngine\assimp\include;$(SolutionDir)CEngine\yaml-cpp\include\;$(SolutionDir)CEngine\vendor\mono\include\</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
