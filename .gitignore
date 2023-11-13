@@ -98,7 +98,8 @@ StyleCopReport.xml
 *.pidb
 *.svclog
 *.scc
-!CEngine/lib/**/*.lib
+!CEngine/lib/x64/Debug/*
+!CEngine/lib/x64/Release/*
 
 # Chutzpah Test files
 _Chutzpah*
