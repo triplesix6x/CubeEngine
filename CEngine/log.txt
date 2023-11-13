@@ -1,9 +1,9 @@
-[2023-11-13 20:50:21.549] [CUBE_ENGINE] [info] Initialized Log.
-[2023-11-13 20:50:21.572] [CUBE_ENGINE] [info] Window was shown.
-[2023-11-13 20:50:21.575] [CUBE_ENGINE] [info] ImGui Win32 was initialized.
-[2023-11-13 20:50:21.617] [CUBE_ENGINE] [info] D3D was initialized.
-[2023-11-13 20:50:21.617] [CUBE_ENGINE] [info] ImGui DX11 was initialized.
-[2023-11-13 20:50:21.617] [CUBE_ENGINE] [info] Graphics was created.
-[2023-11-13 20:50:21.626] [APP] [trace] Successfully loaded texture textures\skyboxmain.dds
-[2023-11-13 20:50:21.656] [APP] [info] Application has been set up
-[2023-11-13 20:50:24.234] [CUBE_ENGINE] [info] Window was closed.
+[2023-11-13 23:04:05.468] [CUBE_ENGINE] [info] Initialized Log.
+[2023-11-13 23:04:05.489] [CUBE_ENGINE] [info] Window was shown.
+[2023-11-13 23:04:05.492] [CUBE_ENGINE] [info] ImGui Win32 was initialized.
+[2023-11-13 23:04:05.530] [CUBE_ENGINE] [info] D3D was initialized.
+[2023-11-13 23:04:05.530] [CUBE_ENGINE] [info] ImGui DX11 was initialized.
+[2023-11-13 23:04:05.530] [CUBE_ENGINE] [info] Graphics was created.
+[2023-11-13 23:04:05.539] [APP] [trace] Successfully loaded texture textures\skyboxmain.dds
+[2023-11-13 23:04:05.553] [APP] [info] Application has been set up
+[2023-11-13 23:04:08.160] [CUBE_ENGINE] [info] Window was closed.

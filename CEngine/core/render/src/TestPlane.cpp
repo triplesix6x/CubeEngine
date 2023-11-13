@@ -2,7 +2,7 @@
 #include "../includes/Plane.h"
 #include "../includes/BindableBase.h"
 #include "../includes/TransformCbufPS.h"
-#include "../imgui/imgui.h"
+#include "imgui.h"
 
 TestPlane::TestPlane(Graphics& gfx, float size)
 {

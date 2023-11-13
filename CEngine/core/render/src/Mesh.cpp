@@ -1,5 +1,5 @@
 #include "../includes/Mesh.h"
-#include "../../imgui/imgui.h"
+#include "imgui.h"
 #include "../../includes/CXM.h"
 #include <unordered_map>
 #include <memory>

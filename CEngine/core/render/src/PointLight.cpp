@@ -1,5 +1,5 @@
 #include "../includes/PointLight.h"
-#include "../../imgui/imgui.h"
+#include "imgui.h"
 
 Lights::PointLight::PointLight(Graphics& gfx, int id, float radius, std::string lightName) : id(id), mesh(gfx, radius), lightName(lightName)
 {

@@ -9,7 +9,7 @@
 #include <memory>
 #include <assimp/postprocess.h>
 #include <type_traits>
-#include "../imgui/imgui.h"
+#include "imgui.h"
 
 class Mesh : public DrawableBase<Mesh>
 {

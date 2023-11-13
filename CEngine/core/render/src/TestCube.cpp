@@ -2,7 +2,7 @@
 #include "../includes/Cube.h"
 #include "../includes/BindableBase.h"
 #include "../includes/TransformCbufPS.h"
-#include "../imgui/imgui.h"
+#include "imgui.h"
 
 TestCube::TestCube(Graphics& gfx, float size)
 {

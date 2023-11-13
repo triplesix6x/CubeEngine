@@ -8,7 +8,7 @@
 #include <memory>
 #include <d3dcompiler.h>
 #include <random>
-#include "../../imgui/imgui_internal.h"
+#include "imgui_internal.h"
 #include <DirectXMath.h>
 
 namespace wrl = Microsoft::WRL;
