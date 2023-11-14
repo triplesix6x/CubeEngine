@@ -39,43 +39,43 @@
     <ClCompile Include="core\src\Mouse.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="core\render\src\Graphics.cpp">
+    <ClCompile Include="render\src\Graphics.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="core\src\Timer.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="core\render\src\Bindable.cpp">
+    <ClCompile Include="render\src\Bindable.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="core\render\src\Drawable.cpp">
+    <ClCompile Include="render\src\Drawable.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="core\render\src\IndexBuffer.cpp">
+    <ClCompile Include="render\src\IndexBuffer.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="core\render\src\InputLayout.cpp">
+    <ClCompile Include="render\src\InputLayout.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="core\render\src\PixelShader.cpp">
+    <ClCompile Include="render\src\PixelShader.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="core\render\src\Topology.cpp">
+    <ClCompile Include="render\src\Topology.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="core\render\src\TransformCBuf.cpp">
+    <ClCompile Include="render\src\TransformCBuf.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="core\render\src\VertexBuffer.cpp">
+    <ClCompile Include="render\src\VertexBuffer.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="core\render\src\VertexShader.cpp">
+    <ClCompile Include="render\src\VertexShader.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="core\render\src\Sampler.cpp">
+    <ClCompile Include="render\src\Sampler.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="core\render\src\Texture.cpp">
+    <ClCompile Include="render\src\Texture.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="imgui\imgui.cpp">
@@ -102,49 +102,49 @@
     <ClCompile Include="imgui\imgui_tables.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="core\render\src\Camera.cpp">
+    <ClCompile Include="render\src\Camera.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="core\render\src\SolidSphere.cpp">
+    <ClCompile Include="render\src\SolidSphere.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="core\render\src\PointLight.cpp">
+    <ClCompile Include="render\src\PointLight.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="core\render\src\Mesh.cpp">
+    <ClCompile Include="render\src\Mesh.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="core\render\src\SkyBox.cpp">
+    <ClCompile Include="render\src\SkyBox.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="core\render\src\SkyboxTransformCBuf.cpp">
+    <ClCompile Include="render\src\SkyboxTransformCBuf.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="core\render\src\DepthStencil.cpp">
+    <ClCompile Include="render\src\DepthStencil.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="core\render\src\Rasterizer.cpp">
+    <ClCompile Include="render\src\Rasterizer.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="core\includes\ImGuiThemes.h">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="core\render\includes\DXTKIncludes.h">
+    <ClCompile Include="render\includes\DXTKIncludes.h">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="core\render\includes\NewIndexedTriangleList.h">
+    <ClCompile Include="render\includes\NewIndexedTriangleList.h">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="core\render\src\TestPlane.cpp">
+    <ClCompile Include="render\src\TestPlane.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="core\render\src\TransformCbufPS.cpp">
+    <ClCompile Include="render\src\TransformCbufPS.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="core\render\src\TestCube.cpp">
+    <ClCompile Include="render\src\TestCube.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="core\render\src\Blender.cpp">
+    <ClCompile Include="render\src\Blender.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="core\includes\CXM.h">
@@ -257,9 +257,6 @@
     <ClInclude Include="core\includes\Application.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="core\CubeApp.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
     <ClInclude Include="memory\includes\PoolAllocator.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
@@ -278,61 +275,61 @@
     <ClInclude Include="core\includes\Mouse.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="core\render\includes\Graphics.h">
+    <ClInclude Include="render\includes\Graphics.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="core\includes\Timer.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="core\render\includes\Bindable.h">
+    <ClInclude Include="render\includes\Bindable.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="core\render\includes\ConstantBuffers.h">
+    <ClInclude Include="render\includes\ConstantBuffers.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="core\render\includes\Drawable.h">
+    <ClInclude Include="render\includes\Drawable.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="core\render\includes\IndexBuffer.h">
+    <ClInclude Include="render\includes\IndexBuffer.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="core\render\includes\InputLayout.h">
+    <ClInclude Include="render\includes\InputLayout.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="core\render\includes\PixelShader.h">
+    <ClInclude Include="render\includes\PixelShader.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="core\render\includes\Topology.h">
+    <ClInclude Include="render\includes\Topology.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="core\render\includes\TransformCbuf.h">
+    <ClInclude Include="render\includes\TransformCbuf.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="core\render\includes\VertexBuffer.h">
+    <ClInclude Include="render\includes\VertexBuffer.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="core\render\includes\VertexShader.h">
+    <ClInclude Include="render\includes\VertexShader.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="core\render\includes\BindableBase.h">
+    <ClInclude Include="render\includes\BindableBase.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="core\render\includes\DrawableBase.h">
+    <ClInclude Include="render\includes\DrawableBase.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="core\includes\CMath.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="core\render\includes\IndexedTriangleList.h">
+    <ClInclude Include="render\includes\IndexedTriangleList.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="core\render\includes\Sampler.h">
+    <ClInclude Include="render\includes\Sampler.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="core\render\includes\Sphere.h">
+    <ClInclude Include="render\includes\Sphere.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="core\render\includes\Texture.h">
+    <ClInclude Include="render\includes\Texture.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="imgui\imconfig.h">
@@ -362,49 +359,49 @@
     <ClInclude Include="core\includes\ImguiManager.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="core\render\includes\SolidSphere.h">
+    <ClInclude Include="render\includes\SolidSphere.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="core\render\includes\PointLight.h">
+    <ClInclude Include="render\includes\PointLight.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="core\render\includes\CVertex.h">
+    <ClInclude Include="render\includes\CVertex.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="core\render\includes\Mesh.h">
+    <ClInclude Include="render\includes\Mesh.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="core\render\includes\Camera.h">
+    <ClInclude Include="render\includes\Camera.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="core\render\includes\Cube.h">
+    <ClInclude Include="render\includes\Cube.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="core\render\includes\SkyBox.h">
+    <ClInclude Include="render\includes\SkyBox.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="core\render\includes\SkyboxTransformCBuf.h">
+    <ClInclude Include="render\includes\SkyboxTransformCBuf.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="core\render\includes\DepthStencil.h">
+    <ClInclude Include="render\includes\DepthStencil.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="core\render\includes\Rasterizer.h">
+    <ClInclude Include="render\includes\Rasterizer.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="core\render\includes\Plane.h">
+    <ClInclude Include="render\includes\Plane.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="core\render\includes\TestPlane.h">
+    <ClInclude Include="render\includes\TestPlane.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="core\render\includes\TransformCbufPS.h">
+    <ClInclude Include="render\includes\TransformCbufPS.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="core\render\includes\TestCube.h">
+    <ClInclude Include="render\includes\TestCube.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="core\render\includes\Blender.h">
+    <ClInclude Include="render\includes\Blender.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="core\includes\SceneSerializer.h">
@@ -495,19 +492,19 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="core\shader\SolidVS.hlsl" />
-    <FxCompile Include="core\shader\SolidPS.hlsl" />
-    <FxCompile Include="core\shader\PhongVS.hlsl" />
-    <FxCompile Include="core\shader\PhongPS.hlsl" />
-    <FxCompile Include="core\shader\SkyBoxPS.hlsl" />
-    <FxCompile Include="core\shader\SkyBoxVS.hlsl" />
-    <FxCompile Include="core\shader\NoTexPhongVS.hlsl" />
-    <FxCompile Include="core\shader\NoTexPhongPS.hlsl" />
-    <FxCompile Include="core\shader\PhongSpecNormalMapPS.hlsl" />
-    <FxCompile Include="core\shader\PhongNormalMapPS.hlsl" />
-    <FxCompile Include="core\shader\PhongNormalMapVS.hlsl" />
-    <FxCompile Include="core\shader\PhongNormalMapObjectPS.hlsl" />
-    <FxCompile Include="core\shader\PhongSpecPS.hlsl" />
+    <FxCompile Include="render\shader\SolidVS.hlsl" />
+    <FxCompile Include="render\shader\SolidPS.hlsl" />
+    <FxCompile Include="render\shader\PhongVS.hlsl" />
+    <FxCompile Include="render\shader\PhongPS.hlsl" />
+    <FxCompile Include="render\shader\SkyBoxPS.hlsl" />
+    <FxCompile Include="render\shader\SkyBoxVS.hlsl" />
+    <FxCompile Include="render\shader\NoTexPhongVS.hlsl" />
+    <FxCompile Include="render\shader\NoTexPhongPS.hlsl" />
+    <FxCompile Include="render\shader\PhongSpecNormalMapPS.hlsl" />
+    <FxCompile Include="render\shader\PhongNormalMapPS.hlsl" />
+    <FxCompile Include="render\shader\PhongNormalMapVS.hlsl" />
+    <FxCompile Include="render\shader\PhongNormalMapObjectPS.hlsl" />
+    <FxCompile Include="render\shader\PhongSpecPS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

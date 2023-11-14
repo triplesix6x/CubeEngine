@@ -1,6 +1,6 @@
 #pragma once
 #include "Bindable.h"
-#include "../../includes/Log.h"
+#include "../core/includes/Log.h"
 
 
 class Texture : public Bindable

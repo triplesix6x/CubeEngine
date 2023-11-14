@@ -1,6 +1,7 @@
 //Файл запуска программы
 
-#include "../CubeApp.h"
+#include "../includes/Log.h"
+#include "../includes/Application.h"
 
 
 

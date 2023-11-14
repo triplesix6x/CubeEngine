@@ -146,32 +146,32 @@
   <ItemGroup>
     <ClCompile Include="core\includes\CXM.h" />
     <ClCompile Include="core\includes\ImGuiThemes.h" />
-    <ClCompile Include="core\render\includes\DXTKIncludes.h" />
-    <ClCompile Include="core\render\includes\NewIndexedTriangleList.h" />
-    <ClCompile Include="core\render\src\Bindable.cpp" />
-    <ClCompile Include="core\render\src\Blender.cpp" />
-    <ClCompile Include="core\render\src\Camera.cpp" />
-    <ClCompile Include="core\render\src\DepthStencil.cpp" />
-    <ClCompile Include="core\render\src\Drawable.cpp" />
-    <ClCompile Include="core\render\src\Graphics.cpp" />
-    <ClCompile Include="core\render\src\IndexBuffer.cpp" />
-    <ClCompile Include="core\render\src\InputLayout.cpp" />
-    <ClCompile Include="core\render\src\Mesh.cpp" />
-    <ClCompile Include="core\render\src\PixelShader.cpp" />
-    <ClCompile Include="core\render\src\PointLight.cpp" />
-    <ClCompile Include="core\render\src\Rasterizer.cpp" />
-    <ClCompile Include="core\render\src\Sampler.cpp" />
-    <ClCompile Include="core\render\src\SkyBox.cpp" />
-    <ClCompile Include="core\render\src\SkyboxTransformCBuf.cpp" />
-    <ClCompile Include="core\render\src\SolidSphere.cpp" />
-    <ClCompile Include="core\render\src\TestCube.cpp" />
-    <ClCompile Include="core\render\src\TestPlane.cpp" />
-    <ClCompile Include="core\render\src\Texture.cpp" />
-    <ClCompile Include="core\render\src\Topology.cpp" />
-    <ClCompile Include="core\render\src\TransformCBuf.cpp" />
-    <ClCompile Include="core\render\src\TransformCbufPS.cpp" />
-    <ClCompile Include="core\render\src\VertexBuffer.cpp" />
-    <ClCompile Include="core\render\src\VertexShader.cpp" />
+    <ClCompile Include="render\includes\DXTKIncludes.h" />
+    <ClCompile Include="render\includes\NewIndexedTriangleList.h" />
+    <ClCompile Include="render\src\Bindable.cpp" />
+    <ClCompile Include="render\src\Blender.cpp" />
+    <ClCompile Include="render\src\Camera.cpp" />
+    <ClCompile Include="render\src\DepthStencil.cpp" />
+    <ClCompile Include="render\src\Drawable.cpp" />
+    <ClCompile Include="render\src\Graphics.cpp" />
+    <ClCompile Include="render\src\IndexBuffer.cpp" />
+    <ClCompile Include="render\src\InputLayout.cpp" />
+    <ClCompile Include="render\src\Mesh.cpp" />
+    <ClCompile Include="render\src\PixelShader.cpp" />
+    <ClCompile Include="render\src\PointLight.cpp" />
+    <ClCompile Include="render\src\Rasterizer.cpp" />
+    <ClCompile Include="render\src\Sampler.cpp" />
+    <ClCompile Include="render\src\SkyBox.cpp" />
+    <ClCompile Include="render\src\SkyboxTransformCBuf.cpp" />
+    <ClCompile Include="render\src\SolidSphere.cpp" />
+    <ClCompile Include="render\src\TestCube.cpp" />
+    <ClCompile Include="render\src\TestPlane.cpp" />
+    <ClCompile Include="render\src\Texture.cpp" />
+    <ClCompile Include="render\src\Topology.cpp" />
+    <ClCompile Include="render\src\TransformCBuf.cpp" />
+    <ClCompile Include="render\src\TransformCbufPS.cpp" />
+    <ClCompile Include="render\src\VertexBuffer.cpp" />
+    <ClCompile Include="render\src\VertexShader.cpp" />
     <ClCompile Include="core\src\Application.cpp" />
     <ClCompile Include="core\src\CXM.cpp" />
     <ClCompile Include="core\src\ImguiManager.cpp" />
@@ -225,7 +225,6 @@
     <ClCompile Include="yaml-cpp\src\tag.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="core\CubeApp.h" />
     <ClInclude Include="core\includes\Application.h" />
     <ClInclude Include="core\includes\CMath.h" />
     <ClInclude Include="core\includes\ImguiManager.h" />
@@ -235,38 +234,38 @@
     <ClInclude Include="core\includes\SceneSerializer.h" />
     <ClInclude Include="core\includes\Window.h" />
     <ClInclude Include="core\includes\WindowsUtils.h" />
-    <ClInclude Include="core\render\includes\Bindable.h" />
-    <ClInclude Include="core\render\includes\BindableBase.h" />
-    <ClInclude Include="core\render\includes\Blender.h" />
-    <ClInclude Include="core\render\includes\Camera.h" />
-    <ClInclude Include="core\render\includes\ConstantBuffers.h" />
-    <ClInclude Include="core\render\includes\Cube.h" />
-    <ClInclude Include="core\render\includes\DepthStencil.h" />
-    <ClInclude Include="core\render\includes\Drawable.h" />
-    <ClInclude Include="core\render\includes\DrawableBase.h" />
-    <ClInclude Include="core\render\includes\Graphics.h" />
-    <ClInclude Include="core\render\includes\IndexBuffer.h" />
-    <ClInclude Include="core\render\includes\IndexedTriangleList.h" />
-    <ClInclude Include="core\render\includes\InputLayout.h" />
-    <ClInclude Include="core\render\includes\Mesh.h" />
-    <ClInclude Include="core\render\includes\PixelShader.h" />
-    <ClInclude Include="core\render\includes\Plane.h" />
-    <ClInclude Include="core\render\includes\PointLight.h" />
-    <ClInclude Include="core\render\includes\Rasterizer.h" />
-    <ClInclude Include="core\render\includes\Sampler.h" />
-    <ClInclude Include="core\render\includes\SkyBox.h" />
-    <ClInclude Include="core\render\includes\SkyboxTransformCBuf.h" />
-    <ClInclude Include="core\render\includes\SolidSphere.h" />
-    <ClInclude Include="core\render\includes\Sphere.h" />
-    <ClInclude Include="core\render\includes\TestCube.h" />
-    <ClInclude Include="core\render\includes\TestPlane.h" />
-    <ClInclude Include="core\render\includes\Texture.h" />
-    <ClInclude Include="core\render\includes\Topology.h" />
-    <ClInclude Include="core\render\includes\TransformCbuf.h" />
-    <ClInclude Include="core\render\includes\TransformCbufPS.h" />
-    <ClInclude Include="core\render\includes\VertexBuffer.h" />
-    <ClInclude Include="core\render\includes\CVertex.h" />
-    <ClInclude Include="core\render\includes\VertexShader.h" />
+    <ClInclude Include="render\includes\Bindable.h" />
+    <ClInclude Include="render\includes\BindableBase.h" />
+    <ClInclude Include="render\includes\Blender.h" />
+    <ClInclude Include="render\includes\Camera.h" />
+    <ClInclude Include="render\includes\ConstantBuffers.h" />
+    <ClInclude Include="render\includes\Cube.h" />
+    <ClInclude Include="render\includes\DepthStencil.h" />
+    <ClInclude Include="render\includes\Drawable.h" />
+    <ClInclude Include="render\includes\DrawableBase.h" />
+    <ClInclude Include="render\includes\Graphics.h" />
+    <ClInclude Include="render\includes\IndexBuffer.h" />
+    <ClInclude Include="render\includes\IndexedTriangleList.h" />
+    <ClInclude Include="render\includes\InputLayout.h" />
+    <ClInclude Include="render\includes\Mesh.h" />
+    <ClInclude Include="render\includes\PixelShader.h" />
+    <ClInclude Include="render\includes\Plane.h" />
+    <ClInclude Include="render\includes\PointLight.h" />
+    <ClInclude Include="render\includes\Rasterizer.h" />
+    <ClInclude Include="render\includes\Sampler.h" />
+    <ClInclude Include="render\includes\SkyBox.h" />
+    <ClInclude Include="render\includes\SkyboxTransformCBuf.h" />
+    <ClInclude Include="render\includes\SolidSphere.h" />
+    <ClInclude Include="render\includes\Sphere.h" />
+    <ClInclude Include="render\includes\TestCube.h" />
+    <ClInclude Include="render\includes\TestPlane.h" />
+    <ClInclude Include="render\includes\Texture.h" />
+    <ClInclude Include="render\includes\Topology.h" />
+    <ClInclude Include="render\includes\TransformCbuf.h" />
+    <ClInclude Include="render\includes\TransformCbufPS.h" />
+    <ClInclude Include="render\includes\VertexBuffer.h" />
+    <ClInclude Include="render\includes\CVertex.h" />
+    <ClInclude Include="render\includes\VertexShader.h" />
     <ClInclude Include="exception\includes\CubeException.h" />
     <ClInclude Include="imgui\imconfig.h" />
     <ClInclude Include="imgui\imgui.h" />
@@ -308,7 +307,7 @@
     <Image Include="icons\kubik2.ico" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="core\shader\NoTexPhongPS.hlsl">
+    <FxCompile Include="render\shader\NoTexPhongPS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
@@ -318,7 +317,7 @@
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)shaders\%(Filename).cso</ObjectFileOutput>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
-    <FxCompile Include="core\shader\NoTexPhongVS.hlsl">
+    <FxCompile Include="render\shader\NoTexPhongVS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
@@ -326,7 +325,7 @@
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)shaders\%(Filename).cso</ObjectFileOutput>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)shaders\%(Filename).cso</ObjectFileOutput>
     </FxCompile>
-    <FxCompile Include="core\shader\PhongNormalMapObjectPS.hlsl">
+    <FxCompile Include="render\shader\PhongNormalMapObjectPS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
@@ -336,7 +335,7 @@
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)shaders\%(Filename).cso</ObjectFileOutput>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
-    <FxCompile Include="core\shader\PhongNormalMapPS.hlsl">
+    <FxCompile Include="render\shader\PhongNormalMapPS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
@@ -346,7 +345,7 @@
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)shaders\%(Filename).cso</ObjectFileOutput>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
-    <FxCompile Include="core\shader\PhongNormalMapVS.hlsl">
+    <FxCompile Include="render\shader\PhongNormalMapVS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
@@ -356,7 +355,7 @@
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)shaders\%(Filename).cso</ObjectFileOutput>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
-    <FxCompile Include="core\shader\PhongPS.hlsl">
+    <FxCompile Include="render\shader\PhongPS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
@@ -366,7 +365,7 @@
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
-    <FxCompile Include="core\shader\PhongSpecNormalMapPS.hlsl">
+    <FxCompile Include="render\shader\PhongSpecNormalMapPS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
@@ -376,7 +375,7 @@
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)shaders\%(Filename).cso</ObjectFileOutput>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
-    <FxCompile Include="core\shader\PhongSpecPS.hlsl">
+    <FxCompile Include="render\shader\PhongSpecPS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
@@ -386,7 +385,7 @@
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)shaders\%(Filename).cso</ObjectFileOutput>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
     </FxCompile>
-    <FxCompile Include="core\shader\PhongVS.hlsl">
+    <FxCompile Include="render\shader\PhongVS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
@@ -394,13 +393,13 @@
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)shaders\%(Filename).cso</ObjectFileOutput>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)shaders\%(Filename).cso</ObjectFileOutput>
     </FxCompile>
-    <FxCompile Include="core\shader\SkyBoxPS.hlsl">
+    <FxCompile Include="render\shader\SkyBoxPS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)shaders\%(Filename).cso</ObjectFileOutput>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)shaders\%(Filename).cso</ObjectFileOutput>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
     </FxCompile>
-    <FxCompile Include="core\shader\SkyBoxVS.hlsl">
+    <FxCompile Include="render\shader\SkyBoxVS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)shaders\%(Filename).cso</ObjectFileOutput>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)shaders\%(Filename).cso</ObjectFileOutput>
@@ -408,7 +407,7 @@
       <EnableDebuggingInformation Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</EnableDebuggingInformation>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
     </FxCompile>
-    <FxCompile Include="core\shader\SolidPS.hlsl">
+    <FxCompile Include="render\shader\SolidPS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
@@ -416,7 +415,7 @@
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)shaders\%(Filename).cso</ObjectFileOutput>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)shaders\%(Filename).cso</ObjectFileOutput>
     </FxCompile>
-    <FxCompile Include="core\shader\SolidVS.hlsl">
+    <FxCompile Include="render\shader\SolidVS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>

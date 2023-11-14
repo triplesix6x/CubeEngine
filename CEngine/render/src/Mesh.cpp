@@ -1,6 +1,6 @@
 #include "../includes/Mesh.h"
 #include "imgui.h"
-#include "../../includes/CXM.h"
+#include "../core/includes/CXM.h"
 #include <unordered_map>
 #include <memory>
 #include <libloaderapi.h>

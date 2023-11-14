@@ -1,7 +1,7 @@
 #include "../includes/Camera.h"
 #include "imgui.h"
 #include "imgui_internal.h"
-#include "../../includes/CMath.h"
+#include "../core/includes/CMath.h"
 
 Camera::Camera() noexcept
 {
