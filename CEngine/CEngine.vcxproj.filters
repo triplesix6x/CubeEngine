@@ -129,12 +129,6 @@
     <ClCompile Include="core\includes\ImGuiThemes.h">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="render\includes\DXTKIncludes.h">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="render\includes\NewIndexedTriangleList.h">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
     <ClCompile Include="render\src\TestPlane.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
@@ -484,6 +478,12 @@
     </ClInclude>
     <ClInclude Include="scripting\includes\ScriptEngine.h">
       <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="render\includes\DXTKIncludes.h">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="render\includes\NewIndexedTriangleList.h">
+      <Filter>Исходные файлы</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

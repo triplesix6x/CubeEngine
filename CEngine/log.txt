@@ -1,8 +1,13 @@
-[2023-11-15 01:55:48.434] [CUBE_ENGINE] [info] Initialized Log.
-[2023-11-15 01:55:48.450] [CUBE_ENGINE] [info] Window was shown.
-[2023-11-15 01:55:48.454] [CUBE_ENGINE] [info] ImGui Win32 was initialized.
-[2023-11-15 01:55:48.489] [CUBE_ENGINE] [info] D3D was initialized.
-[2023-11-15 01:55:48.489] [CUBE_ENGINE] [info] ImGui DX11 was initialized.
-[2023-11-15 01:55:48.489] [CUBE_ENGINE] [info] Graphics was created.
-[2023-11-15 01:55:48.498] [APP] [trace] Successfully loaded texture textures\skyboxmain.dds
-[2023-11-15 01:55:48.564] [APP] [info] Application has been set up
+[2023-11-15 02:38:13.470] [CUBE_ENGINE] [info] Initialized Log.
+[2023-11-15 02:38:13.509] [CUBE_ENGINE] [info] Window was shown.
+[2023-11-15 02:38:13.520] [CUBE_ENGINE] [info] ImGui Win32 was initialized.
+[2023-11-15 02:38:13.540] [CUBE_ENGINE] [info] D3D was initialized.
+[2023-11-15 02:38:13.540] [CUBE_ENGINE] [info] ImGui DX11 was initialized.
+[2023-11-15 02:38:13.540] [CUBE_ENGINE] [info] Graphics was created.
+[2023-11-15 02:38:13.548] [APP] [error] Failed to load a texture textures\skyboxmain.dds
+[2023-11-15 02:38:13.858] [APP] [info] Application has been set up
+[2023-11-15 02:38:21.327] [APP] [error] Failed to load a texture textures\skybox2.dds
+[2023-11-15 02:38:21.723] [APP] [trace] Successfully loaded texture textures\earth.dds
+[2023-11-15 02:38:22.254] [APP] [error] Failed to load a texture textures\skyboxmain.dds
+[2023-11-15 02:38:22.632] [APP] [trace] Successfully loaded texture textures\earth.dds
+[2023-11-15 02:38:26.084] [CUBE_ENGINE] [info] Window was closed.
