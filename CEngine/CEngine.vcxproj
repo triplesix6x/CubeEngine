@@ -121,7 +121,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>libmono-static-sgen.lib;assimp-vc143-mt.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Bcrypt.lib;Version.lib;Winmm.lib;Ws2_32.lib;libmono-static-sgen.lib;assimp-vc143-mt.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -140,7 +140,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>assimp-vc143-mt.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Bcrypt.lib;Version.lib;Winmm.lib;Ws2_32.lib;libmono-static-sgen.lib;assimp-vc143-mt.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -192,6 +192,7 @@
     <ClCompile Include="imgui\imgui_widgets.cpp" />
     <ClCompile Include="memory\src\PoolAllocator.cpp" />
     <ClCompile Include="core\src\Timer.cpp" />
+    <ClCompile Include="scripting\src\ScriptEngine.cpp" />
     <ClCompile Include="yaml-cpp\src\binary.cpp" />
     <ClCompile Include="yaml-cpp\src\contrib\graphbuilder.cpp" />
     <ClCompile Include="yaml-cpp\src\contrib\graphbuilderadapter.cpp" />
@@ -278,6 +279,7 @@
     <ClInclude Include="memory\includes\PoolAllocator.h" />
     <ClInclude Include="core\includes\Timer.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="scripting\includes\ScriptEngine.h" />
     <ClInclude Include="yaml-cpp\src\collectionstack.h" />
     <ClInclude Include="yaml-cpp\src\contrib\graphbuilderadapter.h" />
     <ClInclude Include="yaml-cpp\src\directives.h" />

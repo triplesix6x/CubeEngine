@@ -9,6 +9,7 @@
 #include "../includes/ImguiThemes.h"
 #include "../includes/SceneSerializer.h"
 #include "../includes/WindowsUtils.h"
+#include "../scripting/includes/ScriptEngine.h"
 #include <Commdlg.h>
 #include <memory>
 #include <stdio.h>
@@ -16,6 +17,7 @@
 #include <chrono>
 #include <thread>
 #include <math.h>
+#include <iostream>
 
 
 namespace Cube
@@ -29,6 +31,10 @@ namespace Cube
 		models.push_back(std::make_unique<Model>(m_Window.Gfx(), "models\\cube.obj", id, "Cube"));
 		++id;
 		m_Window.Gfx().SetTexture(&pCubeIco, L"icons\\cubeico2.png");
+		AllocConsole();
+		freopen("CONOUT$", "w", stdout);
+		ScriptEngine::Init();
+
 		CUBE_INFO("Application has been set up");
 	}
 
@@ -41,6 +47,7 @@ namespace Cube
 		}
 		pCubeIco->Release();
 		models.clear();
+		FreeConsole();
 	}
 
 	void Application::HadleInput(float dt)

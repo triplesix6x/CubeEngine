@@ -4,7 +4,7 @@
 #include "CVertex.h"
 #include "NewIndexedTriangleList.h"
 #include <DirectXMath.h>
-#include "../../includes/CMath.h"
+#include "../core/includes/CMath.h"
 #include <array>
 
 class Plane
