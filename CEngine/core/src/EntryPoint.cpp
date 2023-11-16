@@ -10,9 +10,13 @@ int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	HRESULT hResult = CoInitialize(NULL);
 	try
 	{
-		Cube::Log::init();																								//инициализация логирования
-		Cube::Application app(GetSystemMetrics(SM_CXSCREEN), GetSystemMetrics(SM_CYSCREEN), Cube::WindowType::CUSTOM);	//создание экземпляра приложения
-		int Result = app.run();																							//запуск основной функции работы
+		//инициализация логирования
+		Cube::Log::init();
+
+		//создание экземпляра приложения
+		Cube::Application app(GetSystemMetrics(SM_CXSCREEN), GetSystemMetrics(SM_CYSCREEN), Cube::WindowType::CUSTOM);	
+
+		int Result = app.run();																							
 		return Result;
 	}
 	//Обработка исключений

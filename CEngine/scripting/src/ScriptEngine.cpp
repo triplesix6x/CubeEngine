@@ -1,8 +1,10 @@
 #include "../includes/ScriptEngine.h"
 #include <fstream>
+#include <iostream>
 #include "../core/includes/Log.h"
 #include "mono/jit/jit.h"
 #include "mono/metadata/assembly.h"
+#include "mono/metadata/object.h"
 
 struct ScriptEngineData
 {
@@ -23,9 +25,8 @@ void ScriptEngine::Init()
 
 void ScriptEngine::Shutdown()
 {
+    ShutdownMono();
 	delete m_Data;
-
-	ShutdownMono();
 }
 
 char* ReadBytes(const std::string& filepath, uint32_t* outSize)
@@ -79,22 +80,9 @@ MonoAssembly* LoadCSharpAssembly(const std::string& assemblyPath)
     return assembly;
 }
 
-void PrintAssemblyTypes(MonoAssembly* assembly)
+static void CppFunc()
 {
-    MonoImage* image = mono_assembly_get_image(assembly);
-    const MonoTableInfo* typeDefinitionsTable = mono_image_get_table_info(image, MONO_TABLE_TYPEDEF);
-    int32_t numTypes = mono_table_info_get_rows(typeDefinitionsTable);
-
-    for (int32_t i = 0; i < numTypes; i++)
-    {
-        uint32_t cols[MONO_TYPEDEF_SIZE];
-        mono_metadata_decode_row(typeDefinitionsTable, i, cols, MONO_TYPEDEF_SIZE);
-
-        const char* nameSpace = mono_metadata_string_heap(image, cols[MONO_TYPEDEF_NAMESPACE]);
-        const char* name = mono_metadata_string_heap(image, cols[MONO_TYPEDEF_NAME]);
-
-        printf("%s.%s\n", nameSpace, name);
-    }
+    std::cout << "This is CppFunc" << std::endl;
 }
 
 void ScriptEngine::InitMono()
@@ -112,11 +100,27 @@ void ScriptEngine::InitMono()
 	m_Data->appDomain = mono_domain_create_appdomain((char*)"CubeScriptRuntime", nullptr);
 	mono_domain_set(m_Data->appDomain, true);
 
+    mono_add_internal_call("Cube.Main::CppFunction", CppFunc);
+
     m_Data->coreAssembly = LoadCSharpAssembly("Cube-ScriptCore.dll");
-    PrintAssemblyTypes(m_Data->coreAssembly);
+
+    MonoImage* assemblyImage = mono_assembly_get_image(m_Data->coreAssembly);
+    MonoClass* monoClass = mono_class_from_name(assemblyImage, "Cube", "Main");
+
+    MonoObject* instance = mono_object_new(m_Data->appDomain, monoClass);
+    mono_runtime_object_init(instance);
+
+    MonoMethod* printCustomMessageFunc = mono_class_get_method_from_name(monoClass, "PrintMessage", 1);
+    MonoString* monoString = mono_string_new(m_Data->appDomain, "Hello world from c++");
+    void* stringParam = monoString;
+    mono_runtime_invoke(printCustomMessageFunc, instance, &stringParam, nullptr);
 }
 
 void ScriptEngine::ShutdownMono()
 {
+   /* mono_domain_unload(m_Data->appDomain);
+    mono_jit_cleanup(m_Data->rootDomain);*/
 
+    m_Data->appDomain = nullptr;
+    m_Data->rootDomain = nullptr;
 }

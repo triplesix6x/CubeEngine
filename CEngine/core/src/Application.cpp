@@ -31,8 +31,7 @@ namespace Cube
 		models.push_back(std::make_unique<Model>(m_Window.Gfx(), "models\\cube.obj", id, "Cube"));
 		++id;
 		m_Window.Gfx().SetTexture(&pCubeIco, L"icons\\cubeico2.png");
-		AllocConsole();
-		freopen("CONOUT$", "w", stdout);
+
 		ScriptEngine::Init();
 
 		CUBE_INFO("Application has been set up");
@@ -45,9 +44,9 @@ namespace Cube
 			SceneSerializer serializer(*this);
 			serializer.Serialize(scenePath);
 		}
+		ScriptEngine::Shutdown();
 		pCubeIco->Release();
 		models.clear();
-		FreeConsole();
 	}
 
 	void Application::HadleInput(float dt)
@@ -160,7 +159,7 @@ namespace Cube
 
 		auto dt = timer.Mark();
 		HadleInput(dt);
-		m_Window.Gfx().ClearBuffer(0.07f, 0.07f, 0.07f);		//Очистка текущего буфера свап чейна
+		m_Window.Gfx().ClearBuffer(0.07f, 0.07f, 0.07f);
 		m_Window.Gfx().SetCamera(cam.GetMatrix());
 
 		ImGuiID did = m_Window.Gfx().ShowDocksape();
@@ -199,7 +198,7 @@ namespace Cube
 		showLightHelp();
 		showSettingsWindow();
 
-		m_Window.Gfx().EndFrame();							//Замена буфера свап чейна
+		m_Window.Gfx().EndFrame();						
 	}
 
 
