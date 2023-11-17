@@ -12,6 +12,7 @@ struct ScriptEngineData
 	MonoDomain* appDomain = nullptr;
 
     MonoAssembly* coreAssembly = nullptr;
+    MonoImage* coreAssemblyImage = nullptr;
 };
 
 static ScriptEngineData* m_Data;
@@ -21,12 +22,23 @@ void ScriptEngine::Init()
 	m_Data = new ScriptEngineData();
 
 	InitMono();
+    LoadAssembly("Cube-ScriptCore.dll");
+    mono_add_internal_call("Cube.Main::CppFunction", CppFunc);
 }
 
 void ScriptEngine::Shutdown()
 {
     ShutdownMono();
 	delete m_Data;
+}
+
+void ScriptEngine::LoadAssembly(const std::filesystem::path filepath)
+{
+    m_Data->appDomain = mono_domain_create_appdomain((char*)"CubeScriptRuntime", nullptr);
+    mono_domain_set(m_Data->appDomain, true);
+
+    m_Data->coreAssembly = LoadCSharpAssembly(filepath.string());
+    m_Data->coreAssemblyImage = mono_assembly_get_image(m_Data->coreAssembly);
 }
 
 char* ReadBytes(const std::string& filepath, uint32_t* outSize)
@@ -97,15 +109,7 @@ void ScriptEngine::InitMono()
 
 	m_Data->rootDomain = rootDomain;
 
-	m_Data->appDomain = mono_domain_create_appdomain((char*)"CubeScriptRuntime", nullptr);
-	mono_domain_set(m_Data->appDomain, true);
-
-    mono_add_internal_call("Cube.Main::CppFunction", CppFunc);
-
-    m_Data->coreAssembly = LoadCSharpAssembly("Cube-ScriptCore.dll");
-
-    MonoImage* assemblyImage = mono_assembly_get_image(m_Data->coreAssembly);
-    MonoClass* monoClass = mono_class_from_name(assemblyImage, "Cube", "Main");
+    MonoClass* monoClass = mono_class_from_name(m_Data->coreAssemblyImage, "Cube", "Main");
 
     MonoObject* instance = mono_object_new(m_Data->appDomain, monoClass);
     mono_runtime_object_init(instance);
