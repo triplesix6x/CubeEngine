@@ -1,3 +1,5 @@
+//Файл, обеспечивающий работу с окном Win32 API
+
 #pragma once
 #include <string>
 #include <Windows.h>
@@ -9,6 +11,7 @@
 
 namespace Cube
 {
+	//Тип данных для параметров окна
 	enum WindowType : DWORD
 	{
 		FULL = WS_OVERLAPPEDWINDOW,
@@ -19,6 +22,7 @@ namespace Cube
 	class Window
 	{
 	public:
+		//Класс обработки исключений для Window
 		class Exception : public CubeException
 		{
 			using CubeException::CubeException;
@@ -39,6 +43,7 @@ namespace Cube
 			const char* getType() const;
 		};
 	private:
+		//Класс для регистрации win32api класса окна
 		class WindowClass
 		{
 		public:
@@ -52,6 +57,7 @@ namespace Cube
 			HINSTANCE hInst;
 		};
 	public:
+		//Класс для создания окна и обрабтки сообщений от окна
 		Window(int width, int height, WindowType type);
 		~Window();
 		HWND handle() { return hwnd; }

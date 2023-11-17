@@ -9,6 +9,7 @@
 
 namespace YAML
 {
+	//Структура для кодирования и декодирования трехмерного вектора DirectX в формат YAML
 	template<>
 	struct convert<DirectX::XMFLOAT3>
 	{
@@ -35,7 +36,7 @@ namespace YAML
 namespace Cube
 {
 
-
+	//Апкаст оператора для вывода трехмерного вектора DirectX в формат YAML
 	YAML::Emitter& operator<<(YAML::Emitter& out, const DirectX::XMFLOAT3& f3)
 	{
 		out << YAML::Flow;
@@ -45,9 +46,7 @@ namespace Cube
 
 
 	SceneSerializer::SceneSerializer(Application& app) : pApp(&app)
-	{
-		
-	}
+	{}
 
 	void SceneSerializer::Serialize(const std::filesystem::path& filepath)
 	{

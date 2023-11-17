@@ -1,3 +1,5 @@
+//Класс констаного буфера для скайбокса
+
 #pragma once
 #include "ConstantBuffers.h"
 #include "Drawable.h"

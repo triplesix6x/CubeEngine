@@ -1,3 +1,5 @@
+//Класс для определения и добавления в пайплайн растеризатора DirectX (Bindable)
+
 #pragma once
 #include "Bindable.h"
 

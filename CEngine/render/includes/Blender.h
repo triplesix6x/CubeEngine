@@ -1,3 +1,5 @@
+//Смешение DirectX (Bindable)
+
 #pragma once
 #include "Bindable.h"
 #include <array>

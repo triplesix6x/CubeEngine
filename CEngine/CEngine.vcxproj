@@ -164,8 +164,6 @@
     <ClCompile Include="render\src\SkyBox.cpp" />
     <ClCompile Include="render\src\SkyboxTransformCBuf.cpp" />
     <ClCompile Include="render\src\SolidSphere.cpp" />
-    <ClCompile Include="render\src\TestCube.cpp" />
-    <ClCompile Include="render\src\TestPlane.cpp" />
     <ClCompile Include="render\src\Texture.cpp" />
     <ClCompile Include="render\src\Topology.cpp" />
     <ClCompile Include="render\src\TransformCBuf.cpp" />
@@ -190,7 +188,6 @@
     <ClCompile Include="imgui\imgui_impl_win32.cpp" />
     <ClCompile Include="imgui\imgui_tables.cpp" />
     <ClCompile Include="imgui\imgui_widgets.cpp" />
-    <ClCompile Include="memory\src\PoolAllocator.cpp" />
     <ClCompile Include="core\src\Timer.cpp" />
     <ClCompile Include="scripting\src\ScriptEngine.cpp" />
     <ClCompile Include="yaml-cpp\src\binary.cpp" />
@@ -250,7 +247,6 @@
     <ClInclude Include="render\includes\InputLayout.h" />
     <ClInclude Include="render\includes\Mesh.h" />
     <ClInclude Include="render\includes\PixelShader.h" />
-    <ClInclude Include="render\includes\Plane.h" />
     <ClInclude Include="render\includes\PointLight.h" />
     <ClInclude Include="render\includes\Rasterizer.h" />
     <ClInclude Include="render\includes\Sampler.h" />
@@ -258,8 +254,6 @@
     <ClInclude Include="render\includes\SkyboxTransformCBuf.h" />
     <ClInclude Include="render\includes\SolidSphere.h" />
     <ClInclude Include="render\includes\Sphere.h" />
-    <ClInclude Include="render\includes\TestCube.h" />
-    <ClInclude Include="render\includes\TestPlane.h" />
     <ClInclude Include="render\includes\Texture.h" />
     <ClInclude Include="render\includes\Topology.h" />
     <ClInclude Include="render\includes\TransformCbuf.h" />
@@ -276,7 +270,6 @@
     <ClInclude Include="imgui\imstb_rectpack.h" />
     <ClInclude Include="imgui\imstb_textedit.h" />
     <ClInclude Include="imgui\imstb_truetype.h" />
-    <ClInclude Include="memory\includes\PoolAllocator.h" />
     <ClInclude Include="core\includes\Timer.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="scripting\includes\ScriptEngine.h" />

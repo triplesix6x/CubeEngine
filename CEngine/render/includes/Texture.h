@@ -1,3 +1,6 @@
+//Класс для определения и добавления в пайплайн двумерной текстуры (Bindable)
+
+
 #pragma once
 #include "Bindable.h"
 #include "../core/includes/Log.h"

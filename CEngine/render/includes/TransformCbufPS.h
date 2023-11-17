@@ -1,3 +1,6 @@
+//Класс для определения и добавления в пайплайн константного буфера пиксельного шейдера DirectX (Bindable)
+
+
 #pragma once
 #include "TransformCbuf.h"
 

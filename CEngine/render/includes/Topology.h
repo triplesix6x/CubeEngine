@@ -1,3 +1,6 @@
+//Класс для определения и добавления в пайплайн топологии вершин и индексов DirectX (Bindable)
+
+
 #pragma once
 #include "Bindable.h"
 

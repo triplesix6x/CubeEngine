@@ -78,7 +78,7 @@ Graphics::Graphics(HWND hwnd, int width, int height)
 }
 
 
-
+//Функция очистки буфера после прошлого кадра
 void Graphics::ClearBuffer(float red, float green, float blue)
 {
 	if (imguiEnabled)
@@ -185,9 +185,9 @@ void Graphics::Resize(UINT width, UINT height) noexcept
 
 }
 
+//Функция отрисовки пайплайна 
 void Graphics::DrawIndexed(UINT count)
 {
-	//Отрисовка пайплайна 
 	pContext->DrawIndexed( count, 0u, 0u);
 }
 
@@ -207,6 +207,8 @@ void Graphics::ClearScreen(float factor)
 	pContext->ClearRenderTargetView(pTarget.Get(), color);
 }
 
+
+//Функция отрисовки сетки
 void Graphics::DrawGrid(DirectX::XMFLOAT3 camPos) noexcept
 {
 	std::unique_ptr<DirectX::CommonStates> m_states;
@@ -238,7 +240,7 @@ void Graphics::DrawGrid(DirectX::XMFLOAT3 camPos) noexcept
 	m_effect->Apply(pContext.Get());
 	pContext->IASetInputLayout(m_inputLayout.Get());
 	m_batch->Begin();
-
+	
 	DirectX::SimpleMath::Vector3 xaxis(300.f, 0.f, 0.f);
 	DirectX::SimpleMath::Vector3 zaxis(0.f, 0.f, 300.f);
 	DirectX::SimpleMath::Vector3 origin = DirectX::SimpleMath::Vector3(round(camPos.x - 5.0f), 0.f, round(camPos.z + 10.0f));

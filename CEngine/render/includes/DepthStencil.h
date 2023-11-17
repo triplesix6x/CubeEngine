@@ -1,3 +1,5 @@
+//Класс для определения и добавления в пайплайн трафарета глубины DirectX (Bindable)
+
 #pragma once
 #include "Bindable.h"
 

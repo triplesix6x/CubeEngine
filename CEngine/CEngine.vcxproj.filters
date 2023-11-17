@@ -18,9 +18,6 @@
     <ClCompile Include="core\src\Application.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="memory\src\PoolAllocator.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
     <ClCompile Include="core\src\Log.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
@@ -129,13 +126,7 @@
     <ClCompile Include="core\includes\ImGuiThemes.h">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="render\src\TestPlane.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
     <ClCompile Include="render\src\TransformCbufPS.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="render\src\TestCube.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="render\src\Blender.cpp">
@@ -252,9 +243,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core\includes\Application.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="memory\includes\PoolAllocator.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="core\includes\Log.h">
@@ -386,16 +374,7 @@
     <ClInclude Include="render\includes\Rasterizer.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="render\includes\Plane.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="render\includes\TestPlane.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
     <ClInclude Include="render\includes\TransformCbufPS.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="render\includes\TestCube.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="render\includes\Blender.h">

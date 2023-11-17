@@ -1,3 +1,5 @@
+//Все объекты Bindable
+
 #pragma once
 
 #include "ConstantBuffers.h"

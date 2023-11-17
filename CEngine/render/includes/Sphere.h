@@ -1,3 +1,5 @@
+//Класс, описывющий геометрию сферы
+
 #pragma once
 #include "IndexedTriangleList.h"
 #include <DirectXMath.h>

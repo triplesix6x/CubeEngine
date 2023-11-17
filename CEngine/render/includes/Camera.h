@@ -1,3 +1,5 @@
+//Класс для управления камерой в движке
+
 #pragma once
 #include "Graphics.h"
 

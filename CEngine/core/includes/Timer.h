@@ -1,3 +1,5 @@
+//Класс для работы со временем
+
 #pragma once
 #include <chrono>
 

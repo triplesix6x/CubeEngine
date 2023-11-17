@@ -1,5 +1,3 @@
-//Файл работы системы логирования
-
 #include "../includes/Log.h"
 #include <fstream>
 

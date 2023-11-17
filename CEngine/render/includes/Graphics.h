@@ -1,3 +1,5 @@
+// ласс, осуществл€ющий настройку и взаимодействие с DirectX11 API
+
 #pragma once
 #include <windows.h>
 #include <string>
@@ -19,6 +21,7 @@ class Graphics
 	friend class Texture;
 	friend class DDSTex;
 public:
+	// ласс обработчика графических исключений
 	class GraphicsException : public CubeException
 	{
 	using CubeException::CubeException;

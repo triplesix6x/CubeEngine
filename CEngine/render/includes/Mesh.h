@@ -1,3 +1,6 @@
+// ласс, хран€щий информацию о параметрах модели и позвол€ющий с ней взаимодействовать
+//явл€етс€ дочерним классом Drawable
+
 #pragma once
 #include "DrawableBase.h"
 #include "BindableBase.h"
@@ -21,6 +24,8 @@ private:
 	mutable DirectX::XMFLOAT4X4 transform;
 };
 
+
+// ласс одной ноды в общем графе нод конктретной модели
 class Node
 {
 	friend class Model;
@@ -66,9 +71,12 @@ private:
 	DirectX::XMFLOAT4X4 appliedScale;
 };
 
+
+// ласс всей модели, обеспечивающий взаимодействие с отдельными нодами
 class Model
 {
 public:
+	// онструктор загружает модель из файла и прочесывает ее ноды, составл€€ граф из главной ноды и дочерних
 	Model(Graphics& gfx, const std::string& fileName, int id=0, std::string modelName = "Unnamed Object");
 	void Draw(Graphics& gfx) const;
 	void ShowWindow(Graphics& gfx, Model* pSelectedModel) noexcept;
@@ -84,8 +92,14 @@ private:
 	DirectX::XMMATRIX GetTransform() const noexcept;
 	DirectX::XMMATRIX GetScale() const noexcept;
 	Node* GetSelectedNode() const noexcept;
-	static std::unique_ptr<Mesh> ParseMesh(Graphics& gfx, const aiMesh& mesh, const aiMaterial *const *pMaterials,const std::filesystem::path& filePath);
+
+	//‘ункци€ ParseNode ищет дочерние ноды в родительских, €вл€етс€ рекурсивной
 	std::unique_ptr<Node> ParseNode(int& nextId, const aiNode& node);
+
+	//‘ункци€ ParseMesh определ€ет параметры конктретной части модели в ноде,
+	//в частности наличие карты нормалей, карты бликов и настраивает пайплайн
+	static std::unique_ptr<Mesh> ParseMesh(Graphics& gfx, const aiMesh& mesh, const aiMaterial *const *pMaterials,const std::filesystem::path& filePath);
+
 	std::unique_ptr<Node> pRoot;
 	std::vector<std::unique_ptr<Mesh>> meshPtrs;
 	Node* pSelectedNode;

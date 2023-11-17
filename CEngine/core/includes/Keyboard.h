@@ -1,3 +1,5 @@
+//Класс обработчика клавиатуры 
+
 #pragma once
 #include <queue>
 #include <bitset>
@@ -9,6 +11,7 @@ public:
 	class Event
 	{
 	public:
+		//Тип даннных для типа события клавиатуры
 		enum class Type
 		{
 			Press,

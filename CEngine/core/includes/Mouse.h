@@ -1,3 +1,5 @@
+//Класс обработчика мыши
+
 #pragma once
 #include <queue>
 #include <optional>
@@ -13,6 +15,7 @@ public:
 	class Event
 	{
 	public:
+		//Тип даннных для типа события мыши
 		enum class Type
 		{
 			LPress,

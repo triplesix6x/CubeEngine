@@ -1,3 +1,5 @@
+//Класс для определения и добавления в пайплайн входного шаблона DirectX (Bindable)
+
 #pragma once
 #include "Bindable.h"
 

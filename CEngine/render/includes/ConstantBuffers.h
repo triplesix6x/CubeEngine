@@ -1,3 +1,5 @@
+//Класс для работы с константным буфером DirectX (Bindable)
+
 #pragma once
 #include "Bindable.h"
 

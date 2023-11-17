@@ -1,3 +1,5 @@
+//Класс для определения вершин и индексов для трехмерного куба
+
 #pragma once
 #include <optional>
 #include "IndexedTriangleList.h"

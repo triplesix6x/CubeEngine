@@ -1,3 +1,6 @@
+//Класс для определения и добавления в пайплайн буфера вершин DirectX (Bindable)
+
+
 #pragma once
 #include "Bindable.h"
 #include "CVertex.h"

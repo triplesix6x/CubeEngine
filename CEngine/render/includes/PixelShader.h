@@ -1,3 +1,6 @@
+//Класс для определения и добавления в пайплайн пиксельного шейдера DirectX (Bindable)
+
+
 #pragma once
 #include "Bindable.h"
 

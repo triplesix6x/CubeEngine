@@ -1,3 +1,5 @@
+//Файл работы системы логирования
+
 #pragma once
 #include <memory.h>
 #include "spdlog/spdlog.h"
@@ -8,7 +10,9 @@ namespace Cube {
 	class Log
 	{
 	public:
+		//Функция инифиализации логирования
 		static void init();
+
 		inline static std::shared_ptr<spdlog::logger>& GetCoreLogger() { return s_CoreLogger; }
 		inline static std::shared_ptr<spdlog::logger>& GetClientLogger() { return s_ClientLogger; }
 	private:

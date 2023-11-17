@@ -1,3 +1,5 @@
+//Класс для определения и добавления в пайплайн буфера индексов DirectX (Bindable)
+
 #pragma once
 #include "Bindable.h"
 

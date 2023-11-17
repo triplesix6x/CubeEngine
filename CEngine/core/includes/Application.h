@@ -18,21 +18,27 @@ namespace Cube
 		friend class SceneSerializer;
 	public:
 		Application(int width, int height, WindowType type);
-		virtual ~Application();
-		int run();
-		void ShowSceneWindow();
-		void ShowMenuBar();
+		~Application();
 
+		//Функция игрового цикла
+		int run();
+
+		//Функция добавления объекта из файла
 		void AddObj();
+
 		void AddCube();
 
-		void ShowToolBar();
+		//Обработка клавиатуры и мыши
 		void HadleInput(float dt);
 
+		//Функции интерфейса ImGui
+		void ShowSceneWindow();
+		void ShowMenuBar();
 		void showLightHelp();
-
 		void showSettingsWindow();
+		void ShowToolBar();
 
+		//Функции сериализации и десериализации сцены
 		void newScene();
 		void openScene();
 		void saveScene();
@@ -41,7 +47,12 @@ namespace Cube
 	private:
 		bool lHelpWindowOpen = false;
 		bool projSettWindowOpen = false;
-		void doFrame();					//функция отрисовки одного кадра
+		bool drawGrid = true;
+		bool nofpslimit = true;
+
+		//функция отрисовки кадра
+		void doFrame();					
+
 		ImguiManager imgui;
 		Window m_Window;
 		Timer timer;
@@ -51,10 +62,9 @@ namespace Cube
 		ID3D11ShaderResourceView* pCubeIco = nullptr;
 		std::unique_ptr<SkyBox> skybox;
 		Model* pSelectedModel;
-		bool drawGrid = true;
 		std::chrono::milliseconds maxfps = std::chrono::milliseconds(14);
-		bool nofpslimit = true;
 		std::filesystem::path scenePath = "Unnamed Scene";
+
 		int id = 0;
 	};
 }

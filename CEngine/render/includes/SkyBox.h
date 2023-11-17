@@ -1,3 +1,5 @@
+// ласс объекта скайбокса. явл€етс€ дочерним классом Drawable
+
 #pragma once
 #include "DrawableBase.h"
 

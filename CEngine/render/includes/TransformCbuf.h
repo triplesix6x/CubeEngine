@@ -1,3 +1,6 @@
+//Класс для определения и добавления в пайплайн константного буфера DirectX (Bindable)
+
+
 #pragma once
 #include "ConstantBuffers.h"
 #include "Drawable.h"
