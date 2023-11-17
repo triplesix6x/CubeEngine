@@ -189,6 +189,7 @@
     <ClCompile Include="imgui\imgui_tables.cpp" />
     <ClCompile Include="imgui\imgui_widgets.cpp" />
     <ClCompile Include="core\src\Timer.cpp" />
+    <ClCompile Include="scripting\src\ScriptGlue.cpp" />
     <ClCompile Include="scripting\src\ScriptEngine.cpp" />
     <ClCompile Include="yaml-cpp\src\binary.cpp" />
     <ClCompile Include="yaml-cpp\src\contrib\graphbuilder.cpp" />
@@ -272,6 +273,7 @@
     <ClInclude Include="imgui\imstb_truetype.h" />
     <ClInclude Include="core\includes\Timer.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="scripting\includes\ScriptGlue.h" />
     <ClInclude Include="scripting\includes\ScriptEngine.h" />
     <ClInclude Include="yaml-cpp\src\collectionstack.h" />
     <ClInclude Include="yaml-cpp\src\contrib\graphbuilderadapter.h" />

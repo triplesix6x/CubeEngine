@@ -32,6 +32,8 @@ namespace Cube
 		++id;
 		m_Window.Gfx().SetTexture(&pCubeIco, L"icons\\cubeico2.png");
 
+		AllocConsole();
+		freopen("CONOUT$", "w", stdout);
 		ScriptEngine::Init();
 
 		CUBE_INFO("Application has been set up");
@@ -47,6 +49,7 @@ namespace Cube
 		ScriptEngine::Shutdown();
 		pCubeIco->Release();
 		models.clear();
+		FreeConsole();
 	}
 
 	void Application::HadleInput(float dt)
