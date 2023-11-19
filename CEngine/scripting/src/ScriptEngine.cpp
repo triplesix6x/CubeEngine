@@ -112,11 +112,6 @@ void ScriptEngine::Init()
 
     MonoObject* instance = m_Data->EntityClass.Instanciate();
     mono_runtime_object_init(instance);
-
-    MonoMethod* printCustomMessageFunc = m_Data->EntityClass.GetMethod("PrintMessage", 1);
-    MonoString* monoString = mono_string_new(m_Data->appDomain, "Hello world from c++");
-    void* stringParam = monoString;
-    mono_runtime_invoke(printCustomMessageFunc, instance, &stringParam, nullptr);
 }
 
 ScriptClass::ScriptClass(const std::string& classNamespace, const std::string& className) :

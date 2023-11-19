@@ -27,11 +27,6 @@ namespace Cube
         public Main()
         {
             InternalCalls.NativeLog("This logged from C#");
-            Console.WriteLine("Main constr");
-        }
-        public void PrintMessage(string message)
-        {
-            Console.WriteLine($"C# says: {message}");
         }
     }
 }
