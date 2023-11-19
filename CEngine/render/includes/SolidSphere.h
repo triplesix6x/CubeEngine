@@ -1,4 +1,4 @@
-// ласс дл€ создани€ сферы. явл€етс€ дочерним классом Drawable
+// ласс дл€ создани€ сферы. явл€етс€ дочерним классом DrawableBase
 
 #pragma once
 #include "DrawableBase.h"
