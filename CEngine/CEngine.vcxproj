@@ -111,9 +111,9 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>IMGUI_DISABLE_OBSOLETE_FUNCTIONS;YAML_CPP_STATIC_DEFINE;CUBE_BUILD_DLL;CUBE_PLATFORM_WINDOWS;_DEBUG;_CONSOLE;NOMINMAX;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS;_CRT_NON_CONFORMING_WCSTOK</PreprocessorDefinitions>
+      <PreprocessorDefinitions>IMGUI_DISABLE_OBSOLETE_FUNCTIONS;YAML_CPP_STATIC_DEFINE;CUBE_BUILD_DLL;CUBE_PLATFORM_WINDOWS;_SILENCE_STDEXT_ARR_ITERS_DEPRECATION_WARNING;_DEBUG;_CONSOLE;NOMINMAX;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS;_CRT_NON_CONFORMING_WCSTOK</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>C:\Users\user999\source\repos\CubeEngine\CEngine\includes;$(SolutionDir)CEngine\vendor\spdlog\include;$(SolutionDir)CEngine\assimp\include\assimp;$(SolutionDir)CEngine\assimp\include;$(SolutionDir)CEngine\yaml-cpp\include\;$(SolutionDir)CEngine\vendor\mono\include\;$(SolutionDir)CEngine\imgui</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -129,7 +129,7 @@
       <WarningLevel>Level3</WarningLevel>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>IMGUI_DISABLE_OBSOLETE_FUNCTIONS;YAML_CPP_STATIC_DEFINE;CUBE_BUILD_DLL;CUBE_PLATFORM_WINDOWS;_CONSOLE;NOMINMAX;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS;_CRT_NON_CONFORMING_WCSTOK</PreprocessorDefinitions>
+      <PreprocessorDefinitions>IMGUI_DISABLE_OBSOLETE_FUNCTIONS;YAML_CPP_STATIC_DEFINE;CUBE_BUILD_DLL;CUBE_PLATFORM_WINDOWS;_SILENCE_STDEXT_ARR_ITERS_DEPRECATION_WARNING;_CONSOLE;NOMINMAX;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS;_CRT_NON_CONFORMING_WCSTOK</PreprocessorDefinitions>
       <ConformanceMode>Default</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <AdditionalIncludeDirectories>C:\Users\user999\source\repos\CubeEngine\CEngine\includes;$(SolutionDir)CEngine\vendor\spdlog\include;$(SolutionDir)CEngine\assimp\include\assimp;$(SolutionDir)CEngine\assimp\include;$(SolutionDir)CEngine\yaml-cpp\include\;$(SolutionDir)CEngine\vendor\mono\include\;$(SolutionDir)CEngine\imgui</AdditionalIncludeDirectories>
