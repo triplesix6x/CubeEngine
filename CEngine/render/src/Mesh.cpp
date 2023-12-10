@@ -163,6 +163,7 @@ Model::Model(Graphics& gfx, const std::string& fileName, int id, std::string mod
 	}
 	int nextId = 0;
 	pRoot = ParseNode(nextId, *pScene->mRootNode);
+	CUBE_TRACE(std::string("Successfully loaded model") + fileName);
 }
 
 Node& Model::getpRoot()

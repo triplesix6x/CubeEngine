@@ -112,6 +112,7 @@ void ScriptEngine::Init()
 
     MonoObject* instance = m_Data->EntityClass.Instanciate();
     mono_runtime_object_init(instance);
+    CUBE_CORE_INFO("Script Engine was initialized");
 }
 
 ScriptClass::ScriptClass(const std::string& classNamespace, const std::string& className) :
