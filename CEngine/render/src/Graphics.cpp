@@ -1,4 +1,5 @@
-#include <sstream>
+#include <fstream>
+#include <filesystem>
 #include <d3dcompiler.h>
 #include <DirectXMath.h>
 #include <dxgi.h>
@@ -25,8 +26,8 @@ Graphics::Graphics(HWND hwnd, int width, int height)
 	sd.BufferDesc.Width = 0;
 	sd.BufferDesc.Height = 0;
 	sd.BufferDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
-	sd.BufferDesc.RefreshRate.Numerator = 0;
-	sd.BufferDesc.RefreshRate.Denominator = 0;
+	sd.BufferDesc.RefreshRate.Numerator = 360;
+	sd.BufferDesc.RefreshRate.Denominator = 1;
 	sd.BufferDesc.Scaling = DXGI_MODE_SCALING_STRETCHED;
 	sd.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
 	sd.SampleDesc.Count = 1;
@@ -36,7 +37,7 @@ Graphics::Graphics(HWND hwnd, int width, int height)
 	sd.OutputWindow = hwnd;
 	sd.Windowed = TRUE;
 	sd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
-	sd.Flags = 0;
+	sd.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
 
 	HRESULT hResult;
 
@@ -154,10 +155,8 @@ ImGuiID Graphics::ShowDocksape() noexcept
 		dockspace_id = ImGui::GetID("MyDockspace");
 		ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_PassthruCentralNode;
 		ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
-		static bool first_time = true;
-		if (first_time)
+		if (!std::filesystem::exists("imgui.ini"))
 		{
-			first_time = false;
 			ImGui::DockBuilderRemoveNode(dockspace_id);
 			ImGui::DockBuilderAddNode(dockspace_id, dockspace_flags | ImGuiDockNodeFlags_DockSpace);
 			ImGui::DockBuilderSetNodeSize(dockspace_id, viewport->Size);
@@ -167,6 +166,7 @@ ImGuiID Graphics::ShowDocksape() noexcept
 			ImGuiID dock_id_scene_down = ImGui::DockBuilderSplitNode(dock_id_right, ImGuiDir_Down, 0.5f, nullptr, &dock_id_right);
 			ImGui::DockBuilderDockWindow("Scene", dock_id_right);
 			ImGui::DockBuilderDockWindow("ToolBar", dock_id_left);
+			ImGui::DockBuilderDockWindow("Camera", dock_id_scene_down);
 			ImGui::DockBuilderDockWindow("Proprieties", dock_id_scene_down);
 			ImGui::DockBuilderFinish(dockspace_id);
 

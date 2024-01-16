@@ -20,6 +20,10 @@
 #include <iostream>
 
 
+extern bool ImGuiSaveStyle(const char* filename, const ImGuiStyle& style);
+extern bool ImGuiLoadStyle(const char* filename, ImGuiStyle& style);
+
+
 namespace Cube
 {
 	Application::Application(int width, int height, WindowType type) 
@@ -47,6 +51,7 @@ namespace Cube
 		ScriptEngine::Shutdown();
 		pCubeIco->Release();
 		models.clear();
+		ImGuiSaveStyle("style.style", ImGui::GetStyle());
 	}
 
 	void Application::HadleInput(float dt)

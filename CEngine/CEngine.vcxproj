@@ -148,6 +148,7 @@
     <ClCompile Include="core\includes\ImGuiThemes.h" />
     <ClInclude Include="render\includes\DXTKIncludes.h" />
     <ClInclude Include="render\includes\NewIndexedTriangleList.h" />
+    <ClCompile Include="core\src\SerializeStyle.cpp" />
     <ClCompile Include="render\src\Bindable.cpp" />
     <ClCompile Include="render\src\Blender.cpp" />
     <ClCompile Include="render\src\Camera.cpp" />

@@ -20,8 +20,7 @@ DirectX::XMMATRIX Camera::GetMatrix() const noexcept
 
 void Camera::SpawnControlWindow() noexcept
 {
-	if (ImGui::TreeNode("Camera"))
-	{
+	ImGui::Begin("Camera");
 		ImGui::Columns(2);
 		ImGui::SetColumnWidth(0, 100);
 		ImGui::Text("Position");
@@ -115,9 +114,7 @@ void Camera::SpawnControlWindow() noexcept
 		{
 			Reset();
 		}
-		ImGui::TreePop();
-	}
-
+		ImGui::End();
 }
 
 void Camera::Rotate(float dx, float dy) noexcept
