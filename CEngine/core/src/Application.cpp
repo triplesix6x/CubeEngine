@@ -32,10 +32,11 @@ namespace Cube
 		light(m_Window.Gfx()), 
 		skybox(std::make_unique<SkyBox>(m_Window.Gfx(), "textures\\skyboxmain.dds"))
 	{
-		models.push_back(std::make_unique<Model>(m_Window.Gfx(), "models\\cube.obj", id, "Cube"));
-		++id;
+		/*models.push_back(std::make_unique<Model>(m_Window.Gfx(), "models\\cube.obj", id, "Cube"));
+		++id;*/
 		m_Window.Gfx().SetTexture(&pCubeIco, L"icons\\cubeico2.png");
-
+		cube.SetPos({ 4.0f,0.0f,0.0f });
+		cube2.SetPos({ 0.0f,4.0f,0.0f });
 		ScriptEngine::Init();
 
 		CUBE_INFO("Application has been set up");
@@ -176,7 +177,7 @@ namespace Cube
 
 		if (skybox)
 		{
-			skybox->Draw(m_Window.Gfx());
+			skybox->Submit(fc);
 		}
 
 		light.Bind(m_Window.Gfx(), cam.GetMatrix());
@@ -184,18 +185,21 @@ namespace Cube
 
 		for (auto& m : models) 
 		{
-			m->Draw(m_Window.Gfx());
+			m->Submit(fc);
 		}
 
+		cube.Submit(fc); 
+		cube2.Submit(fc); 
 
-		light.drawSpheres(m_Window.Gfx());
+		light.drawSpheres(fc);
 		
-
+		fc.Execute(m_Window.Gfx());
 
 		if (drawGrid)
 		{
 			m_Window.Gfx().DrawGrid(cam.pos);
 		}
+
 
 		ShowMenuBar(); 
 		ShowSceneWindow(); 
@@ -203,7 +207,8 @@ namespace Cube
 		showLightHelp();
 		showSettingsWindow();
 
-		m_Window.Gfx().EndFrame();						
+		m_Window.Gfx().EndFrame();	
+		fc.Reset();
 	}
 
 

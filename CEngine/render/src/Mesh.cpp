@@ -15,34 +15,10 @@ std::string operator-(std::string source, const std::string& target)
 
 
 
-Mesh::Mesh(Graphics& gfx, std::vector<std::unique_ptr<Bindable>> bindPtrs)
+void Mesh::Submit(FrameCommander& frame, DirectX::FXMMATRIX accumulatedTranform) const noexcept
 {
-	if (!IsStaticInitialized())
-	{
-		AddStaticBind(std::make_unique<Topology>(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
-	}
-
-	for (auto& pb : bindPtrs)
-	{
-		if (auto pi = dynamic_cast<IndexBuffer*>(pb.get()))
-		{
-			AddIndexBuffer(std::unique_ptr<IndexBuffer>{ pi });
-			pb.release();
-		}
-		else
-		{
-			AddBind(std::move(pb));
-		}
-	}
-
-	AddBind(std::make_unique<TransformCbuf>(gfx, *this));
-}
-
-
-void Mesh::Draw(Graphics& gfx, DirectX::FXMMATRIX accumulatedTransform) const
-{
-	DirectX::XMStoreFloat4x4(&transform, accumulatedTransform);
-	Drawable::Draw(gfx);
+	DirectX::XMStoreFloat4x4(&transform, accumulatedTranform);
+	Drawable::Submit(frame);
 }
 
 
@@ -63,7 +39,7 @@ id(id), meshPtrs(std::move(meshPtrs)) , name(name)
 }
 
 
-void Node::Draw(Graphics& gfx, DirectX::FXMMATRIX accumulatedTransform) const 
+void Node::Submit(FrameCommander& frame, DirectX::FXMMATRIX accumulatedTransform) const noexcept
 {
 	const auto built =
 		DirectX::XMLoadFloat4x4(&appliedTransform) *
@@ -71,11 +47,11 @@ void Node::Draw(Graphics& gfx, DirectX::FXMMATRIX accumulatedTransform) const
 		accumulatedTransform;
 	for (const auto pm : meshPtrs)
 	{
-		pm->Draw(gfx, built);
+		pm->Submit(frame, built);
 	}
 	for (const auto& pc : childPtrs)
 	{
-		pc->Draw(gfx, built);
+		pc->Submit(frame, built);
 	}
 }
 
@@ -140,6 +116,39 @@ std::string Node::GetName() const noexcept
 	return name;
 }
 
+void Node::ConstControl(Graphics& gfx, PSMaterialConstantFullmonte& c) noexcept
+{
+	//if (meshPtrs.empty())
+	//{
+	//	return;
+	//}
+
+	//if (auto pcb = meshPtrs.front()->QueryBindable<PixelConstantBuffer<PSMaterialConstantFullmonte>>())
+	//{
+	//	ImGui::Text("Material");
+
+	//	bool normalMapEnabled = (bool)c.normalMapEnabled;
+	//	ImGui::Checkbox("Norm Map", &normalMapEnabled);
+	//	c.normalMapEnabled = normalMapEnabled ? TRUE : FALSE;
+
+	//	bool specularMapEnabled = (bool)c.specularMapEnabled;
+	//	ImGui::Checkbox("Spec Map", &specularMapEnabled);
+	//	c.specularMapEnabled = specularMapEnabled ? TRUE : FALSE;
+
+	//	bool hasGlossMap = (bool)c.hasGlossMap;
+	//	ImGui::Checkbox("Gloss Alpha", &hasGlossMap);
+	//	c.hasGlossMap = hasGlossMap ? TRUE : FALSE;
+
+	//	ImGui::SliderFloat("Spec Weight", &c.specularMapWeight, 0.0f, 3.0f);
+
+	//	ImGui::SliderFloat("Spec Pow", &c.specularPower, 0.0f, 1000.0f, "%f");
+
+	//	ImGui::ColorPicker3("Spec Color", reinterpret_cast<float*>(&c.specularColor));
+
+	//	pcb->Update(gfx, c);
+	//}
+}
+
 
 
 
@@ -172,20 +181,20 @@ Node& Model::getpRoot()
 }
 
 
-void Model::Draw(Graphics& gfx) const
+void Model::Submit(FrameCommander& frame) const noexcept
 {
-	if (auto node = GetSelectedNode())
+	/*if (auto node = GetSelectedNode())
 	{
 		node->SetAppliedTransform(GetTransform());
 		node->SetAppliedScale(GetScale());
-	}
-	pRoot->Draw(gfx, DirectX::XMMatrixIdentity());
+	}*/
+	pRoot->Submit(frame, DirectX::XMMatrixIdentity());
 }
 
 
 void Model::ShowWindow(Graphics& gfx, Model* pSelectedModel) noexcept
 {
-	int nodeIndexTracker = 0;
+	/*int nodeIndexTracker = 0;
 
 	if (pSelectedModel == this)
 	{
@@ -398,9 +407,12 @@ void Model::ShowWindow(Graphics& gfx, Model* pSelectedModel) noexcept
 				scale.yscale = 1.0f;
 				scale.zscale = 1.0f;
 			}
+
+			pSelectedNode->ConstControl(gfx, mc);
+
 			ImGui::End();
 		}
-	}
+	}*/
 }
 
 void Model::SetRootTransfotm(DirectX::FXMMATRIX tf)
@@ -454,7 +466,7 @@ Node* Model::GetSelectedNode() const noexcept
 
 std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh, const aiMaterial *const *pMaterials, const std::filesystem::path& filePath)
 {
-	namespace dx = DirectX;
+	/*namespace dx = DirectX;
 	using CubeR::VertexLayout;
 	std::string dir = filePath.parent_path().string() + "\\";
 
@@ -467,7 +479,7 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh, const 
 		bool hasAlphaGloss = false;
 		float shine = 2.0f;
 		dx::XMFLOAT4 specularColor = { 0.18f, 0.18f, 0.18f, 1.0f };
-		dx::XMFLOAT3 diffuseColor = { 0.45f, 0.45f, 0.85f };
+		dx::XMFLOAT4 diffuseColor = { 0.45f, 0.45f, 0.85f, 1.0f };
 		if (mesh.mMaterialIndex >= 0)
 		{
 
@@ -762,10 +774,11 @@ std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh, const 
 			}
 			else
 			{
-				throw std::runtime_error("terrible combination of textures in material smh");
+				throw std::runtime_error("Wrong texture combination");
 			}	
-		bindablePtrs.push_back(std::make_unique<DepthStencil>(gfx, false));
-		return std::make_unique<Mesh>(gfx, std::move(bindablePtrs));
+		bindablePtrs.push_back(std::make_unique<DepthStencil>(gfx, DepthStencil::Mode::Off));
+		return std::make_unique<Mesh>(gfx, std::move(bindablePtrs));*/
+return {};
 }
 
 

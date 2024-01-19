@@ -266,7 +266,7 @@ namespace CubeR
 				assert("Bad element type" && false);
 			}
 		}
-	protected:
+	public:
 		Vertex(char* pData, const VertexLayout& layout) noexcept
 			:
 			pData(pData),

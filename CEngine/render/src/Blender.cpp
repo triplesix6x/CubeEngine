@@ -1,6 +1,7 @@
 #include "../includes/Blender.h"
 
 
+
 Blender::Blender(Graphics& gfx, bool blending)
 	:
 	blending(blending)

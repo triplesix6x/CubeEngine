@@ -18,10 +18,10 @@ cbuffer PLightCbuf
 
 cbuffer ObjectCBuf
 {
-    float3 materialColor;
+    float4 materialColor;
     float specularIntensity;
     float specularPower;
-    float padding[2];
+    //float padding[2];
 };
 
 float3 CalcPointLight(LightCBuf light, float3 viewPos, float3 n)

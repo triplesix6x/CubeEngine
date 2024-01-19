@@ -1,5 +1,6 @@
 #include "../includes/Rasterizer.h"
 
+
 Rasterizer::Rasterizer(Graphics& gfx, bool twoSided)
 {
 	D3D11_RASTERIZER_DESC desc = CD3D11_RASTERIZER_DESC(CD3D11_DEFAULT{});

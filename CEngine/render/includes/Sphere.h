@@ -4,12 +4,13 @@
 #include "IndexedTriangleList.h"
 #include <DirectXMath.h>
 #include "../core/includes/CMath.h"
+#include <optional>
+#include "Vertex.h"
 
 class Sphere
 {
 public:
-	template<class V>
-	static IndexedTriangleList<V> MakeTesselated(int latDiv, int longDiv)
+	static IndexedTriangleList MakeTesselated(CubeR::VertexLayout layout, int latDiv, int longDiv)
 	{
 		namespace dx = DirectX;
 		assert(latDiv >= 3);
@@ -20,7 +21,7 @@ public:
 		const float lattitudeAngle = PI / latDiv;
 		const float longitudeAngle = 2.0f * PI / longDiv;
 
-		std::vector<V> vertices;
+		CubeR::VertexBuffer vb{ std::move(layout) };
 		for (int iLat = 1; iLat < latDiv; iLat++)
 		{
 			const auto latBase = dx::XMVector3Transform(
@@ -29,22 +30,28 @@ public:
 			);
 			for (int iLong = 0; iLong < longDiv; iLong++)
 			{
-				vertices.emplace_back();
+				dx::XMFLOAT3 calculatedPos;
 				auto v = dx::XMVector3Transform(
 					latBase,
 					dx::XMMatrixRotationZ(longitudeAngle * iLong)
 				);
-				dx::XMStoreFloat3(&vertices.back().pos, v);
+				dx::XMStoreFloat3(&calculatedPos, v);
+				vb.EmplaceBack(calculatedPos);
 			}
 		}
 
-
-		const auto iNorthPole = (unsigned short)vertices.size();
-		vertices.emplace_back();
-		dx::XMStoreFloat3(&vertices.back().pos, base);
-		const auto iSouthPole = (unsigned short)vertices.size();
-		vertices.emplace_back();
-		dx::XMStoreFloat3(&vertices.back().pos, dx::XMVectorNegate(base));
+		const auto iNorthPole = (unsigned short)vb.Size();
+		{
+			dx::XMFLOAT3 northPos;
+			dx::XMStoreFloat3(&northPos, base);
+			vb.EmplaceBack(northPos);
+		}
+		const auto iSouthPole = (unsigned short)vb.Size();
+		{
+			dx::XMFLOAT3 southPos;
+			dx::XMStoreFloat3(&southPos, dx::XMVectorNegate(base));
+			vb.EmplaceBack(southPos);
+		}
 
 		const auto calcIdx = [latDiv, longDiv](unsigned short iLat, unsigned short iLong)
 			{ return iLat * longDiv + iLong; };
@@ -60,7 +67,6 @@ public:
 				indices.push_back(calcIdx(iLat + 1, iLong));
 				indices.push_back(calcIdx(iLat + 1, iLong + 1));
 			}
-
 			indices.push_back(calcIdx(iLat, longDiv - 1));
 			indices.push_back(calcIdx(iLat + 1, longDiv - 1));
 			indices.push_back(calcIdx(iLat, 0));
@@ -69,14 +75,12 @@ public:
 			indices.push_back(calcIdx(iLat + 1, 0));
 		}
 
-
 		for (unsigned short iLong = 0; iLong < longDiv - 1; iLong++)
 		{
 
 			indices.push_back(iNorthPole);
 			indices.push_back(calcIdx(0, iLong));
 			indices.push_back(calcIdx(0, iLong + 1));
-
 			indices.push_back(calcIdx(latDiv - 2, iLong + 1));
 			indices.push_back(calcIdx(latDiv - 2, iLong));
 			indices.push_back(iSouthPole);
@@ -85,16 +89,19 @@ public:
 		indices.push_back(iNorthPole);
 		indices.push_back(calcIdx(0, longDiv - 1));
 		indices.push_back(calcIdx(0, 0));
-
 		indices.push_back(calcIdx(latDiv - 2, 0));
 		indices.push_back(calcIdx(latDiv - 2, longDiv - 1));
 		indices.push_back(iSouthPole);
 
-		return { std::move(vertices),std::move(indices) };
+		return { std::move(vb),std::move(indices) };
 	}
-	template<class V>
-	static IndexedTriangleList<V> Make()
+	static IndexedTriangleList Make(std::optional<CubeR::VertexLayout> layout = std::nullopt)
 	{
-		return MakeTesselated<V>(12, 24);
+		using Element = CubeR::VertexLayout::ElementType;
+		if (!layout)
+		{
+			layout = CubeR::VertexLayout{}.Append(Element::Position3D);
+		}
+		return MakeTesselated(std::move(*layout), 12, 24);
 	}
 };

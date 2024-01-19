@@ -1,30 +1,35 @@
 #include "../includes/Drawable.h"
 #include "../includes/IndexBuffer.h"
+#include "../includes/BindableBase.h"
 #include <cassert>
 #include <typeinfo>
 
-void Drawable::Draw(Graphics& gfx) const 
+
+void Drawable::Submit(FrameCommander& frame) const noexcept
 {
-	for (auto& b : binds)
+	for (const auto& tech : techniques)
 	{
-		b->Bind(gfx);
+		tech.Submit(frame, *this);
 	}
-	for (auto& b : GetStaticBinds())
-	{
-		b->Bind(gfx);
-	}
-	gfx.DrawIndexed(pIndexBuffer->GetCount());
 }
 
-void Drawable::AddBind(std::unique_ptr<Bindable> bind) 
+void Drawable::AddTechnique(Technique tech_in) noexcept
 {
-	assert("*Must* use AddIndexBuffer to bind index buffer" && typeid(*bind) != typeid(IndexBuffer));
-	binds.push_back(std::move(bind));
+	tech_in.InitializeParentReferences(*this);
+	techniques.push_back(std::move(tech_in));
 }
 
-void Drawable::AddIndexBuffer(std::unique_ptr<IndexBuffer> ibuf) noexcept
+void Drawable::Bind(Graphics& gfx) const noexcept
 {
-	assert("Attempting to add index buffer a second time" && pIndexBuffer == nullptr);
-	pIndexBuffer = ibuf.get();
-	binds.push_back(std::move(ibuf));
+	pTopology->Bind(gfx);
+	pIndices->Bind(gfx);
+	pVertices->Bind(gfx);
 }
+
+UINT Drawable::GetIndexCount() const noexcept
+{
+	return pIndices->GetCount();
+}
+
+Drawable::~Drawable()
+{}

@@ -7,6 +7,8 @@
 #include "../render/includes/PointLight.h"
 #include "../render/includes/Mesh.h"
 #include "../render/includes/SkyBox.h"
+#include "../render/includes/TestCube.h"
+#include "../render/includes/FrameCommander.h"
 #include <set>
 
 namespace Cube
@@ -63,6 +65,11 @@ namespace Cube
 		Model* pSelectedModel;
 		std::chrono::milliseconds maxfps = std::chrono::milliseconds(14);
 		std::filesystem::path scenePath = "Unnamed Scene";
+
+		FrameCommander fc;
+
+		TestCube cube{ m_Window.Gfx(),4.0f };
+		TestCube cube2{ m_Window.Gfx(),4.0f };
 
 		int id = 0;
 	};

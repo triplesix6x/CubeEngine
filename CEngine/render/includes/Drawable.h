@@ -4,10 +4,15 @@
 
 #pragma once
 #include "Graphics.h"
+#include "Technique.h"
 #include <DirectXMath.h>
 
 
-class Bindable;
+class IndexBuffer;
+class VertexBuffer;
+class Topology;
+class InputLayout;
+
 
 class Drawable
 {
@@ -16,28 +21,15 @@ class Drawable
 public:
 	Drawable() = default;
 	Drawable(const Drawable&) = delete;
-	virtual DirectX::XMMATRIX GetTransformXM() const = 0;
-	void Draw(Graphics& gfx) const;
-	virtual void Update(float dt)
-	{};
-	virtual ~Drawable() = default;
-	template<class T>
-	T* QueryBindable() noexcept
-	{
-		for (auto& pb : binds)
-		{
-			if (auto pt = dynamic_cast<T*>(pb.get()))
-			{
-				return pt;
-			}
-		}
-		return nullptr;
-	}
+	void AddTechnique(Technique tech_in) noexcept;
+	virtual DirectX::XMMATRIX GetTransformXM() const noexcept = 0;
+	void Submit(class FrameCommander& frame) const noexcept;
+	void Bind(Graphics& gfx) const noexcept;
+	UINT GetIndexCount() const noexcept;
+	virtual ~Drawable();
 protected:
-	void AddBind(std::unique_ptr<Bindable> bind);
-	void AddIndexBuffer(std::unique_ptr<class IndexBuffer> ibuf) noexcept;
-private:
-	virtual const std::vector<std::unique_ptr<Bindable>>& GetStaticBinds() const noexcept = 0;
-	const class IndexBuffer* pIndexBuffer = nullptr;
-	std::vector<std::unique_ptr<Bindable>> binds;
-};
+	std::shared_ptr<IndexBuffer> pIndices; 
+	std::shared_ptr<VertexBuffer> pVertices; 
+	std::shared_ptr<Topology> pTopology; 
+	std::vector<Technique> techniques;
+}; 

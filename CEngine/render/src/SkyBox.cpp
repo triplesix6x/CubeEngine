@@ -2,47 +2,42 @@
 #include "../includes/BindableBase.h"
 #include "../includes/Sphere.h"
 #include "../includes/Cube.h"
-#include "../includes/Sampler.h"
+#include "../includes/CVertex.h"
+#include "../includes/IndexedTriangleList.h"
+
 
 
 SkyBox::SkyBox(Graphics& gfx, std::string name) : path(name)
 {
 	namespace dx = DirectX;
-	struct Vertex
+
+	auto model = CCube::Make();
+	pVertices = std::make_shared<VertexBuffer>(gfx, model.vertices);
+	pIndices = std::make_shared<IndexBuffer>(gfx, model.indices);
+	pTopology = std::make_shared<Topology>(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	{
-		dx::XMFLOAT3 pos;
-	};
+		Technique skybox;
+		Step only(0);
 
-
-		AddBind(std::make_unique<Rasterizer>(gfx, true));
-		AddBind(std::make_unique<DepthStencil>(gfx, true));
-		auto model = CCube::Make<Vertex>();
-		AddBind(std::make_unique<VertexBuffer>(gfx, model.vertices));
-		AddIndexBuffer(std::make_unique<IndexBuffer>(gfx, model.indices));
-
-
-		AddBind(std::make_unique<Texture>(gfx, name));
-		AddBind(std::make_unique<Sampler>(gfx));
-		
-
-		auto pvs = std::make_unique<VertexShader>(gfx, L"shaders\\SkyBoxVS.cso");
+		auto pvs = std::make_shared<VertexShader>(gfx, L"shaders\\SkyBoxVS.cso");
 		auto pvsbc = pvs->GetBytecode();
-		AddBind(std::move(pvs));
+		only.AddBindable(std::move(pvs));
 
-		AddBind(std::make_unique<PixelShader>(gfx, L"shaders\\SkyBoxPS.cso"));
+		only.AddBindable(std::make_shared<PixelShader>(gfx, L"shaders\\SkyBoxPS.cso"));
 
-		const std::vector<D3D11_INPUT_ELEMENT_DESC> ied =
-		{
-			{ "Position",0,DXGI_FORMAT_R32G32B32_FLOAT,0,D3D11_APPEND_ALIGNED_ELEMENT,D3D11_INPUT_PER_VERTEX_DATA,0 },
-		};
-		AddBind(std::make_unique<InputLayout>(gfx, ied, pvsbc));
 
-		AddBind(std::make_unique<Topology>(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
+		only.AddBindable(std::make_shared<InputLayout>(gfx, model.vertices.GetLayout(), pvsbc));
+		
+		only.AddBindable(std::make_shared<Texture>(gfx, name));
+		only.AddBindable(std::make_shared<Sampler>(gfx));
+		only.AddBindable(std::make_shared<SkyboxTransformCbuf>(gfx));
 
-	AddBind(std::make_unique<SkyboxTransformCbuf>(gfx));
+		only.AddBindable(std::make_shared<Rasterizer>(gfx, true));
+
+		skybox.AddStep(std::move(only));
+		AddTechnique(std::move(skybox));
+	}
 }
-
-void SkyBox::Update(float dt) noexcept {}
 
 
 DirectX::XMMATRIX SkyBox::GetTransformXM() const noexcept

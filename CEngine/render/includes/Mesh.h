@@ -2,7 +2,7 @@
 //явл€етс€ дочерним классом DrawableBase
 
 #pragma once
-#include "DrawableBase.h"
+#include "Drawable.h"
 #include "BindableBase.h"
 #include "Vertex.h"
 #include <assimp/Importer.hpp>
@@ -14,12 +14,12 @@
 #include <type_traits>
 #include "imgui.h"
 
-class Mesh : public DrawableBase<Mesh>
+class Mesh : public Drawable
 {
 public:
-	Mesh(Graphics& gfx, std::vector<std::unique_ptr<Bindable>> bindPtrs);
-	void Draw(Graphics& gfx, DirectX::FXMMATRIX accumulatedTransform) const ;
+	using Drawable::Drawable;
 	DirectX::XMMATRIX GetTransformXM() const noexcept override;
+	void Submit(FrameCommander& frame, DirectX::FXMMATRIX accumulatedTranform) const noexcept;
 private:
 	mutable DirectX::XMFLOAT4X4 transform;
 };
@@ -42,17 +42,18 @@ public:
 	};
 	struct PSMaterialConstantNotex
 	{
-		DirectX::XMFLOAT3 color;
+		DirectX::XMFLOAT4 color;
 		float specularIntensity = 0.65f;
 		float specularPower = 2.0f;
-		float padding[3];
+		float padding[2];
 	};
 	Node(int id, const std::string& name,std::vector<Mesh*> meshPtrs, const DirectX::XMMATRIX& transform) ;
 	Node(const Node&) = delete;
 	Node& operator=(const Node&) = delete;
-	void Draw(Graphics& gfx, DirectX::FXMMATRIX accumulatedTransform) const;
+	void Submit(FrameCommander& frame, DirectX::FXMMATRIX accumulatedTransform) const noexcept;
 	void SetAppliedTransform(DirectX::FXMMATRIX transform) noexcept;
 	void SetAppliedScale(DirectX::FXMMATRIX scale) noexcept;
+	void ConstControl(Graphics& gfx, PSMaterialConstantFullmonte& c) noexcept;
 	const DirectX::XMFLOAT4X4& GetAppliedTransform() const noexcept;
 	const DirectX::XMFLOAT4X4& GetAppliedScale() const noexcept;
 	int GetId() const noexcept;
@@ -61,7 +62,6 @@ public:
 	void RenderTree(Node*& pSelectedNode) const noexcept;
 private:
 	void AddChild(std::unique_ptr<Node> pChild) ;
-private:
 	std::string name;
 	int id;
 	std::vector<std::unique_ptr<Node>> childPtrs;
@@ -69,6 +69,7 @@ private:
 	DirectX::XMFLOAT4X4 baseTransform;
 	DirectX::XMFLOAT4X4 appliedTransform;
 	DirectX::XMFLOAT4X4 appliedScale;
+
 };
 
 
@@ -78,7 +79,7 @@ class Model
 public:
 	// онструктор загружает модель из файла и прочесывает ее ноды, составл€€ граф из главной ноды и дочерних
 	Model(Graphics& gfx, const std::string& fileName, int id=0, std::string modelName = "Unnamed Object");
-	void Draw(Graphics& gfx) const;
+	void Submit(FrameCommander& frame) const noexcept;
 	void ShowWindow(Graphics& gfx, Model* pSelectedModel) noexcept;
 	void SetRootTransfotm(DirectX::FXMMATRIX tf);
 	void SetRootScaling(DirectX::FXMMATRIX sf);
@@ -89,6 +90,7 @@ public:
 	std::string rootPath;
 	int id;
 private:
+	Node::PSMaterialConstantFullmonte mc;
 	DirectX::XMMATRIX GetTransform() const noexcept;
 	DirectX::XMMATRIX GetScale() const noexcept;
 	Node* GetSelectedNode() const noexcept;

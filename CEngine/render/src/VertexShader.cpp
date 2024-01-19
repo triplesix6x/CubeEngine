@@ -1,6 +1,7 @@
 #include "../includes/VertexShader.h"
 
 
+
 VertexShader::VertexShader(Graphics& gfx, const std::wstring& path)
 {
 

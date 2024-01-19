@@ -1,12 +1,13 @@
-[2024-01-16 21:50:08.765] [CUBE_ENGINE] [info] Initialized Log.
-[2024-01-16 21:50:08.782] [CUBE_ENGINE] [info] Window was shown.
-[2024-01-16 21:50:08.786] [CUBE_ENGINE] [info] ImGui Win32 was initialized.
-[2024-01-16 21:50:08.832] [CUBE_ENGINE] [info] D3D was initialized.
-[2024-01-16 21:50:08.832] [CUBE_ENGINE] [info] ImGui DX11 was initialized.
-[2024-01-16 21:50:08.832] [CUBE_ENGINE] [info] Graphics was created.
-[2024-01-16 21:50:08.835] [APP] [trace] Successfully loaded texture textures\skyboxmain.dds
-[2024-01-16 21:50:08.841] [APP] [trace] Successfully loaded modelmodels\cube.obj
-[2024-01-16 21:50:08.857] [CUBE_ENGINE] [trace] This logged from C#
-[2024-01-16 21:50:08.857] [CUBE_ENGINE] [info] Script Engine was initialized
-[2024-01-16 21:50:08.857] [APP] [info] Application has been set up
-[2024-01-16 21:50:16.909] [CUBE_ENGINE] [info] Window was closed.
+[2024-01-19 05:13:08.347] [CUBE_ENGINE] [info] Initialized Log.
+[2024-01-19 05:13:08.367] [CUBE_ENGINE] [info] Window was shown.
+[2024-01-19 05:13:08.371] [CUBE_ENGINE] [info] ImGui Win32 was initialized.
+[2024-01-19 05:13:08.421] [CUBE_ENGINE] [info] D3D was initialized.
+[2024-01-19 05:13:08.421] [CUBE_ENGINE] [info] ImGui DX11 was initialized.
+[2024-01-19 05:13:08.421] [CUBE_ENGINE] [info] Graphics was created.
+[2024-01-19 05:13:08.425] [APP] [trace] Successfully loaded texture textures\skyboxmain.dds
+[2024-01-19 05:13:08.474] [APP] [trace] Successfully loaded texture textures\brickwall.jpg
+[2024-01-19 05:13:08.519] [APP] [trace] Successfully loaded texture textures\brickwall.jpg
+[2024-01-19 05:13:08.542] [CUBE_ENGINE] [trace] This logged from C#
+[2024-01-19 05:13:08.542] [CUBE_ENGINE] [info] Script Engine was initialized
+[2024-01-19 05:13:08.542] [APP] [info] Application has been set up
+[2024-01-19 05:13:12.623] [CUBE_ENGINE] [info] Window was closed.

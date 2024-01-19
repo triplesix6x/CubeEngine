@@ -134,6 +134,7 @@
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <AdditionalIncludeDirectories>C:\Users\user999\source\repos\CubeEngine\CEngine\includes;$(SolutionDir)CEngine\vendor\spdlog\include;$(SolutionDir)CEngine\assimp\include\assimp;$(SolutionDir)CEngine\assimp\include;$(SolutionDir)CEngine\yaml-cpp\include\;$(SolutionDir)CEngine\vendor\mono\include\;$(SolutionDir)CEngine\imgui</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -147,7 +148,9 @@
     <ClCompile Include="core\includes\CXM.h" />
     <ClCompile Include="core\includes\ImGuiThemes.h" />
     <ClInclude Include="render\includes\DXTKIncludes.h" />
-    <ClInclude Include="render\includes\NewIndexedTriangleList.h" />
+    <ClInclude Include="render\includes\FrameCommander.h" />
+    <ClInclude Include="render\includes\Job.h" />
+    <ClInclude Include="render\includes\IndexedTriangleList.h" />
     <ClCompile Include="core\src\SerializeStyle.cpp" />
     <ClCompile Include="render\src\Bindable.cpp" />
     <ClCompile Include="render\src\Blender.cpp" />
@@ -157,7 +160,9 @@
     <ClCompile Include="render\src\Graphics.cpp" />
     <ClCompile Include="render\src\IndexBuffer.cpp" />
     <ClCompile Include="render\src\InputLayout.cpp" />
+    <ClCompile Include="render\src\Job.cpp" />
     <ClCompile Include="render\src\Mesh.cpp" />
+    <ClCompile Include="render\src\NullPixelShader.cpp" />
     <ClCompile Include="render\src\PixelShader.cpp" />
     <ClCompile Include="render\src\PointLight.cpp" />
     <ClCompile Include="render\src\Rasterizer.cpp" />
@@ -165,6 +170,9 @@
     <ClCompile Include="render\src\SkyBox.cpp" />
     <ClCompile Include="render\src\SkyboxTransformCBuf.cpp" />
     <ClCompile Include="render\src\SolidSphere.cpp" />
+    <ClCompile Include="render\src\Step.cpp" />
+    <ClCompile Include="render\src\Technique.cpp" />
+    <ClCompile Include="render\src\TestCube.cpp" />
     <ClCompile Include="render\src\Texture.cpp" />
     <ClCompile Include="render\src\Topology.cpp" />
     <ClCompile Include="render\src\TransformCBuf.cpp" />
@@ -242,12 +250,12 @@
     <ClInclude Include="render\includes\Cube.h" />
     <ClInclude Include="render\includes\DepthStencil.h" />
     <ClInclude Include="render\includes\Drawable.h" />
-    <ClInclude Include="render\includes\DrawableBase.h" />
     <ClInclude Include="render\includes\Graphics.h" />
     <ClInclude Include="render\includes\IndexBuffer.h" />
-    <ClInclude Include="render\includes\IndexedTriangleList.h" />
     <ClInclude Include="render\includes\InputLayout.h" />
     <ClInclude Include="render\includes\Mesh.h" />
+    <ClInclude Include="render\includes\NullPixelShader.h" />
+    <ClInclude Include="render\includes\Pass.h" />
     <ClInclude Include="render\includes\PixelShader.h" />
     <ClInclude Include="render\includes\PointLight.h" />
     <ClInclude Include="render\includes\Rasterizer.h" />
@@ -256,6 +264,9 @@
     <ClInclude Include="render\includes\SkyboxTransformCBuf.h" />
     <ClInclude Include="render\includes\SolidSphere.h" />
     <ClInclude Include="render\includes\Sphere.h" />
+    <ClInclude Include="render\includes\Step.h" />
+    <ClInclude Include="render\includes\Technique.h" />
+    <ClInclude Include="render\includes\TestCube.h" />
     <ClInclude Include="render\includes\Texture.h" />
     <ClInclude Include="render\includes\Topology.h" />
     <ClInclude Include="render\includes\TransformCbuf.h" />
