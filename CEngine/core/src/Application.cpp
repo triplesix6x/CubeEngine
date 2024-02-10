@@ -188,8 +188,8 @@ namespace Cube
 			m->Submit(fc);
 		}
 
-		cube.Submit(fc); 
-		cube2.Submit(fc); 
+		//cube.Submit(fc); 
+		//cube2.Submit(fc); 
 
 		light.drawSpheres(fc);
 		

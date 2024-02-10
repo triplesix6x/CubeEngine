@@ -261,6 +261,9 @@
     <ClCompile Include="render\src\TestCube.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="render\src\Material.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core\includes\Application.h">
@@ -503,6 +506,9 @@
     <ClInclude Include="render\includes\TestCube.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="render\includes\Material.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="icons\cursor.ico">
@@ -529,6 +535,8 @@
     <FxCompile Include="render\shader\PhongNormalMapVS.hlsl" />
     <FxCompile Include="render\shader\PhongNormalMapObjectPS.hlsl" />
     <FxCompile Include="render\shader\PhongSpecPS.hlsl" />
+    <FxCompile Include="render\shader\PhongSpecVS.hlsl" />
+    <FxCompile Include="render\shader\PhongSpecNormalMapVS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

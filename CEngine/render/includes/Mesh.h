@@ -4,7 +4,6 @@
 #pragma once
 #include "Drawable.h"
 #include "BindableBase.h"
-#include "Vertex.h"
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <optional>
@@ -17,7 +16,7 @@
 class Mesh : public Drawable
 {
 public:
-	using Drawable::Drawable;
+	Mesh(Graphics& gfx, const Material& mat, const aiMesh& mesh) noexcept;
 	DirectX::XMMATRIX GetTransformXM() const noexcept override;
 	void Submit(FrameCommander& frame, DirectX::FXMMATRIX accumulatedTranform) const noexcept;
 private:
@@ -31,29 +30,12 @@ class Node
 	friend class Model;
 	friend class ModelWindow;
 public:
-	struct PSMaterialConstantFullmonte
-	{
-		BOOL  normalMapEnabled = TRUE;
-		BOOL specularMapEnabled = TRUE;
-		BOOL  hasGlossMap = FALSE;
-		float specularPower = 3.1f;
-		DirectX::XMFLOAT3 specularColor = { 0.75f,0.75f,0.75f };
-		float specularMapWeight = 0.671f;
-	};
-	struct PSMaterialConstantNotex
-	{
-		DirectX::XMFLOAT4 color;
-		float specularIntensity = 0.65f;
-		float specularPower = 2.0f;
-		float padding[2];
-	};
 	Node(int id, const std::string& name,std::vector<Mesh*> meshPtrs, const DirectX::XMMATRIX& transform) ;
 	Node(const Node&) = delete;
 	Node& operator=(const Node&) = delete;
 	void Submit(FrameCommander& frame, DirectX::FXMMATRIX accumulatedTransform) const noexcept;
 	void SetAppliedTransform(DirectX::FXMMATRIX transform) noexcept;
 	void SetAppliedScale(DirectX::FXMMATRIX scale) noexcept;
-	void ConstControl(Graphics& gfx, PSMaterialConstantFullmonte& c) noexcept;
 	const DirectX::XMFLOAT4X4& GetAppliedTransform() const noexcept;
 	const DirectX::XMFLOAT4X4& GetAppliedScale() const noexcept;
 	int GetId() const noexcept;
@@ -80,9 +62,11 @@ public:
 	//Конструктор загружает модель из файла и прочесывает ее ноды, составляя граф из главной ноды и дочерних
 	Model(Graphics& gfx, const std::string& fileName, int id=0, std::string modelName = "Unnamed Object");
 	void Submit(FrameCommander& frame) const noexcept;
+	std::unique_ptr<Mesh> ParseMesh(Graphics& gfx, const aiMesh& mesh, const aiMaterial* const* pMaterials, const std::filesystem::path& filePath);
 	void ShowWindow(Graphics& gfx, Model* pSelectedModel) noexcept;
 	void SetRootTransfotm(DirectX::FXMMATRIX tf);
 	void SetRootScaling(DirectX::FXMMATRIX sf);
+	std::vector<Technique> GetTechniques() const noexcept;
 	~Model() noexcept;
 	int GetId() const noexcept;
 	Node& getpRoot();
@@ -90,17 +74,14 @@ public:
 	std::string rootPath;
 	int id;
 private:
-	Node::PSMaterialConstantFullmonte mc;
+	CubeR::VertexLayout vtxLayout;
+	std::vector<Technique> techniques;
 	DirectX::XMMATRIX GetTransform() const noexcept;
 	DirectX::XMMATRIX GetScale() const noexcept;
 	Node* GetSelectedNode() const noexcept;
 
 	//Функция ParseNode ищет дочерние ноды в родительских, является рекурсивной
 	std::unique_ptr<Node> ParseNode(int& nextId, const aiNode& node);
-
-	//Функция ParseMesh определяет параметры конктретной части модели в ноде,
-	//в частности наличие карты нормалей, карты бликов и настраивает пайплайн
-	static std::unique_ptr<Mesh> ParseMesh(Graphics& gfx, const aiMesh& mesh, const aiMaterial *const *pMaterials,const std::filesystem::path& filePath);
 
 	std::unique_ptr<Node> pRoot;
 	std::vector<std::unique_ptr<Mesh>> meshPtrs;

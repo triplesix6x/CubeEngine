@@ -1,7 +1,6 @@
 #include "../includes/SolidSphere.h"
 #include "../includes/BindableBase.h"
 #include "../includes/Sphere.h"
-#include "../includes/CVertex.h"
 #include "../includes/IndexedTriangleList.h"
 
 
@@ -10,9 +9,9 @@ SolidSphere::SolidSphere(Graphics& gfx, float radius)
 	namespace dx = DirectX;
 	auto model = Sphere::Make();
 	model.Transform(dx::XMMatrixScaling(radius, radius, radius));
-	pVertices = std::make_shared<VertexBuffer>(gfx, model.vertices);
-	pIndices = std::make_shared<IndexBuffer>(gfx, model.indices);
-	pTopology = std::make_shared<Topology>(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	pVertices = std::make_unique<VertexBuffer>(gfx, model.vertices);
+	pIndices = std::make_unique<IndexBuffer>(gfx, model.indices);
+	pTopology = std::make_unique<Topology>(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	{
 		Technique solid;

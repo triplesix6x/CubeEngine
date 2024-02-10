@@ -13,31 +13,31 @@ TestCube::TestCube(Graphics& gfx, float size)
 	auto model = CCube::MakeIndependentTextured();
 	model.Transform(dx::XMMatrixScaling(size, size, size));
 	model.SetNormalsIndependentFlat();
-	pVertices = std::make_shared<VertexBuffer>(gfx, model.vertices);
-	pIndices = std::make_shared<IndexBuffer>(gfx, model.indices);
-	pTopology = std::make_shared<Topology>(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	pVertices = std::make_unique<VertexBuffer>(gfx, model.vertices);
+	pIndices = std::make_unique<IndexBuffer>(gfx, model.indices);
+	pTopology = std::make_unique<Topology>(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	{
 		Technique standard;
 		{
-			Step only(1);
+			Step Phong(1);
 
-			only.AddBindable(std::make_shared<Texture>(gfx, "textures\\brickwall.jpg"));
-			only.AddBindable(std::make_shared<Sampler>(gfx));
+			Phong.AddBindable(std::make_shared<Texture>(gfx, "textures\\brickwall.jpg"));
+			Phong.AddBindable(std::make_shared<Sampler>(gfx));
 
 			auto pvs = std::make_shared<VertexShader>(gfx, L"shaders\\PhongVS.cso");
 			auto pvsbc = pvs->GetBytecode();
-			only.AddBindable(std::move(pvs));
+			Phong.AddBindable(std::move(pvs));
 
-			only.AddBindable(std::make_shared<PixelShader>(gfx, L"shaders\\PhongPS.cso"));
+			Phong.AddBindable(std::make_shared<PixelShader>(gfx, L"shaders\\PhongPS.cso"));
 
-			only.AddBindable(std::make_shared<PixelConstantBuffer<PSMaterialConstant>>(gfx, pmc, 1u));
+			Phong.AddBindable(std::make_shared<PixelConstantBuffer<PSMaterialConstant>>(gfx, pmc, 1u));
 
-			only.AddBindable(std::make_shared<InputLayout>(gfx, model.vertices.GetLayout(), pvsbc));
+			Phong.AddBindable(std::make_shared<InputLayout>(gfx, model.vertices.GetLayout(), pvsbc));
 
-			only.AddBindable(std::make_shared<TransformCbuf>(gfx));
+			Phong.AddBindable(std::make_unique<TransformCbuf>(gfx));
 
-			standard.AddStep(std::move(only));
+			standard.AddStep(std::move(Phong));
 		}
 		AddTechnique(std::move(standard));
 	}

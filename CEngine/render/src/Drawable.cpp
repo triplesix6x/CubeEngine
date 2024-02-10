@@ -1,9 +1,22 @@
 #include "../includes/Drawable.h"
 #include "../includes/IndexBuffer.h"
 #include "../includes/BindableBase.h"
+#include "../includes/Material.h"
 #include <cassert>
 #include <typeinfo>
 
+
+Drawable::Drawable(Graphics& gfx, const Material& mat, const aiMesh& mesh) noexcept
+{
+	pVertices = mat.MakeVertexBindable(gfx, mesh);
+	pIndices = mat.MakeIndexBindable(gfx, mesh);
+	pTopology = std::make_unique<Topology>(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+	for (auto& t : mat.GetTechniques())
+	{
+		AddTechnique(std::move(t));
+	}
+}
 
 void Drawable::Submit(FrameCommander& frame) const noexcept
 {

@@ -12,9 +12,9 @@ SkyBox::SkyBox(Graphics& gfx, std::string name) : path(name)
 	namespace dx = DirectX;
 
 	auto model = CCube::Make();
-	pVertices = std::make_shared<VertexBuffer>(gfx, model.vertices);
-	pIndices = std::make_shared<IndexBuffer>(gfx, model.indices);
-	pTopology = std::make_shared<Topology>(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	pVertices = std::make_unique<VertexBuffer>(gfx, model.vertices);
+	pIndices = std::make_unique<IndexBuffer>(gfx, model.indices);
+	pTopology = std::make_unique<Topology>(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	{
 		Technique skybox;
 		Step only(0);
