@@ -593,6 +593,7 @@ namespace Cube
 				}
 				ImGui::PopStyleVar(2);
 			}
+
 			if (selected == 2)
 			{
 				ImGui::SeparatorText("Graphics");
