@@ -2,14 +2,18 @@
 
 #pragma once
 #include "Bindable.h"
+#include "CVertex.h"
 
-class InputLayout : public Bindable
-{
-public:
-	InputLayout(Graphics& gfx,
-		const std::vector<D3D11_INPUT_ELEMENT_DESC>& layout,
-		ID3DBlob* pVertexShaderBytecode);
+
+	class InputLayout : public Bindable
+	{
+	public:
+		InputLayout(Graphics& gfx,
+			CubeR::VertexLayout layout,
+			ID3DBlob* pVertexShaderBytecode);
 		void Bind(Graphics& gfx)  noexcept override;
-protected:
-	Microsoft::WRL::ComPtr<ID3D11InputLayout> pInputLayout;
-};
+		const CubeR::VertexLayout GetLayout() const noexcept;
+	protected:
+		CubeR::VertexLayout layout;
+		Microsoft::WRL::ComPtr<ID3D11InputLayout> pInputLayout;
+	};

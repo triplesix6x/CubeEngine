@@ -1,6 +1,5 @@
 #include "../includes/SkyboxTransformCbuf.h"
 
-
 	SkyboxTransformCbuf::SkyboxTransformCbuf(Graphics& gfx, UINT slot)
 		:
 		pVcbuf{ std::make_unique<VertexConstantBuffer<Transforms>>(gfx,slot) }

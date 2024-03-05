@@ -1,5 +1,6 @@
 #include "../includes/IndexBuffer.h"
 
+
 IndexBuffer::IndexBuffer(Graphics& gfx, const std::vector<unsigned short>& indices) noexcept
 	:
 	count((UINT)indices.size())

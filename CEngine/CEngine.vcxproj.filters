@@ -246,6 +246,24 @@
     <ClCompile Include="core\src\SerializeStyle.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="render\src\Job.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="render\src\NullPixelShader.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="render\src\Step.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="render\src\Technique.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="render\src\TestCube.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="render\src\Material.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core\includes\Application.h">
@@ -305,13 +323,7 @@
     <ClInclude Include="render\includes\BindableBase.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="render\includes\DrawableBase.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
     <ClInclude Include="core\includes\CMath.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="render\includes\IndexedTriangleList.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="render\includes\Sampler.h">
@@ -467,10 +479,34 @@
     <ClInclude Include="render\includes\DXTKIncludes.h">
       <Filter>Исходные файлы</Filter>
     </ClInclude>
-    <ClInclude Include="render\includes\NewIndexedTriangleList.h">
+    <ClInclude Include="render\includes\IndexedTriangleList.h">
       <Filter>Исходные файлы</Filter>
     </ClInclude>
     <ClInclude Include="scripting\includes\ScriptGlue.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="render\includes\FrameCommander.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="render\includes\Pass.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="render\includes\Job.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="render\includes\NullPixelShader.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="render\includes\Step.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="render\includes\Technique.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="render\includes\TestCube.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="render\includes\Material.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
@@ -499,6 +535,8 @@
     <FxCompile Include="render\shader\PhongNormalMapVS.hlsl" />
     <FxCompile Include="render\shader\PhongNormalMapObjectPS.hlsl" />
     <FxCompile Include="render\shader\PhongSpecPS.hlsl" />
+    <FxCompile Include="render\shader\PhongSpecVS.hlsl" />
+    <FxCompile Include="render\shader\PhongSpecNormalMapVS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

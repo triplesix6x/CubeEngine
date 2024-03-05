@@ -3,14 +3,18 @@
 #pragma once
 #include "Graphics.h"
 
-class Bindable
-{
-public:
-	//Функция Bind переопределяется в каждом дочернем классе Bindable 
-	// и отвечает за добавление объекта в пайплайн DirectX
-	virtual void Bind(Graphics& gfx) noexcept = 0;
-	virtual ~Bindable() = default;
-protected:
-	static ID3D11DeviceContext* GetContext(Graphics& gfx);
-	static ID3D11Device* GetDevice(Graphics& gfx);
-};
+class Drawable;
+
+	class Bindable
+	{
+	public:
+		//Функция Bind переопределяется в каждом дочернем классе Bindable 
+		// и отвечает за добавление объекта в пайплайн DirectX
+		virtual void Bind(Graphics& gfx) noexcept = 0;
+		virtual void InitializeParentReference(const Drawable&) noexcept
+		{}
+		virtual ~Bindable() = default;
+	protected:
+		static ID3D11DeviceContext* GetContext(Graphics& gfx);
+		static ID3D11Device* GetDevice(Graphics& gfx);
+	};

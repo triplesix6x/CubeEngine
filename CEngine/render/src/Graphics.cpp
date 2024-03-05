@@ -26,9 +26,9 @@ Graphics::Graphics(HWND hwnd, int width, int height)
 	sd.BufferDesc.Width = 0;
 	sd.BufferDesc.Height = 0;
 	sd.BufferDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
-	sd.BufferDesc.RefreshRate.Numerator = 360;
+	sd.BufferDesc.RefreshRate.Numerator = 0;
 	sd.BufferDesc.RefreshRate.Denominator = 1;
-	sd.BufferDesc.Scaling = DXGI_MODE_SCALING_STRETCHED;
+	sd.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
 	sd.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
 	sd.SampleDesc.Count = 1;
 	sd.SampleDesc.Quality = 0;
@@ -37,12 +37,12 @@ Graphics::Graphics(HWND hwnd, int width, int height)
 	sd.OutputWindow = hwnd;
 	sd.Windowed = TRUE;
 	sd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
-	sd.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
+	sd.Flags = 0;
 
 	HRESULT hResult;
 
 	//Создание девайса и свап чейна
-	GFX_THROW_FAILED(D3D11CreateDeviceAndSwapChain(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, 0, nullptr, 0, D3D11_SDK_VERSION, &sd, &pSwap, &pDevice, nullptr, &pContext));
+	GFX_THROW_FAILED(D3D11CreateDeviceAndSwapChain(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, D3D11_CREATE_DEVICE_BGRA_SUPPORT, nullptr, 0, D3D11_SDK_VERSION, &sd, &pSwap, &pDevice, nullptr, &pContext));
 
 	//Задание целевого вида 
 	wrl::ComPtr<ID3D11Resource> pBackBuffer;
@@ -55,7 +55,7 @@ Graphics::Graphics(HWND hwnd, int width, int height)
 	descDepth.Height = height;
 	descDepth.MipLevels = 1u;
 	descDepth.ArraySize = 1u;
-	descDepth.Format = DXGI_FORMAT_D32_FLOAT;
+	descDepth.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
 	descDepth.SampleDesc.Count = 1u;
 	descDepth.SampleDesc.Quality = 0u;
 	descDepth.Usage = D3D11_USAGE_DEFAULT;
@@ -63,7 +63,7 @@ Graphics::Graphics(HWND hwnd, int width, int height)
 	pDevice->CreateTexture2D(&descDepth, nullptr, &pDepthStencil);
 
 	D3D11_DEPTH_STENCIL_VIEW_DESC descDSV = {};
-	descDSV.Format = DXGI_FORMAT_D32_FLOAT;
+	descDSV.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
 	descDSV.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
 	descDSV.Texture2D.MipSlice = 0u;
 	pDevice->CreateDepthStencilView(pDepthStencil.Get(), &descDSV, &pDSV);
@@ -166,8 +166,8 @@ ImGuiID Graphics::ShowDocksape() noexcept
 			ImGuiID dock_id_scene_down = ImGui::DockBuilderSplitNode(dock_id_right, ImGuiDir_Down, 0.5f, nullptr, &dock_id_right);
 			ImGui::DockBuilderDockWindow("Scene", dock_id_right);
 			ImGui::DockBuilderDockWindow("ToolBar", dock_id_left);
-			ImGui::DockBuilderDockWindow("Camera", dock_id_scene_down);
 			ImGui::DockBuilderDockWindow("Proprieties", dock_id_scene_down);
+			ImGui::DockBuilderDockWindow("Camera", dock_id_scene_down);
 			ImGui::DockBuilderFinish(dockspace_id);
 
 		}

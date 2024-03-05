@@ -3,41 +3,35 @@
 // обновление параметров объекта
 
 #pragma once
-#include "Graphics.h"
 #include <DirectXMath.h>
+#include "Technique.h"
+#include "Graphics.h"
 
 
-class Bindable;
+class Material;
+struct aiMesh;
+
+
+class IndexBuffer;
+class VertexBuffer;
+class Topology;
+class InputLayout;
 
 class Drawable
 {
-	template<class T>
-	friend class DrawableBase;
 public:
 	Drawable() = default;
+	Drawable(Graphics& gfx, const Material& mat, const aiMesh& mesh) noexcept;
 	Drawable(const Drawable&) = delete;
-	virtual DirectX::XMMATRIX GetTransformXM() const = 0;
-	void Draw(Graphics& gfx) const;
-	virtual void Update(float dt)
-	{};
-	virtual ~Drawable() = default;
-	template<class T>
-	T* QueryBindable() noexcept
-	{
-		for (auto& pb : binds)
-		{
-			if (auto pt = dynamic_cast<T*>(pb.get()))
-			{
-				return pt;
-			}
-		}
-		return nullptr;
-	}
+	void AddTechnique(Technique tech_in) noexcept;
+	virtual DirectX::XMMATRIX GetTransformXM() const noexcept = 0;
+	void Submit(class FrameCommander& frame) const noexcept;
+	void Bind(Graphics& gfx) const noexcept;
+	UINT GetIndexCount() const noexcept;
+	virtual ~Drawable();
 protected:
-	void AddBind(std::unique_ptr<Bindable> bind);
-	void AddIndexBuffer(std::unique_ptr<class IndexBuffer> ibuf) noexcept;
-private:
-	virtual const std::vector<std::unique_ptr<Bindable>>& GetStaticBinds() const noexcept = 0;
-	const class IndexBuffer* pIndexBuffer = nullptr;
-	std::vector<std::unique_ptr<Bindable>> binds;
-};
+	std::unique_ptr<IndexBuffer> pIndices; 
+	std::unique_ptr<VertexBuffer> pVertices;
+	std::unique_ptr<Topology> pTopology;
+	std::vector<Technique> techniques;
+}; 

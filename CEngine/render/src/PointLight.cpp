@@ -1,4 +1,5 @@
 #include "../includes/PointLight.h"
+#include "../includes/FrameCommander.h"
 #include "imgui.h"
 
 Lights::PointLight::PointLight(Graphics& gfx, int id, float radius, std::string lightName) : id(id), mesh(gfx, radius), lightName(lightName)
@@ -114,10 +115,10 @@ void Lights::PointLight::setCbuf(PointLightCBuf Cbuf)
 	cbData = Cbuf;
 }
 
-void Lights::PointLight::Draw(Graphics& gfx) const noexcept
+void Lights::PointLight::Submit(class FrameCommander& frame) const noexcept
 {
 	mesh.SetPos(cbData.pos);
-	mesh.Draw(gfx);
+	mesh.Submit(frame);
 }
 
 Lights::Lights(Graphics& gfx, float radius) : cbuf(gfx, 0u, 32u)
@@ -191,13 +192,13 @@ void Lights::spawnWnds()
 	}
 }
 
-void Lights::drawSpheres(Graphics& gfx)
+void Lights::drawSpheres(class FrameCommander& frame)
 {
 	for (auto& l : sceneLights)
 	{
 		if (l->DrawSphere())
 		{
-			l->Draw(gfx);
+			l->Submit(frame);
 		}
 	}
 }

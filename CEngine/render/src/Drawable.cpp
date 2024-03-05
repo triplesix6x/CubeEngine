@@ -1,30 +1,48 @@
 #include "../includes/Drawable.h"
 #include "../includes/IndexBuffer.h"
+#include "../includes/BindableBase.h"
+#include "../includes/Material.h"
 #include <cassert>
 #include <typeinfo>
 
-void Drawable::Draw(Graphics& gfx) const 
+
+Drawable::Drawable(Graphics& gfx, const Material& mat, const aiMesh& mesh) noexcept
 {
-	for (auto& b : binds)
+	pVertices = mat.MakeVertexBindable(gfx, mesh);
+	pIndices = mat.MakeIndexBindable(gfx, mesh);
+	pTopology = std::make_unique<Topology>(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+	for (auto& t : mat.GetTechniques())
 	{
-		b->Bind(gfx);
+		AddTechnique(std::move(t));
 	}
-	for (auto& b : GetStaticBinds())
-	{
-		b->Bind(gfx);
-	}
-	gfx.DrawIndexed(pIndexBuffer->GetCount());
 }
 
-void Drawable::AddBind(std::unique_ptr<Bindable> bind) 
+void Drawable::Submit(FrameCommander& frame) const noexcept
 {
-	assert("*Must* use AddIndexBuffer to bind index buffer" && typeid(*bind) != typeid(IndexBuffer));
-	binds.push_back(std::move(bind));
+	for (const auto& tech : techniques)
+	{
+		tech.Submit(frame, *this);
+	}
 }
 
-void Drawable::AddIndexBuffer(std::unique_ptr<IndexBuffer> ibuf) noexcept
+void Drawable::AddTechnique(Technique tech_in) noexcept
 {
-	assert("Attempting to add index buffer a second time" && pIndexBuffer == nullptr);
-	pIndexBuffer = ibuf.get();
-	binds.push_back(std::move(ibuf));
+	tech_in.InitializeParentReferences(*this);
+	techniques.push_back(std::move(tech_in));
 }
+
+void Drawable::Bind(Graphics& gfx) const noexcept
+{
+	pTopology->Bind(gfx);
+	pIndices->Bind(gfx);
+	pVertices->Bind(gfx);
+}
+
+UINT Drawable::GetIndexCount() const noexcept
+{
+	return pIndices->GetCount();
+}
+
+Drawable::~Drawable()
+{}

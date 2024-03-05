@@ -27,7 +27,7 @@ public:
 		PointLight(Graphics& gfx, int id, float radius, std::string lightName);
 		void SpawnControlWindow() noexcept;
 		void Reset() noexcept;
-		void Draw(Graphics& gfx) const noexcept;
+		void Submit(class FrameCommander& frame) const noexcept;
 		bool DrawSphere(); 
 		PointLightCBuf getCbuf() const;
 		void setCbuf(PointLightCBuf Cbuf);
@@ -47,7 +47,7 @@ public:
 	void DeleteLight(int i);
 	void UpdateCbufs();
 	void spawnWnds();
-	void drawSpheres(Graphics& gfx);
+	void drawSpheres(class FrameCommander& frame);
 	void Bind(Graphics& gfx, DirectX::FXMMATRIX view) noexcept;
 	std::vector<std::unique_ptr<PointLight>> sceneLights;
 private:
