@@ -445,10 +445,7 @@ namespace Cube
 			}
 			if (ImGui::BeginMenu("Help"))
 			{
-				if (ImGui::MenuItem("Light Help"))
-				{
-					lHelpWindowOpen = true;
-				}
+				lHelpWindowOpen = true;
 				ImGui::EndMenu();
 			}
 			ImGui::EndMainMenuBar();
@@ -462,8 +459,12 @@ namespace Cube
 			ImGuiIO& io = ImGui::GetIO();
 			ImGui::SetNextWindowSize(ImVec2{ 400, 700 }, ImGuiCond_Appearing);
 			ImGui::SetNextWindowPos(ImVec2(io.DisplaySize.x * 0.5f, io.DisplaySize.y * 0.5f), ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
-			ImGui::Begin("Light Help", &lHelpWindowOpen, ImGuiWindowFlags_NoCollapse);
-			ImGui::SeparatorText("POINT LIGHT VALUES:");
+			ImGui::Begin("Help", &lHelpWindowOpen, ImGuiWindowFlags_NoCollapse);
+
+			ImGui::SeparatorText("MOVE/CAMERA HELP ");
+			ImGui::TextWrapped("Camera movement:\nW - Forward\nS - Back\nA - Left\nD - Right\nShift - Descend\nSpace - Rise\nTo rotate the camera, right - click and move the mouse.\n\nAdding an object from a file :\n1. Right - click on an empty space in the 'Scene' window or left - click on the 'Scene' item in the top menu \n2. Select the item 'Add object from file...'\n3. Select a 3D model file.You can add four types of files : .obj, .gltf, .fbx and .md5mesh.\n4. Click");
+
+			ImGui::SeparatorText("LIGHT HELP: ");
 			ImGui::Columns(1);
 			ImGui::TextWrapped("Cube Engine uses one type of shading - Phong shading. So here are presented the recommended values for Point light sources, depending on them ranges from objects:");
 

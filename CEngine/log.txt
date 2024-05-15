@@ -1,31 +1,12 @@
-[2024-05-05 13:32:52.701] [CUBE_ENGINE] [info] Initialized Log.
-[2024-05-05 13:32:52.717] [CUBE_ENGINE] [info] Window was shown.
-[2024-05-05 13:32:52.720] [CUBE_ENGINE] [info] ImGui Win32 was initialized.
-[2024-05-05 13:32:52.755] [CUBE_ENGINE] [info] D3D was initialized.
-[2024-05-05 13:32:52.755] [CUBE_ENGINE] [info] ImGui DX11 was initialized.
-[2024-05-05 13:32:52.755] [CUBE_ENGINE] [info] Graphics was created.
-[2024-05-05 13:32:52.763] [APP] [trace] Successfully loaded texture textures\skyboxmain.dds
-[2024-05-05 13:32:52.770] [APP] [trace] Successfully loaded modelmodels\cube.obj
-[2024-05-05 13:32:52.795] [CUBE_ENGINE] [trace] This logged from C#
-[2024-05-05 13:32:52.795] [CUBE_ENGINE] [info] Script Engine was initialized
-[2024-05-05 13:32:52.795] [APP] [info] Application has been set up
-[2024-05-05 13:32:55.002] [APP] [info] Opened file  C:\Users\user999\Desktop\MyCubeProject\test.cubeproj
-[2024-05-05 13:32:55.034] [APP] [trace] Successfully loaded texture C:\Users\user999\Desktop\MyCubeProject\skyboxes\space.dds
-[2024-05-05 13:32:55.034] [APP] [trace] Loaded skybox file  C:\Users\user999\Desktop\MyCubeProject\skyboxes\space.dds
-[2024-05-05 13:32:55.090] [APP] [trace] Successfully loaded texture C:\Users\user999\Desktop\MyCubeProject\models\nano\glass_dif.png
-[2024-05-05 13:32:55.125] [APP] [trace] Successfully loaded texture C:\Users\user999\Desktop\MyCubeProject\models\nano\leg_dif.png
-[2024-05-05 13:32:55.157] [APP] [trace] Successfully loaded texture C:\Users\user999\Desktop\MyCubeProject\models\nano\leg_showroom_spec.png
-[2024-05-05 13:32:55.189] [APP] [trace] Successfully loaded texture C:\Users\user999\Desktop\MyCubeProject\models\nano\hand_dif.png
-[2024-05-05 13:32:55.236] [APP] [trace] Successfully loaded texture C:\Users\user999\Desktop\MyCubeProject\models\nano\hand_showroom_spec.png
-[2024-05-05 13:32:55.242] [APP] [trace] Successfully loaded texture C:\Users\user999\Desktop\MyCubeProject\models\nano\glass_dif.png
-[2024-05-05 13:32:55.260] [APP] [trace] Successfully loaded texture C:\Users\user999\Desktop\MyCubeProject\models\nano\arm_dif.png
-[2024-05-05 13:32:55.294] [APP] [trace] Successfully loaded texture C:\Users\user999\Desktop\MyCubeProject\models\nano\arm_showroom_spec.png
-[2024-05-05 13:32:55.323] [APP] [trace] Successfully loaded texture C:\Users\user999\Desktop\MyCubeProject\models\nano\helmet_diff.png
-[2024-05-05 13:32:55.354] [APP] [trace] Successfully loaded texture C:\Users\user999\Desktop\MyCubeProject\models\nano\helmet_showroom_spec.png
-[2024-05-05 13:32:55.376] [APP] [trace] Successfully loaded texture C:\Users\user999\Desktop\MyCubeProject\models\nano\body_dif.png
-[2024-05-05 13:32:55.413] [APP] [trace] Successfully loaded texture C:\Users\user999\Desktop\MyCubeProject\models\nano\body_showroom_spec.png
-[2024-05-05 13:32:55.415] [APP] [trace] Successfully loaded modelC:\Users\user999\Desktop\MyCubeProject\models\nano\nanosuit.obj
-[2024-05-05 13:32:55.417] [APP] [trace] Loaded model file  C:\Users\user999\Desktop\MyCubeProject\models\nano\nanosuit.obj
-[2024-05-05 13:32:55.418] [APP] [info] Scene has been successfully opened
-[2024-05-05 13:33:09.094] [CUBE_ENGINE] [info] Window was closed.
-[2024-05-05 13:33:09.099] [APP] [info] Scene has been successfully saved
+[2024-05-15 13:24:03.197] [CUBE_ENGINE] [info] Initialized Log.
+[2024-05-15 13:24:03.221] [CUBE_ENGINE] [info] Window was shown.
+[2024-05-15 13:24:03.225] [CUBE_ENGINE] [info] ImGui Win32 was initialized.
+[2024-05-15 13:24:03.275] [CUBE_ENGINE] [info] D3D was initialized.
+[2024-05-15 13:24:03.275] [CUBE_ENGINE] [info] ImGui DX11 was initialized.
+[2024-05-15 13:24:03.275] [CUBE_ENGINE] [info] Graphics was created.
+[2024-05-15 13:24:03.280] [APP] [trace] Successfully loaded texture textures\skyboxmain.dds
+[2024-05-15 13:24:03.287] [APP] [trace] Successfully loaded modelmodels\cube.obj
+[2024-05-15 13:24:03.307] [CUBE_ENGINE] [trace] This logged from C#
+[2024-05-15 13:24:03.307] [CUBE_ENGINE] [info] Script Engine was initialized
+[2024-05-15 13:24:03.307] [APP] [info] Application has been set up
+[2024-05-15 13:24:19.810] [CUBE_ENGINE] [info] Window was closed.
