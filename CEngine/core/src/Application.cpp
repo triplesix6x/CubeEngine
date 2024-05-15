@@ -462,7 +462,7 @@ namespace Cube
 			ImGui::Begin("Help", &lHelpWindowOpen, ImGuiWindowFlags_NoCollapse);
 
 			ImGui::SeparatorText("MOVE/CAMERA HELP ");
-			ImGui::TextWrapped("Camera movement:\nW - Forward\nS - Back\nA - Left\nD - Right\nShift - Descend\nSpace - Rise\nTo rotate the camera, right - click and move the mouse.\n\nAdding an object from a file :\n1. Right - click on an empty space in the 'Scene' window or left - click on the 'Scene' item in the top menu \n2. Select the item 'Add object from file...'\n3. Select a 3D model file.You can add four types of files : .obj, .gltf, .fbx and .md5mesh.\n4. Click");
+			ImGui::TextWrapped("Camera movement:\nW - Forward\nS - Back\nA - Left\nD - Right\nShift - Descend\nSpace - Rise\n\nTo rotate the camera, right - click and move the mouse.\n\nAdding an object from a file :\n1. Right - click on an empty space in the 'Scene' window or left - click on the 'Scene' item in the top menu \n2. Select the item 'Add object from file...'\n3. Select a 3D model file.You can add four types of files : .obj, .gltf, .fbx and .md5mesh.\n4. Click");
 
 			ImGui::SeparatorText("LIGHT HELP: ");
 			ImGui::Columns(1);
